@@ -2,6 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Year Ten</title>
+<script>try{var t=localStorage.getItem("yt-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
 <style>
 :root{--bg:#f6f7fb;--card:#fff;--tx:#1d2433;--mu:#5b6578;--ac:#5b3fd0;--ac2:#e9e4ff;--bd:#dde1ea;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141c;--card:#1b1e29;--tx:#e8eaf2;--mu:#9aa3b8;--ac:#a58bff;--ac2:#2b2552;--bd:#2d3243}}
@@ -50,18 +51,19 @@ main{padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px
 </main>
 <footer>To add a subject, add one line to the SUBJECTS list in this file.</footer>
 <script>
-/* Edit the links here. Plain links to the pages in the same folder, so the three files must sit together. */
+/* Edit the links here. Plain links to the pages in the same folder, so all the files must sit together. */
 const SUBJECTS=[
  {name:"Psychology",emoji:"🧠",note:"Study hub",href:"psychology.html"},
- {name:"Specialist Maths",emoji:"📐",note:"Proof & complex numbers",href:"specialist-maths.html"}
+ {name:"Specialist Maths",emoji:"📐",note:"Proof & complex numbers",href:"specialist-maths.html"},
+ {name:"Physics",emoji:"⚛️",note:"Motion, forces & energy",href:"physics.html"}
 ];
 document.getElementById("grid").innerHTML=SUBJECTS.map(s=>`<a class="tile" href="${s.href}"><span class="e">${s.emoji}</span><span class="n">${s.name}</span><span class="d">${s.note}</span></a>`).join("");
-document.getElementById("th").onclick=()=>{const r=document.documentElement;const dk=r.dataset.theme=="dark"||(r.dataset.theme!="light"&&matchMedia("(prefers-color-scheme:dark)").matches);r.dataset.theme=dk?"light":"dark"};
+document.getElementById("th").onclick=()=>{const r=document.documentElement;const dk=r.dataset.theme=="dark"||(r.dataset.theme!="light"&&matchMedia("(prefers-color-scheme:dark)").matches);r.dataset.theme=dk?"light":"dark";try{localStorage.setItem("yt-theme",r.dataset.theme)}catch(e){}};
 
 
 /* ---- Feedback: where "send" mode delivers. Set ONE of these (leave both empty to use the phone share sheet / copy). ---- */
-const FEEDBACK_EMAIL="Jakeclur1@gmail.com";   // e.g. "you@example.com" opens the person's email app addressed to you
-const FEEDBACK_FORM="https://docs.google.com/forms/d/e/1FAIpQLSc4UPsdfXsty1ZS-HWWL29H22tIC8DDre3dA876eQKtZ9HH0Q/viewform";    // e.g. a Google Form link; the message is copied so they can paste it in
+const FEEDBACK_EMAIL="";   // e.g. "you@example.com" opens the person's email app addressed to you
+const FEEDBACK_FORM="";    // e.g. a Google Form link; the message is copied so they can paste it in
 function sendMode(){const $=id=>document.getElementById(id);$("fform").style.display="block";$("fpost").textContent="Send feedback";
  $("fpost").onclick=async()=>{const t=$("ftx").value.trim(),n=$("fnm").value.trim();if(!t){return}const body=(n?n+": ":"")+t,m=x=>{$("fmsg").textContent=x};
   if(FEEDBACK_EMAIL){location.href="mailto:"+FEEDBACK_EMAIL+"?subject="+encodeURIComponent("Year Ten site feedback")+"&body="+encodeURIComponent(body);m("Opening your email app…");return}
