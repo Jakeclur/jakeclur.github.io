@@ -38,7 +38,8 @@ html{-webkit-text-size-adjust:100%}body{overflow-x:hidden}
 main{padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
 @media(max-width:560px){main{padding-top:64px;padding-bottom:28px}.sub{font-size:15px;margin-bottom:22px}.grid{gap:16px}a.tile{width:min(100%,230px)}a.tile .e{font-size:46px}a.tile .n{font-size:21px}.fb{margin-top:30px;padding:14px;border-radius:14px}.fb h2{font-size:20px}#th{padding:6px 11px}}
 @media(max-width:360px){a.tile{width:min(100%,200px)}a.tile .n{font-size:19px}}
-</style></head><body>
+</style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#5b3fd0"><link rel="apple-touch-icon" href="icon-180.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Year 10">
+</head><body>
 <button id="th" aria-label="Toggle dark mode">◐</button>
 <main>
 <h1>Year <span>Ten</span></h1>
@@ -101,5 +102,23 @@ function sendMode(){const $=id=>document.getElementById(id);$("fform").style.dis
   $("fpost").disabled=false};
  db.collection("fb").onSnapshot(s=>{docs=s.docs.map(d=>({id:d.id,...(d.data()||{})}));render()},e=>msg("Couldn't load feedback ("+(e.code||"error")+")."));
 })();
+</script>
+<script>
+/* Offline support: registers sw.js when the site is served over https */
+if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){
+ addEventListener("load",function(){
+  var had=!!navigator.serviceWorker.controller;
+  navigator.serviceWorker.register("sw.js").catch(function(){});
+  navigator.serviceWorker.addEventListener("controllerchange",function(){
+   if(!had){had=true;return}
+   if(document.getElementById("ytupd"))return;
+   var b=document.createElement("div");b.id="ytupd";
+   b.style.cssText="position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:99;background:#1d2433;color:#fff;padding:10px 14px;border-radius:12px;font:600 14px system-ui,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.35);display:flex;gap:10px;align-items:center";
+   var t=document.createElement("span");t.textContent="A new version is ready.";
+   var k=document.createElement("button");k.textContent="Refresh";k.style.cssText="font:600 13px system-ui,sans-serif;border:0;border-radius:999px;padding:6px 12px;background:#a58bff;color:#12141c;cursor:pointer";
+   k.onclick=function(){location.reload()};b.appendChild(t);b.appendChild(k);document.body.appendChild(b)
+  })
+ })
+}
 </script>
 </body></html>

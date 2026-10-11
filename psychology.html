@@ -81,7 +81,17 @@ svg .ar{fill:none;stroke:var(--ac);stroke-width:2}svg .ln{fill:none;stroke:var(-
 html{-webkit-text-size-adjust:100%}body{overflow-x:hidden;overflow-wrap:anywhere}
 table{display:block;overflow-x:auto}
 @media(max-width:560px){header{padding:14px 12px 6px}h1{font-size:20px}nav{padding:6px 10px}.tab{flex:1;padding:8px 6px;font-size:14px;text-align:center}main{padding:6px 10px 76px}section{padding:12px;border-radius:12px}.grid{grid-template-columns:1fr}.q>div.h{flex-wrap:wrap}label.d{margin-left:0}.fcard{min-height:110px;font-size:17px}#dr{width:100%}#tut{padding:11px 15px;font-size:14px}.acts button{font-size:12px}}
-</style></head><body>
+
+/* ---- features: ratings, spaced flashcards, quiz ---- */
+.rate{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0 0;font:13px system-ui,sans-serif;color:var(--mu)}
+.rb{font:600 12.5px system-ui,sans-serif;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:999px;padding:6px 12px;cursor:pointer}
+.rb.on.g{background:#d9f5e3;border-color:#1f8f55;color:#10331f}.rb.on.n{background:#fff1c9;border-color:#d9a400;color:#4a3a00}.rb.on.x{background:#fde0e0;border-color:#d33;color:#4a1010}
+#fcr .rb{padding:10px 16px;font-size:14px}#fcr .rb.g{border-color:#1f8f55}#fcr .rb.n{border-color:#d9a400}#fcr .rb.x{border-color:#d33}
+.fcstat{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 10px;font:14px system-ui,sans-serif}
+.qzq{font-size:17px;margin:6px 0 10px}
+@media(max-width:640px){.rb{min-height:40px}.qzq{font-size:16px}#fcr .rb{flex:1;min-height:46px}}
+</style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#5b3fd0"><link rel="apple-touch-icon" href="icon-180.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Year 10">
+</head><body>
 <div style="max-width:860px;margin:auto;padding:10px 16px 0;font:600 14px system-ui,sans-serif"><a href="index.html" style="color:var(--ac);text-decoration:none">← Year Ten</a></div>
 <header><h1 id="h1"></h1>
 <div class="sub" id="hsub"></div>
@@ -234,4 +244,196 @@ async function send(){
 document.getElementById("ts").onclick=send;
 ti.addEventListener("keydown",e=>{if(e.key=="Enter"&&!e.shiftKey){e.preventDefault();send()}});
 
-</script></body></html>
+</script><script>
+/* ===== Feature pack: self-rating, spaced flashcards (Leitner boxes), Quiz me ===== */
+(function(){
+const LB={g:"Got it",n:"Nearly",x:"Not yet"},IC={g:"✅",n:"🟡",x:"❌"},DAY=864e5;
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const hash=s=>{let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return(h>>>0).toString(36)};
+const $=id=>document.getElementById(id);
+const nm=s=>(typeof SH!=="undefined"&&SH[s.id])||s.title;
+
+/* ---------- Feature 3: self-rating on every question ---------- */
+function setRating(key,v){
+  if(P["r:"+key]==v){delete P["r:"+key];delete P["rt:"+key]}
+  else{P["r:"+key]=v;P["rt:"+key]=Date.now();if(v=="g")P[key]=true}
+  save();return P["r:"+key]
+}
+const origQ=qCard;
+qCard=function(s,q){
+  const key=s.id+q.r,r=P["r:"+key];
+  const row='<div class="rate"><span>How did it go?</span>'+["g","n","x"].map(k=>'<button class="rb'+(r==k?" on "+k:"")+'" data-rate="'+k+'" data-rk="'+key+'">'+IC[k]+" "+LB[k]+"</button>").join("")+"</div>";
+  return origQ(s,q).replace("<details>",row+"<details>")
+};
+FL.push(["w","⚠ Needs work"]);
+const origFill=fill;
+fill=function(){
+  const w=filt=="w";if(w)filt="all";
+  origFill();
+  if(w){filt="w";prune()}
+};
+function prune(){
+  const res=$("res");if(!res)return;
+  res.querySelectorAll(".q").forEach(el=>{const v=P["r:"+el.id.slice(2)];if(v!="n"&&v!="x")el.remove()});
+  res.querySelectorAll("section").forEach(sec=>{
+    if(!sec.querySelector(".q")){sec.remove();return}
+    sec.querySelectorAll("h3").forEach(h=>{let n=h.nextElementSibling,c=0;while(n&&n.tagName!="H3"){if(n.classList.contains("q"))c++;n=n.nextElementSibling}
+      if(!c)h.remove();else h.textContent=h.textContent.replace(/\(\d+\)\s*$/,"("+c+")")})
+  });
+  if(!res.querySelector(".q"))res.innerHTML='<p class="sub">Nothing is marked “Nearly” or “Not yet”. Rate questions after you try them and they will collect here.</p>'
+}
+
+/* ---------- Feature 1: spaced flashcards ---------- */
+const INT=[0,1,3,7,14];          // days until the next review for boxes 1 to 5
+const ck=i=>"c:"+hash(FC[i][0]);
+const cst=i=>P[ck(i)]||null;
+const isDue=i=>{const c=cst(i);return!c||c.d<=Date.now()};
+const dueList=()=>FC.map((_,i)=>i).filter(isDue);
+function gradeCard(i,v){
+  const c=cst(i)||{b:0,d:0};let b=c.b,d;
+  if(v=="a"){b=0;d=Date.now()+10*60e3}
+  else if(v=="n"){d=Date.now()+Math.max(1,Math.round(INT[b]/2))*DAY}
+  else{b=Math.min(4,b+1);d=Date.now()+INT[b]*DAY}
+  P[ck(i)]={b:b,d:d,t:Date.now()};save();return P[ck(i)]
+}
+function nextDue(){
+  let m=Infinity;FC.forEach((_,i)=>{const c=cst(i);if(c&&c.d<m)m=c.d});
+  if(m===Infinity)return"";const h=Math.max(1,Math.round((m-Date.now())/36e5));
+  return h<24?"in about "+h+" hour"+(h==1?"":"s"):"in about "+Math.round(h/24)+" day"+(Math.round(h/24)==1?"":"s")
+}
+const mode=()=>P["cmode"]||"due";
+function syncFC(){fc.o=mode()=="due"?shuffle(dueList()):FC.map((_,i)=>i);fc.i=0;fc.f=false}
+revP=function(){
+  syncFC();const due=dueList().length,m=mode();
+  return'<section id="FC"><span class="wk">Revision</span><h2>Flashcards &amp; cheat sheet</h2>'+
+  '<div class="fcstat"><span><b id="fcdue">'+due+'</b> due today · '+(FC.length-due)+' not due</span><span class="acts"><button data-fcm="due" class="'+(m=="due"?"on":"")+'">Study due cards</button><button data-fcm="all" class="'+(m=="all"?"on":"")+'">All cards</button></span></div>'+
+  '<div id="fcard" class="fcard" tabindex="0"></div>'+
+  '<div id="fcr" class="acts" style="display:none"><button class="rb x" data-fcr="a">🔁 Again</button><button class="rb n" data-fcr="n">🟡 Almost</button><button class="rb g" data-fcr="g">✅ Got it</button></div>'+
+  '<div class="acts"><button id="fp">◀ Prev</button><button id="fn">Next ▶</button><button id="fs">🔀 Shuffle</button><span class="sub" id="fcn"></span></div>'+
+  '<p class="sub" style="margin:8px 0 0">Flip the card, then rate yourself. “Again” brings it back soon, “Got it” moves it to a longer gap (1, 3, 7, then 14 days).</p>'+
+  '<details class="rs"><summary>Show all cards as a cheat sheet</summary><table>'+FC.map(x=>"<tr><td><b>"+fm(x[0])+"</b></td><td>"+fm(x[1])+"</td></tr>").join("")+"</table></details></section>"
+};
+drawFC=function(){
+  const c=$("fcard");if(!c)return;
+  const r=$("fcr"),n=$("fcn");
+  if(!fc.o.length){c.className="fcard";c.innerHTML=(mode()=="due"?"🎉 All caught up!<br><small>No cards are due right now"+(nextDue()?". The next one is due "+nextDue():"")+".</small>":"No cards yet.");r.style.display="none";n.textContent="";return}
+  const x=FC[fc.o[fc.i]];
+  c.className="fcard"+(fc.f?" bk":"");c.innerHTML=fm(fc.f?x[1]:x[0]);
+  r.style.display=fc.f?"flex":"none";
+  n.textContent=(fc.i+1)+" / "+fc.o.length+(fc.f?"":" (tap card to flip)")
+};
+
+/* ---------- Feature 2: Quiz me (mixed, shuffled practice) ---------- */
+let qz={step:"setup",sel:null,n:10,pri:true,list:[],i:0,show:false,res:[]};
+const allQ=()=>{const a=[];D.forEach(s=>s.qs.forEach(q=>a.push({s:s,q:q,key:s.id+q.r})));return a};
+function buildList(sel,n,pri,only){
+  let pool=allQ().filter(x=>sel.has(x.s.id)&&(!only||only.has(x.key)));
+  const w=x=>{if(!pri)return Math.random();const v=P["r:"+x.key];const base=v=="x"?3:v=="n"?2:!v?1.2:0.25;return base*(0.6+Math.random())};
+  pool=pool.map(x=>({x:x,w:w(x)})).sort((a,b)=>b.w-a.w).slice(0,n).map(o=>o.x);
+  return shuffle(pool)
+}
+function startQuiz(){
+  const sel=qz.sel||new Set(D.map(s=>s.id));
+  qz.list=buildList(sel,qz.n,qz.pri,null);qz.i=0;qz.show=false;qz.res=[];qz.step=qz.list.length?"run":"setup"
+}
+function quizP(){
+  if(qz.step=="run")return qRun();
+  if(qz.step=="end")return qEnd();
+  const sel=qz.sel||(qz.sel=new Set(D.map(s=>s.id)));
+  const rated=allQ().filter(x=>P["r:"+x.key]=="n"||P["r:"+x.key]=="x").length;
+  return'<section><span class="wk">Mixed practice</span><h2>🎯 Quiz me</h2>'+
+  '<p class="sub">A shuffled mix of questions from the topics you choose. Mixing topics trains you to decide <i>which</i> method to use, and trying an answer before looking is one of the best ways to learn. Work each one on paper, then check and rate yourself.</p>'+
+  '<h3>Topics</h3><div class="acts">'+D.map(s=>'<button data-qt="'+s.id+'" class="'+(sel.has(s.id)?"on":"")+'">'+s.id+" "+nm(s)+"</button>").join("")+"</div>"+
+  '<div class="acts"><button data-qall="1">Select all</button><button data-qnone="1">Clear</button></div>'+
+  '<h3>Number of questions</h3><div class="acts">'+[5,10,15,20].map(n=>'<button data-qn="'+n+'" class="'+(qz.n==n?"on":"")+'">'+n+"</button>").join("")+"</div>"+
+  '<label class="d" style="display:flex;gap:8px;align-items:center;margin:12px 0"><input type="checkbox" id="qpri" '+(qz.pri?"checked":"")+'> Prioritise questions I have not got yet'+(rated?" ("+rated+" marked to practise)":"")+"</label>"+
+  '<div class="acts"><button class="on" data-qstart="1">Start quiz</button></div></section>'
+}
+function qRun(){
+  const it=qz.list[qz.i],s=it.s,q=it.q;
+  let h='<section><span class="wk">Question '+(qz.i+1)+" of "+qz.list.length+"</span> <span class=\"wk\">"+s.id+" "+nm(s)+"</span>"+
+  '<div style="height:6px;background:var(--bd);border-radius:6px;overflow:hidden;margin:6px 0 10px"><i style="display:block;height:100%;width:'+Math.round(100*qz.i/qz.list.length)+'%;background:var(--ok,#1f8f55)"></i></div>'+
+  '<div class="qzq"><b>'+q.r+"</b> "+fm(q.q)+(q.fig?'<div class="fig">'+q.fig+"</div>":"")+"</div>";
+  if(!qz.show)h+='<p class="sub">Try it on paper first.</p><div class="acts"><button class="on" data-qshow="1">Show solution</button><button data-qstop="1">Stop quiz</button></div>';
+  else h+='<div class="sol">'+fm(q.a)+(q.afig?'<div class="fig">'+q.afig+"</div>":"")+'</div><div class="rate"><span>How did it go?</span>'+["g","n","x"].map(k=>'<button class="rb" data-qr="'+k+'">'+IC[k]+" "+LB[k]+"</button>").join("")+"</div>";
+  return h+"</section>"
+}
+function qEnd(){
+  const c={g:0,n:0,x:0};qz.res.forEach(r=>c[r.v]++);const t=qz.res.length||1;
+  const miss=qz.res.filter(r=>r.v!="g");
+  let h='<section><span class="wk">Quiz finished</span><h2>🎉 '+c.g+" of "+qz.res.length+" got it</h2>"+
+  '<p class="sub">✅ '+c.g+" got it · 🟡 "+c.n+" nearly · ❌ "+c.x+" not yet ("+Math.round(100*c.g/t)+"% got it). Your ratings were saved, so “Needs work” on the Questions page and the next quiz will use them.</p>";
+  if(miss.length){h+="<h3>To revisit ("+miss.length+")</h3>"+miss.map(r=>{const it=qz.list.find(x=>x.key==r.key);return'<div class="q"><div class="h"><div><b>'+it.s.id+" "+it.q.r+"</b> "+fm(it.q.q)+'</div></div><div class="acts"><button data-qopen="'+r.key+'">Open in Questions</button></div></div>'}).join("")}
+  h+='<div class="acts" style="margin-top:12px">'+(miss.length?'<button class="on" data-qretry="1">Retry the ones I missed</button>':"")+'<button data-qnew="1">New quiz</button></div></section>';
+  return h
+}
+const origBk=bkP;
+bkP=function(id){return id=="quiz"?quizP():origBk(id)};
+const origNav=navR;
+navR=function(){
+  origNav();
+  if(pg=="rev"){const c=nav.querySelector(".chips2");if(c){const b=document.createElement("button");b.setAttribute("data-go","rev/quiz");b.className=tp=="quiz"?"on":"";b.textContent="🎯 Quiz me";c.insertBefore(b,c.children[1]||null)}}
+};
+const origQP=qP;
+qP=function(){return origQP().replace('<button id="rn">','<button data-go="rev/quiz">🎯 Quiz me</button><button id="rn">')};
+
+/* ---------- click handling (runs before the page's own handler) ---------- */
+function redrawQuiz(scroll){main.innerHTML=quizP();if(scroll)window.scrollTo(0,0)}
+function handle(e){
+  const t=e.target.closest?e.target.closest("button,#fcard"):null;if(!t)return;
+  const d=t.dataset||{};
+  const stop=()=>{e.stopPropagation();e.preventDefault()};
+  if(d.rate){stop();const k=d.rk,v=setRating(k,d.rate),row=t.parentElement;
+    row.querySelectorAll(".rb").forEach(x=>{x.className="rb"+(v==x.dataset.rate?" on "+x.dataset.rate:"")});
+    if(v=="g"){const cb=document.querySelector('input[data-k="'+k+'"]');if(cb)cb.checked=true}
+    stat();return}
+  if(pg=="rev"&&tp=="fc"){
+    if(t.id=="fcard"){stop();if(fc.o.length){fc.f=!fc.f;drawFC()}return}
+    if(t.id=="fn"){stop();if(fc.o.length){fc.i=(fc.i+1)%fc.o.length;fc.f=false;drawFC()}return}
+    if(t.id=="fp"){stop();if(fc.o.length){fc.i=(fc.i+fc.o.length-1)%fc.o.length;fc.f=false;drawFC()}return}
+    if(t.id=="fs"){stop();fc.o=shuffle(fc.o);fc.i=0;fc.f=false;drawFC();return}
+    if(d.fcm){stop();P["cmode"]=d.fcm;save();main.innerHTML=revP();drawFC();return}
+    if(d.fcr){stop();if(!fc.o.length)return;const idx=fc.o[fc.i];gradeCard(idx,d.fcr);
+      if(mode()=="due"){fc.o.splice(fc.i,1);if(d.fcr=="a")fc.o.push(idx);if(fc.i>=fc.o.length)fc.i=0}
+      else fc.i=(fc.i+1)%fc.o.length;
+      fc.f=false;const el=$("fcdue");if(el)el.textContent=dueList().length;drawFC();return}
+  }
+  if(pg=="rev"&&tp=="quiz"){
+    if(d.qt){stop();const s=qz.sel||(qz.sel=new Set());s.has(d.qt)?s.delete(d.qt):s.add(d.qt);redrawQuiz();return}
+    if(d.qall){stop();qz.sel=new Set(D.map(s=>s.id));redrawQuiz();return}
+    if(d.qnone){stop();qz.sel=new Set();redrawQuiz();return}
+    if(d.qn){stop();qz.n=+d.qn;redrawQuiz();return}
+    if(d.qstart){stop();const cb=$("qpri");if(cb)qz.pri=cb.checked;if(!qz.sel||!qz.sel.size)qz.sel=new Set(D.map(s=>s.id));startQuiz();redrawQuiz(true);return}
+    if(d.qshow){stop();qz.show=true;redrawQuiz();return}
+    if(d.qstop){stop();qz.step="setup";redrawQuiz(true);return}
+    if(d.qr){stop();const it=qz.list[qz.i];P["r:"+it.key]=d.qr;P["rt:"+it.key]=Date.now();if(d.qr=="g")P[it.key]=true;save();stat();
+      qz.res.push({key:it.key,v:d.qr});qz.i++;qz.show=false;if(qz.i>=qz.list.length)qz.step="end";redrawQuiz(true);return}
+    if(d.qretry){stop();const only=new Set(qz.res.filter(r=>r.v!="g").map(r=>r.key));qz.list=shuffle(allQ().filter(x=>only.has(x.key)));qz.i=0;qz.show=false;qz.res=[];qz.step="run";redrawQuiz(true);return}
+    if(d.qnew){stop();qz.step="setup";redrawQuiz(true);return}
+    if(d.qopen){stop();const key=d.qopen,s=D.find(x=>key.indexOf(x.id)==0);pg="q";tp=s?s.id:tp;filt="all";qry="";render();const el=$("q-"+key);if(el){el.scrollIntoView({block:"center"});el.style.outline="2px solid var(--ac)";setTimeout(()=>{el.style.outline=""},2500)}return}
+  }
+}
+main.addEventListener("click",handle,true);
+window.__yt={ck:ck,setRating:setRating,gradeCard:gradeCard,dueList:dueList,buildList:buildList,handle:handle,quiz:()=>qz,startQuiz:startQuiz,quizP:quizP,qRun:qRun,qEnd:qEnd,syncFC:syncFC,INT:INT};
+render();
+})();
+</script>
+<script>
+/* Offline support: registers sw.js when the site is served over https */
+if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){
+ addEventListener("load",function(){
+  var had=!!navigator.serviceWorker.controller;
+  navigator.serviceWorker.register("sw.js").catch(function(){});
+  navigator.serviceWorker.addEventListener("controllerchange",function(){
+   if(!had){had=true;return}
+   if(document.getElementById("ytupd"))return;
+   var b=document.createElement("div");b.id="ytupd";
+   b.style.cssText="position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:99;background:#1d2433;color:#fff;padding:10px 14px;border-radius:12px;font:600 14px system-ui,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.35);display:flex;gap:10px;align-items:center";
+   var t=document.createElement("span");t.textContent="A new version is ready.";
+   var k=document.createElement("button");k.textContent="Refresh";k.style.cssText="font:600 13px system-ui,sans-serif;border:0;border-radius:999px;padding:6px 12px;background:#a58bff;color:#12141c;cursor:pointer";
+   k.onclick=function(){location.reload()};b.appendChild(t);b.appendChild(k);document.body.appendChild(b)
+  })
+ })
+}
+</script>
+</body></html>
