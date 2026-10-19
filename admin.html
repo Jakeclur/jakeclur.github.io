@@ -294,26 +294,50 @@ function publishCard() {
     h("div", { class: "row" }, [pub])]);
 }
 
+// Publishes everything as ONE commit, so the site is never left half updated.
 async function publishToGitHub(repo, branch, token, files) {
-  var api = "https://api.github.com/repos/" + repo + "/contents/", n = 0;
-  var hd = { Authorization: "Bearer " + token, Accept: "application/vnd.github+json", "Content-Type": "application/json" };
-  async function sha(path) { var r = await fetch(api + path + "?ref=" + encodeURIComponent(branch), { headers: hd }); return r.ok ? (await r.json()).sha : null; }
-  async function put(path, text) {
-    var body = { message: "Update locked site", branch: branch, content: btoa(unescape(encodeURIComponent(text))) }, s = await sha(path);
-    if (s) body.sha = s;
-    var r = await fetch(api + path, { method: "PUT", headers: hd, body: JSON.stringify(body) });
-    if (!r.ok) throw new Error(path + ": " + r.status + " " + ((await r.json().catch(function () { return {}; })).message || ""));
-    n++;
-  }
-  for (var path in files) await put(path, files[path]);
-  var ls = await fetch(api + "p?ref=" + encodeURIComponent(branch), { headers: hd });
-  if (ls.ok) for (var item of await ls.json()) {
-    if (item.name.slice(-4) === ".enc" && !files["p/" + item.name]) {
-      var r = await fetch(api + item.path, { method: "DELETE", headers: hd, body: JSON.stringify({ message: "Remove page", branch: branch, sha: item.sha }) });
-      if (!r.ok) throw new Error("delete " + item.path + ": " + r.status);
+  var api = "https://api.github.com/repos/" + repo + "/", hd = { Authorization: "Bearer " + token, Accept: "application/vnd.github+json", "Content-Type": "application/json" };
+  var wake = null;
+  try { if (navigator.wakeLock) wake = await navigator.wakeLock.request("screen"); } catch (e) {}   // keep the phone screen on
+  function wait(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+  // Retries when the network drops or GitHub is briefly busy.
+  async function call(method, path, body) {
+    var last;
+    for (var a = 0; a < 4; a++) {
+      try {
+        var r = await fetch(api + path, { method: method, headers: hd, body: body ? JSON.stringify(body) : undefined });
+        if (r.status >= 500 || r.status === 429) { last = new Error(path + ": " + r.status); await wait(1000 * (a + 1)); continue; }
+        var d = await r.json().catch(function () { return {}; });
+        if (!r.ok) throw new Error(path.split("?")[0] + ": " + r.status + " " + (d.message || ""));
+        return d;
+      } catch (e) {
+        if (/^[^:]*: [0-9]{3}/.test(e.message)) throw e;            // a real answer from GitHub, do not retry
+        last = e; await wait(1000 * (a + 1));
+      }
     }
+    throw new Error("The connection to GitHub failed. Keep this page open with the screen on and try again. (" + (last && last.message) + ")");
   }
-  return n;
+  try {
+    var ref = await call("GET", "git/ref/heads/" + encodeURIComponent(branch));
+    var head = ref.object.sha, commit = await call("GET", "git/commits/" + head);
+    var old = await call("GET", "git/trees/" + commit.tree.sha + "?recursive=1");
+    var paths = Object.keys(files), done = 0, tree = [], q = paths.slice();
+    async function worker() {
+      while (q.length) {
+        var path = q.shift(), b = await call("POST", "git/blobs", { content: files[path], encoding: "utf-8" });
+        tree.push({ path: path, mode: "100644", type: "blob", sha: b.sha });
+        say("Uploading " + (++done) + " of " + paths.length + "… keep this page open", "wn");
+      }
+    }
+    await Promise.all([worker(), worker(), worker()]);
+    old.tree.forEach(function (t) {                              // remove pages that no longer exist
+      if (t.type === "blob" && /^p\/[^\/]+\.enc$/.test(t.path) && !files[t.path]) tree.push({ path: t.path, mode: "100644", type: "blob", sha: null });
+    });
+    var nt = await call("POST", "git/trees", { base_tree: commit.tree.sha, tree: tree });
+    var nc = await call("POST", "git/commits", { message: "Update locked site", tree: nt.sha, parents: [head] });
+    await call("PATCH", "git/refs/heads/" + encodeURIComponent(branch), { sha: nc.sha });
+    return paths.length;
+  } finally { if (wake) try { wake.release(); } catch (e) {} }
 }
 
 function adminPwCard() {
