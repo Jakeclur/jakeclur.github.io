@@ -1,7 +1,8 @@
 /* Year Ten Study Hub: offline support.
-   Change VERSION whenever you upload new pages so phones refresh their saved copy. */
-const VERSION = "yt-v3";
-const FILES = ["./", "index.html", "psychology.html", "specialist-maths.html", "physics.html", "methods.html", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
+   Only the sign-in page and the encrypted files are saved. Nothing readable is stored here.
+   Change VERSION to make phones drop their old saved copy. */
+const VERSION = "yt-v4";
+const FILES = ["./", "index.html", "lock.js", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(
@@ -23,18 +24,10 @@ self.addEventListener("fetch", e => {
   const r = e.request;
   if (r.method !== "GET") return;
   const u = new URL(r.url);
-  if (u.origin !== location.origin) return;            // Google Forms, the tutor API etc. always use the network
-  const isPage = r.mode === "navigate" || u.pathname.endsWith(".html") || u.pathname.endsWith("/");
-  if (isPage) {
-    // Pages: try the network first so updates arrive, fall back to the saved copy when offline.
-    e.respondWith(
-      fetch(r).then(res => { const copy = res.clone(); caches.open(VERSION).then(c => c.put(r, copy)); return res; })
-        .catch(() => caches.match(r).then(m => m || caches.match("index.html")))
-    );
-  } else {
-    // Icons, manifest: saved copy first.
-    e.respondWith(
-      caches.match(r).then(m => m || fetch(r).then(res => { const copy = res.clone(); caches.open(VERSION).then(c => c.put(r, copy)); return res; }))
-    );
-  }
+  if (u.origin !== location.origin || u.pathname.endsWith("/admin.html") || u.pathname.endsWith("/vault.enc")) return;
+  // Network first so access changes arrive straight away; saved copy only when offline.
+  e.respondWith(
+    fetch(r).then(res => { if (res.ok) { const copy = res.clone(); caches.open(VERSION).then(c => c.put(r, copy)); } return res; })
+      .catch(() => caches.match(r).then(m => m || caches.match("index.html")))
+  );
 });

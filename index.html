@@ -38,10 +38,28 @@ html{-webkit-text-size-adjust:100%}body{overflow-x:hidden}
 main{padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
 @media(max-width:560px){main{padding-top:64px;padding-bottom:28px}.sub{font-size:15px;margin-bottom:22px}.grid{gap:16px}a.tile{width:min(100%,230px)}a.tile .e{font-size:46px}a.tile .n{font-size:21px}.fb{margin-top:30px;padding:14px;border-radius:14px}.fb h2{font-size:20px}#th{padding:6px 11px}}
 @media(max-width:360px){a.tile{width:min(100%,200px)}a.tile .n{font-size:19px}}
-</style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#5b3fd0"><link rel="apple-touch-icon" href="icon-180.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Year 10">
+#gate{width:100%;max-width:380px;padding:56px 18px 40px;margin:auto 0;text-align:center}
+#gate h1{font-size:clamp(34px,9vw,54px)}
+#lf input[type=text],#lf input[type=password],#lf input:not([type]){width:100%;font:16px system-ui,sans-serif;padding:12px;border-radius:12px;border:1px solid var(--bd);background:var(--card);color:var(--tx);margin-bottom:10px}
+#lf .keep{display:block;text-align:left;font:14px system-ui,sans-serif;color:var(--mu);margin:2px 0 8px}#lf .keep input{width:auto;margin:0 6px 0 0}
+#lf button{width:100%;font:600 16px system-ui,sans-serif;border:0;background:var(--ac);color:#fff;border-radius:999px;padding:12px;cursor:pointer}#lf button:disabled{opacity:.6}
+#lm{min-height:22px;font:14px system-ui,sans-serif;color:#c0392b;margin-bottom:8px}
+footer a{color:var(--ac)}
+</style><script src="lock.js"></script><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#5b3fd0"><link rel="apple-touch-icon" href="icon-180.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Year 10">
 </head><body>
 <button id="th" aria-label="Toggle dark mode">◐</button>
-<main>
+<section id="gate" hidden>
+<form id="lf" autocomplete="on">
+<h1>Year <span>Ten</span></h1>
+<p class="sub" style="margin-bottom:18px">Sign in to open the study hubs</p>
+<input id="lu" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="Username" required>
+<input id="lp" name="password" type="password" autocomplete="current-password" placeholder="Password" required>
+<label class="keep"><input id="lk" type="checkbox"> Keep me signed in on this device</label>
+<div id="lm" role="alert"></div>
+<button id="lb" type="submit">Sign in</button>
+</form>
+</section>
+<main id="hub" hidden>
 <h1>Year <span>Ten</span></h1>
 <p class="sub">Choose a subject to open its study hub</p>
 <div class="grid" id="grid"></div>
@@ -50,16 +68,49 @@ main{padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px
 <div id="fform" style="display:none"><input id="fnm" maxlength="40" placeholder="Your name (optional)"><textarea id="ftx" maxlength="500" placeholder="Write your feedback here…"></textarea><button id="fpost">Post feedback</button><span class="cnt" id="fcnt">0 / 500</span></div>
 <div id="flist"></div></section>
 </main>
-<footer>To add a subject, add one line to the SUBJECTS list in this file.</footer>
+<footer id="ft" hidden><span id="who"></span> · <a href="#" id="lo">Sign out</a></footer>
 <script>
-/* Edit the links here. Plain links to the pages in the same folder, so all the files must sit together. */
-const SUBJECTS=[
- {name:"Psychology",emoji:"🧠",note:"Study hub",href:"psychology.html"},
- {name:"Specialist Maths",emoji:"📐",note:"Proof & complex numbers",href:"specialist-maths.html"},
- {name:"Physics",emoji:"⚛️",note:"Motion, forces & energy",href:"physics.html"},
- {name:"Methods",emoji:"📊",note:"Closing the Gap report",href:"methods.html"}
-];
-document.getElementById("grid").innerHTML=SUBJECTS.map(s=>`<a class="tile" href="${s.href}"><span class="e">${s.emoji}</span><span class="n">${s.name}</span><span class="d">${s.note}</span></a>`).join("");
+{ /* block scope: nothing here may stay global, or the pages written in later would clash with it */
+/* ---- Sign-in. Pages are stored encrypted (see lock.js); the admin page decides who gets which pages. ---- */
+const SK="yt-session";
+const getSess=()=>{try{return JSON.parse(sessionStorage.getItem(SK)||localStorage.getItem(SK))}catch(e){return null}};
+const setSess=(s,keep)=>{try{sessionStorage.setItem(SK,JSON.stringify(s));if(keep)localStorage.setItem(SK,JSON.stringify(s))}catch(e){}};
+const clearSess=()=>{try{sessionStorage.removeItem(SK);localStorage.removeItem(SK)}catch(e){}};
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const wantPage=()=>new URLSearchParams(location.search).get("p");
+function showGate(msg){document.getElementById("hub").hidden=true;document.getElementById("ft").hidden=true;document.getElementById("gate").hidden=false;document.getElementById("lm").textContent=msg||""}
+function showHub(s){
+ document.getElementById("gate").hidden=true;document.getElementById("hub").hidden=false;document.getElementById("ft").hidden=false;
+ document.getElementById("who").textContent="Signed in as "+s.name;
+ document.getElementById("grid").innerHTML=s.pages.length?s.pages.map(p=>`<a class="tile" href="index.html?p=${encodeURIComponent(p.id)}"><span class="e">${esc(p.emoji||"📄")}</span><span class="n">${esc(p.title)}</span><span class="d">${esc(p.note||"")}</span></a>`).join(""):'<p class="sub">No pages are unlocked for your account yet. Ask the site owner.</p>'}
+async function openPage(s,id){
+ const pg=s.pages.find(p=>p.id===id);
+ if(!pg){history.replaceState(null,"","index.html");showHub(s);return}
+ try{
+  const r=await fetch("p/"+encodeURIComponent(id)+".enc",{cache:"no-store"});if(!r.ok)throw 0;
+  let html=await YTLock.decryptPage(await r.text(),pg.key);
+  html=html.replace(/href="([a-z0-9-]+)\.html(#[^"]*)?"/g,(m,n,h)=>n==="index"?m:'href="index.html?p='+n+(h||"")+'"');
+  document.open();document.write(html);document.close();
+ }catch(e){clearSess();history.replaceState(null,"","index.html");showGate("Your access changed or was removed. Please sign in again.")}
+}
+async function boot(){
+ const s=getSess();
+ if(!s){showGate("");return}
+ const id=wantPage();
+ if(id)openPage(s,id);else showHub(s);
+}
+document.getElementById("lf").onsubmit=async e=>{
+ e.preventDefault();const b=document.getElementById("lb"),m=document.getElementById("lm");b.disabled=true;m.textContent="Checking…";m.style.color="var(--mu)";
+ try{
+  const acc=await (await fetch("access.json",{cache:"no-store"})).json();
+  const s=await YTLock.login(acc,document.getElementById("lu").value,document.getElementById("lp").value);
+  if(!s){m.style.color="#c0392b";m.textContent="Wrong username or password, or this account is turned off.";b.disabled=false;return}
+  setSess(s,document.getElementById("lk").checked);document.getElementById("lp").value="";
+  const id=wantPage();if(id)openPage(s,id);else showHub(s);
+ }catch(err){m.style.color="#c0392b";m.textContent="Could not reach the site. Check your connection.";}
+ b.disabled=false};
+document.getElementById("lo").onclick=e=>{e.preventDefault();clearSess();history.replaceState(null,"","index.html");showGate("")};
+boot();
 document.getElementById("th").onclick=()=>{const r=document.documentElement;const dk=r.dataset.theme=="dark"||(r.dataset.theme!="light"&&matchMedia("(prefers-color-scheme:dark)").matches);r.dataset.theme=dk?"light":"dark";try{localStorage.setItem("yt-theme",r.dataset.theme)}catch(e){}};
 
 
@@ -103,6 +154,7 @@ function sendMode(){const $=id=>document.getElementById(id);$("fform").style.dis
   $("fpost").disabled=false};
  db.collection("fb").onSnapshot(s=>{docs=s.docs.map(d=>({id:d.id,...(d.data()||{})}));render()},e=>msg("Couldn't load feedback ("+(e.code||"error")+")."));
 })();
+}
 </script>
 <script>
 /* Offline support: registers sw.js when the site is served over https */

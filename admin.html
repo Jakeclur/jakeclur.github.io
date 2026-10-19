@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Admin · Year Ten</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1d2433;--mu:#5b6578;--ac:#5b3fd0;--ac2:#e9e4ff;--bd:#dde1ea;--er:#c0392b;--ok:#1e8e4e;--wn:#b9770e}
+@media(prefers-color-scheme:dark){:root{--bg:#12141c;--card:#1b1e29;--tx:#e8eaf2;--mu:#9aa3b8;--ac:#a58bff;--ac2:#2b2552;--bd:#2d3243;--er:#ff7b6b;--ok:#4cd08a;--wn:#f0b45a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,sans-serif;padding:16px 16px 80px}
+.w{max-width:760px;margin:0 auto}
+h1{margin:8px 0 2px;font-size:28px}h1 span{color:var(--ac)}
+h2{margin:0 0 10px;font-size:19px}
+.sub{color:var(--mu);margin:0 0 16px;font-size:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin:14px 0}
+label{display:block;font-weight:600;font-size:13px;margin:10px 0 4px}
+input[type=text],input[type=password],input[type=file]{width:100%;padding:10px 11px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit}
+button{font:600 14px system-ui,sans-serif;border:1px solid var(--ac);background:var(--ac);color:#fff;border-radius:999px;padding:8px 15px;cursor:pointer}
+button.g{background:transparent;color:var(--tx);border-color:var(--bd)}
+button.d{background:transparent;color:var(--er);border-color:var(--er)}
+button:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row.sp{justify-content:space-between}
+.it{padding:11px 0;border-top:1px solid var(--bd)}.it:first-of-type{border-top:0}
+.b{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;border:1px solid}
+.b.on{color:var(--ok);border-color:var(--ok)}.b.off{color:var(--er);border-color:var(--er)}
+.mu{color:var(--mu);font-size:13px}
+#msg{position:sticky;top:8px;z-index:5;margin:10px 0;padding:10px 14px;border-radius:10px;font-size:14px;display:none;border:1px solid var(--bd);background:var(--card)}
+#msg.er{display:block;color:var(--er);border-color:var(--er)}#msg.ok{display:block;color:var(--ok);border-color:var(--ok)}#msg.wn{display:block;color:var(--wn);border-color:var(--wn)}
+#dirty{display:none;color:var(--wn);font-weight:700;font-size:13px}
+.pg{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-top:1px solid var(--bd)}
+.pg button{min-width:92px}
+.lk{color:var(--er)}.ul{color:var(--ok)}
+.grid2{display:grid;grid-template-columns:70px 1fr;gap:8px}
+code{background:var(--ac2);padding:1px 6px;border-radius:6px}
+</style></head><body><div class="w">
+<h1>Year <span>Ten</span> admin</h1>
+<p class="sub">This page works on your device only. Nothing you type here is sent to anyone.</p>
+<div id="msg" role="status"></div>
+<div id="app"></div>
+</div>
+<script src="lock.js"></script>
+<script>
+var L = YTLock, S = null, $app = document.getElementById("app");
+
+/* ---------- tiny helpers ---------- */
+function h(tag, props, kids) {
+  var e = document.createElement(tag);
+  for (var k in props || {}) { if (k === "on") for (var ev in props.on) e.addEventListener(ev, props.on[ev]); else if (k === "text") e.textContent = props[k]; else e.setAttribute(k, props[k]); }
+  (kids || []).forEach(function (c) { if (c != null) e.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+  return e;
+}
+function say(text, kind) { var m = document.getElementById("msg"); m.className = text ? kind || "ok" : ""; m.textContent = text || ""; if (text) m.scrollIntoView({ block: "nearest" }); }
+function mark() { S.dirty = true; var d = document.getElementById("dirty"); if (d) d.style.display = "inline"; }
+function genPass() {
+  var a = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789", r = crypto.getRandomValues(new Uint8Array(14)), s = "";
+  for (var i = 0; i < r.length; i++) s += a[r[i] % a.length];
+  return s;
+}
+function slug(s) { return s.toLowerCase().replace(/\.html?$/, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
+function findUser(name) { return S.vault.users.filter(function (u) { return u.name.toLowerCase() === name.trim().toLowerCase(); })[0]; }
+addEventListener("beforeunload", function (e) { if (S && S.dirty) { e.preventDefault(); e.returnValue = ""; } });
+
+/* ---------- start: setup or unlock ---------- */
+function start() {
+  say("");
+  fetch("vault.enc", { cache: "no-store" }).then(function (r) { return r.ok ? r.text() : null; }).catch(function () { return null; })
+    .then(function (t) { t ? unlockScreen(t) : setupScreen(); });
+}
+
+function setupScreen() {
+  var p1 = h("input", { type: "password", autocomplete: "new-password" }), p2 = h("input", { type: "password", autocomplete: "new-password" });
+  var go = h("button", { text: "Create admin vault" });
+  go.onclick = async function () {
+    if (p1.value.length < 12) return say("Use at least 12 characters. This one password protects everything.", "er");
+    if (p1.value !== p2.value) return say("The two passwords do not match.", "er");
+    go.disabled = true; say("Working…", "wn");
+    var a = await L.newAdminKey(p1.value);
+    S = { vault: { v: 1, pages: [], users: [] }, admin: a, dirty: true, sel: null };
+    say("");
+    main();
+  };
+  $app.replaceChildren(h("div", { class: "card" }, [
+    h("h2", { text: "First-time setup" }),
+    h("p", { class: "mu", text: "No vault found. Choose an admin password. If you lose it nobody can recover your pages or accounts, so keep it somewhere safe." }),
+    h("label", { text: "Admin password (12+ characters)" }), p1,
+    h("label", { text: "Repeat it" }), p2,
+    h("div", { class: "row", style: "margin-top:14px" }, [go])]));
+}
+
+function unlockScreen(text) {
+  var pw = h("input", { type: "password", autocomplete: "current-password" }), go = h("button", { text: "Unlock" });
+  async function run() {
+    go.disabled = true; say("Unlocking…", "wn");
+    try {
+      var o = await L.openVault(text, pw.value);
+      S = { vault: o.vault, admin: { key: o.key, salt: o.salt, iter: o.iter }, dirty: false, sel: null };
+      say(""); main();
+    } catch (e) { say("Wrong admin password.", "er"); go.disabled = false; }
+  }
+  go.onclick = run; pw.onkeydown = function (e) { if (e.key === "Enter") run(); };
+  $app.replaceChildren(h("div", { class: "card" }, [h("h2", { text: "Admin login" }), h("label", { text: "Admin password" }), pw, h("div", { class: "row", style: "margin-top:14px" }, [go])]));
+  pw.focus();
+}
+
+/* ---------- main screen ---------- */
+function main() {
+  var kids = [h("div", { class: "row sp" }, [h("span", { id: "dirty", text: "● Changes not published yet" }),
+    h("button", { class: "g", text: "Log out", on: { click: function () { if (!S.dirty || confirm("You have unpublished changes. Log out anyway?")) { S.dirty = false; S = null; start(); } } } })])];
+  kids.push(S.sel ? settingsCard() : accountsCard());
+  if (!S.sel) { kids.push(newAccountCard(), pagesCard(), publishCard(), adminPwCard()); }
+  $app.replaceChildren.apply($app, kids);
+  document.getElementById("dirty").style.display = S.dirty ? "inline" : "none";
+}
+function change() { mark(); main(); }
+
+function accountsCard() {
+  var c = h("div", { class: "card" }, [h("h2", { text: "Accounts (" + S.vault.users.length + ")" })]);
+  if (!S.vault.users.length) c.appendChild(h("p", { class: "mu", text: "No accounts yet. Add one below." }));
+  S.vault.users.forEach(function (u) {
+    c.appendChild(h("div", { class: "it" }, [
+      h("div", { class: "row sp" }, [
+        h("div", {}, [h("b", { text: u.name }), " ", h("span", { class: "b " + (u.disabled ? "off" : "on"), text: u.disabled ? "Disabled" : "Active" }),
+          h("div", { class: "mu", text: u.pages.length + " of " + S.vault.pages.length + " pages unlocked" })]),
+        h("div", { class: "row" }, [
+          h("button", { text: "Settings", on: { click: function () { S.sel = u.name; main(); } } }),
+          h("button", { class: "g", text: u.disabled ? "Enable" : "Disable", on: { click: function () { u.disabled = !u.disabled; change(); } } })])])]));
+  });
+  return c;
+}
+
+function newAccountCard() {
+  var n = h("input", { type: "text", autocomplete: "off", autocapitalize: "none" }), p = h("input", { type: "text", autocomplete: "off" });
+  var gen = h("button", { class: "g", text: "Generate", on: { click: function () { p.value = genPass(); } } });
+  var add = h("button", { text: "Create account" });
+  add.onclick = async function () {
+    var name = n.value.trim();
+    if (!/^[A-Za-z0-9._-]{3,32}$/.test(name)) return say("Username: 3–32 letters, numbers, dot, dash or underscore.", "er");
+    if (findUser(name)) return say("That username already exists.", "er");
+    if (p.value.length < 8) return say("Password needs 8+ characters.", "er");
+    add.disabled = true; say("Creating…", "wn");
+    var s = await L.makeUserSecret(name, p.value);
+    S.vault.users.push({ name: name, salt: s.salt, ku: s.ku, iter: s.iter, pages: [], disabled: false });
+    S.sel = name; say("Account created. Write the password down now: " + p.value + " (it can't be shown again). Then unlock pages below.", "ok");
+    change();
+  };
+  return h("div", { class: "card" }, [h("h2", { text: "New account" }),
+    h("label", { text: "Username" }), n, h("label", { text: "Password" }), p,
+    h("div", { class: "row", style: "margin-top:12px" }, [gen, add]),
+    h("p", { class: "mu", text: "New accounts start with every page locked." })]);
+}
+
+function settingsCard() {
+  var u = findUser(S.sel);
+  if (!u) { S.sel = null; return accountsCard(); }
+  var c = h("div", { class: "card" }, [
+    h("div", { class: "row sp" }, [h("h2", { text: "Settings: " + u.name }), h("button", { class: "g", text: "← Back", on: { click: function () { S.sel = null; main(); } } })]),
+    h("p", { class: "mu", text: "Status: " + (u.disabled ? "Disabled (cannot sign in once published)" : "Active") })]);
+  c.appendChild(h("h2", { text: "Pages", style: "margin-top:16px" }));
+  if (!S.vault.pages.length) c.appendChild(h("p", { class: "mu", text: "No pages yet. Add pages on the main screen." }));
+  S.vault.pages.forEach(function (pg) {
+    var on = u.pages.indexOf(pg.id) >= 0;
+    c.appendChild(h("div", { class: "pg" }, [
+      h("div", {}, [h("b", { text: (pg.emoji || "") + " " + pg.title }), h("div", { class: on ? "ul" : "lk", text: on ? "🔓 Unlocked" : "🔒 Locked" })]),
+      h("button", { class: on ? "d" : "", text: on ? "Lock" : "Unlock", on: { click: function () {
+        u.pages = on ? u.pages.filter(function (x) { return x !== pg.id; }) : u.pages.concat(pg.id); change(); } } })]));
+  });
+  var np = h("input", { type: "text", autocomplete: "off" });
+  var rs = h("button", { text: "Set new password" });
+  rs.onclick = async function () {
+    if (np.value.length < 8) return say("Password needs 8+ characters.", "er");
+    rs.disabled = true; say("Working…", "wn");
+    var s = await L.makeUserSecret(u.name, np.value);
+    u.salt = s.salt; u.ku = s.ku; u.iter = s.iter;
+    say("New password set: " + np.value + ". Old password stops working once you publish.", "ok"); change();
+  };
+  c.appendChild(h("h2", { text: "Password", style: "margin-top:18px" }));
+  c.appendChild(h("div", { class: "row" }, [np, h("button", { class: "g", text: "Generate", on: { click: function () { np.value = genPass(); } } }), rs]));
+  c.appendChild(h("div", { class: "row", style: "margin-top:18px" }, [
+    h("button", { class: u.disabled ? "" : "d", text: u.disabled ? "Enable account" : "Disable account", on: { click: function () { u.disabled = !u.disabled; change(); } } }),
+    h("button", { class: "d", text: "Delete account", on: { click: function () {
+      if (confirm("Delete " + u.name + " for good?")) { S.vault.users = S.vault.users.filter(function (x) { return x !== u; }); S.sel = null; change(); } } } })]));
+  return c;
+}
+
+function pagesCard() {
+  var c = h("div", { class: "card" }, [h("h2", { text: "Pages (" + S.vault.pages.length + ")" })]);
+  S.vault.pages.forEach(function (pg) {
+    var em = h("input", { type: "text", value: pg.emoji || "", maxlength: "4" }), ti = h("input", { type: "text", value: pg.title }), no = h("input", { type: "text", value: pg.note || "", placeholder: "Short description" });
+    em.oninput = function () { pg.emoji = em.value; mark(); }; ti.oninput = function () { pg.title = ti.value; mark(); }; no.oninput = function () { pg.note = no.value; mark(); };
+    var rep = h("input", { type: "file", accept: ".html,text/html" });
+    rep.onchange = function () { if (rep.files[0]) rep.files[0].text().then(function (t) { pg.html = t; say("Replaced " + pg.id + ".html (" + Math.round(t.length / 1024) + " KB).", "ok"); change(); }); };
+    c.appendChild(h("div", { class: "it" }, [
+      h("div", { class: "row sp" }, [h("b", { text: pg.id + ".html" }),
+        h("button", { class: "d", text: "Remove", on: { click: function () {
+          if (!confirm("Remove " + pg.id + " and unlock it from every account?")) return;
+          S.vault.pages = S.vault.pages.filter(function (x) { return x !== pg; });
+          S.vault.users.forEach(function (u) { u.pages = u.pages.filter(function (x) { return x !== pg.id; }); }); change(); } } })]),
+      h("div", { class: "grid2", style: "margin-top:6px" }, [em, ti]), h("div", { style: "margin-top:8px" }, [no]),
+      h("label", { text: "Replace with a newer file" }), rep]));
+  });
+  var add = h("input", { type: "file", accept: ".html,text/html", multiple: "multiple" });
+  add.onchange = function () {
+    Array.prototype.forEach.call(add.files, function (f) {
+      var id = slug(f.name);
+      if (!id || id === "index" || id === "admin" || id === "login") return say("Skipped " + f.name + ": that name is reserved.", "er");
+      f.text().then(function (t) {
+        var m = t.match(/<title>([^<]*)<\/title>/i), title = (m && m[1].trim()) || id, ex = S.vault.pages.filter(function (x) { return x.id === id; })[0];
+        if (ex) { ex.html = t; say("Updated " + id + ".", "ok"); } else S.vault.pages.push({ id: id, title: title, emoji: "📄", note: "", html: t });
+        change();
+      });
+    });
+  };
+  c.appendChild(h("label", { text: "Add pages (choose one or more .html files)" })); c.appendChild(add);
+  return c;
+}
+
+/* ---------- build, zip, publish ---------- */
+var CRC = (function () { var t = [], c, n, k; for (n = 0; n < 256; n++) { c = n; for (k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t; })();
+function crc32(u) { var c = -1; for (var i = 0; i < u.length; i++) c = CRC[(c ^ u[i]) & 255] ^ (c >>> 8); return (c ^ -1) >>> 0; }
+function makeZip(files) {   // store-only zip
+  var enc = new TextEncoder(), parts = [], cen = [], off = 0;
+  function u16(n) { return [n & 255, n >>> 8 & 255]; } function u32(n) { return [n & 255, n >>> 8 & 255, n >>> 16 & 255, n >>> 24 & 255]; }
+  Object.keys(files).forEach(function (name) {
+    var nm = enc.encode(name), data = enc.encode(files[name]), crc = crc32(data);
+    var lh = new Uint8Array([0x50, 0x4b, 3, 4, 20, 0, 0, 8, 0, 0, 0, 0, 0x21, 0].concat(u32(crc), u32(data.length), u32(data.length), u16(nm.length), [0, 0]));
+    parts.push(lh, nm, data);
+    cen.push(new Uint8Array([0x50, 0x4b, 1, 2, 20, 0, 20, 0, 0, 8, 0, 0, 0, 0, 0x21, 0].concat(u32(crc), u32(data.length), u32(data.length), u16(nm.length), [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], u32(off))), nm);
+    off += lh.length + nm.length + data.length;
+  });
+  var cl = 0; cen.forEach(function (x) { cl += x.length; });
+  var end = new Uint8Array([0x50, 0x4b, 5, 6, 0, 0, 0, 0].concat(u16(Object.keys(files).length), u16(Object.keys(files).length), u32(cl), u32(off), [0, 0]));
+  return new Blob(parts.concat(cen, [end]), { type: "application/zip" });
+}
+
+function publishCard() {
+  var zip = h("button", { text: "Build & download ZIP" });
+  zip.onclick = async function () {
+    zip.disabled = true; say("Locking pages…", "wn");
+    try {
+      var f = await L.build(S.vault, S.admin), a = h("a", { href: URL.createObjectURL(makeZip(f)), download: "year-ten-locked-site.zip" });
+      document.body.appendChild(a); a.click(); a.remove(); S.dirty = false;
+      say("Done. Unzip it, then upload everything inside to GitHub (steps below).", "ok"); document.getElementById("dirty").style.display = "none";
+    } catch (e) { say("Build failed: " + e.message, "er"); }
+    zip.disabled = false;
+  };
+  var repo = h("input", { type: "text", value: "Jakeclur/jakeclur.github.io" }), br = h("input", { type: "text", value: "main" }), tk = h("input", { type: "password", autocomplete: "off", placeholder: "github_pat_…" });
+  var pub = h("button", { class: "g", text: "Publish to GitHub now" });
+  pub.onclick = async function () {
+    if (!tk.value) return say("Paste a GitHub token first (see the note below).", "er");
+    pub.disabled = true; say("Locking pages…", "wn");
+    try {
+      var f = await L.build(S.vault, S.admin), n = await publishToGitHub(repo.value.trim(), br.value.trim(), tk.value.trim(), f);
+      S.dirty = false; document.getElementById("dirty").style.display = "none";
+      say("Published " + n + " files. The live site updates in a minute or two.", "ok");
+    } catch (e) { say("Publish failed: " + e.message, "er"); }
+    pub.disabled = false;
+  };
+  return h("div", { class: "card" }, [h("h2", { text: "Publish" }),
+    h("p", { class: "mu", text: "Changes only go live after you publish. Each publish also makes every old page key useless on the new files." }),
+    h("div", { class: "row" }, [zip]),
+    h("p", { class: "mu", text: "Upload by hand: unzip, open your repo on github.com, Add file → Upload files, drag in vault.enc, access.json and the p folder, then Commit. If you removed a page, also delete its old file inside p/." }),
+    h("h2", { text: "Or publish in one click", style: "margin-top:18px" }),
+    h("label", { text: "Repository" }), repo, h("label", { text: "Branch" }), br, h("label", { text: "GitHub token" }), tk,
+    h("p", { class: "mu", text: "Make one at github.com/settings/personal-access-tokens: only this repository, permission “Contents: Read and write”. It stays in this page's memory and is gone when you close the tab." }),
+    h("div", { class: "row" }, [pub])]);
+}
+
+async function publishToGitHub(repo, branch, token, files) {
+  var api = "https://api.github.com/repos/" + repo + "/contents/", n = 0;
+  var hd = { Authorization: "Bearer " + token, Accept: "application/vnd.github+json", "Content-Type": "application/json" };
+  async function sha(path) { var r = await fetch(api + path + "?ref=" + encodeURIComponent(branch), { headers: hd }); return r.ok ? (await r.json()).sha : null; }
+  async function put(path, text) {
+    var body = { message: "Update locked site", branch: branch, content: btoa(unescape(encodeURIComponent(text))) }, s = await sha(path);
+    if (s) body.sha = s;
+    var r = await fetch(api + path, { method: "PUT", headers: hd, body: JSON.stringify(body) });
+    if (!r.ok) throw new Error(path + ": " + r.status + " " + ((await r.json().catch(function () { return {}; })).message || ""));
+    n++;
+  }
+  for (var path in files) await put(path, files[path]);
+  var ls = await fetch(api + "p?ref=" + encodeURIComponent(branch), { headers: hd });
+  if (ls.ok) for (var item of await ls.json()) {
+    if (item.name.slice(-4) === ".enc" && !files["p/" + item.name]) {
+      var r = await fetch(api + item.path, { method: "DELETE", headers: hd, body: JSON.stringify({ message: "Remove page", branch: branch, sha: item.sha }) });
+      if (!r.ok) throw new Error("delete " + item.path + ": " + r.status);
+    }
+  }
+  return n;
+}
+
+function adminPwCard() {
+  var p1 = h("input", { type: "password", autocomplete: "new-password" }), go = h("button", { class: "g", text: "Change admin password" });
+  go.onclick = async function () {
+    if (p1.value.length < 12) return say("Use at least 12 characters.", "er");
+    go.disabled = true; say("Working…", "wn"); S.admin = await L.newAdminKey(p1.value); p1.value = "";
+    say("Admin password changed. Publish to save it.", "ok"); change();
+  };
+  return h("div", { class: "card" }, [h("h2", { text: "Admin password" }), h("label", { text: "New admin password (12+ characters)" }), p1, h("div", { class: "row", style: "margin-top:12px" }, [go])]);
+}
+
+start();
+</script></body></html>
