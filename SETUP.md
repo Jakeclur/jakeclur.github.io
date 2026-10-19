@@ -12,7 +12,7 @@ Everything else (including old `index (3).html` and the zip files) needs a paid 
 
 ## 2. Stripe (money)
 1. stripe.com > make account (needs an adult 18+). Stay in **Test mode** first.
-2. Product catalogue > Add product > recurring price > copy the **Price ID** (`price_...`).
+2. Product catalogue > Add product > recurring price **A$1.00 / month**, currency AUD > copy the **Price ID** (`price_...`).
 3. Settings > Billing > Customer portal > turn it on.
 
 ## 3. Cloudflare Pages (host)
