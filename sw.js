@@ -1,12 +1,12 @@
 /* Year Ten Study Hub: offline support.
    Change VERSION whenever you upload new pages so phones refresh their saved copy. */
 const VERSION = "yt-v3";
-const FILES = ["./", "index.html", "psychology.html", "specialist-maths.html", "physics.html", "methods.html", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
+const FILES = ["./", "index.html", "login.html", "account.html", "psychology.html", "specialist-maths.html", "physics.html", "methods.html", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(
     caches.open(VERSION)
-      .then(c => Promise.all(FILES.map(f => c.add(new Request(f, { cache: "reload" })).catch(() => {}))))
+      .then(c => Promise.all(FILES.map(f => fetch(f, { cache: "reload", redirect: "manual" }).then(r => r.ok && !r.redirected ? c.put(f, r) : null).catch(() => {}))))
       .then(() => self.skipWaiting())
   );
 });
@@ -28,7 +28,7 @@ self.addEventListener("fetch", e => {
   if (isPage) {
     // Pages: try the network first so updates arrive, fall back to the saved copy when offline.
     e.respondWith(
-      fetch(r).then(res => { const copy = res.clone(); caches.open(VERSION).then(c => c.put(r, copy)); return res; })
+      fetch(r, { redirect: "manual" }).then(res => { if (res.ok && !res.redirected) { const copy = res.clone(); caches.open(VERSION).then(c => c.put(r, copy)); } return res; })
         .catch(() => caches.match(r).then(m => m || caches.match("index.html")))
     );
   } else {

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Account · Year Ten</title>
+<script>try{var t=localStorage.getItem("yt-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1d2433;--mu:#5b6578;--ac:#5b3fd0;--bd:#dde1ea;--er:#c0392b}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141c;--card:#1b1e29;--tx:#e8eaf2;--mu:#9aa3b8;--ac:#a58bff;--bd:#2d3243;--er:#ff7b6b}}
+:root[data-theme="dark"]{--bg:#12141c;--card:#1b1e29;--tx:#e8eaf2;--mu:#9aa3b8;--ac:#a58bff;--bd:#2d3243;--er:#ff7b6b}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,sans-serif;padding:16px}
+.card{width:100%;max-width:420px;background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:24px}
+h1{margin:0 0 4px;font-size:26px}h1 span{color:var(--ac)}
+p{color:var(--mu);margin:8px 0}
+.b{display:block;width:100%;margin-top:12px;padding:12px;border:0;border-radius:999px;background:var(--ac);color:#fff;font:600 16px system-ui,sans-serif;cursor:pointer;text-align:center;text-decoration:none}
+.b.s{background:none;border:1px solid var(--bd);color:var(--tx)}
+.b:disabled{opacity:.6}
+#note{color:var(--er);min-height:20px;font-size:14px}
+a{color:var(--ac)}
+</style></head><body>
+<div class="card" id="c">Loading…</div>
+<script>
+var c=document.getElementById("c"),q=new URLSearchParams(location.search);
+function el(h){c.innerHTML=h}
+function post(url,btn){btn.disabled=true;
+ fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"}).then(function(r){return r.json()})
+ .then(function(d){if(d.url)location.href=d.url;else{document.getElementById("note").textContent=d.error||"Something went wrong.";btn.disabled=false}})
+ .catch(function(){document.getElementById("note").textContent="Network problem.";btn.disabled=false})}
+function render(m){
+ if(!m.loggedIn){location.href="/login.html?next=/account.html";return}
+ var h='<h1>Year <span>Ten</span></h1><p>Signed in as <b></b></p>';
+ if(m.paid){
+  h+='<p>✅ Subscription active'+(m.renews?(m.cancelling?'. Ends ':'. Renews ')+new Date(m.renews).toLocaleDateString():'')+'.</p><a class="b" href="/index.html">Open study hubs</a><button class="b s" id="pt">Manage billing</button>';
+ }else{
+  if(q.get("paid"))h+='<p>Payment received. Unlocking… <a href="/account.html">refresh</a> in a few seconds.</p>';
+  else if(q.get("locked"))h+='<p>🔒 Subscribe to unlock the study hubs.</p>';
+  else h+='<p>No active subscription.</p>';
+  h+='<button class="b" id="sb">Subscribe</button>';
+  if(m.status!=="none")h+='<button class="b s" id="pt">Manage billing</button>';
+ }
+ h+='<div id="note"></div><button class="b s" id="lo">Log out</button>';
+ el(h);c.querySelector("b").textContent=m.email;
+ var s=document.getElementById("sb"),p=document.getElementById("pt");
+ if(s)s.onclick=function(){post("/api/checkout",s)};
+ if(p)p.onclick=function(){post("/api/portal",p)};
+ document.getElementById("lo").onclick=function(){fetch("/api/logout",{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"}).then(function(){location.href="/index.html"})};
+ if(q.get("paid")&&!m.paid)setTimeout(load,3000);
+}
+function load(){fetch("/api/me").then(function(r){return r.json()}).then(render).catch(function(){el("Could not load. Try again.")})}
+load();
+</script></body></html>
