@@ -1,7 +1,7 @@
 {
  "name": "Year Ten Study Hub",
  "short_name": "Year 10",
- "description": "Study hubs for Year Ten: Psychology, Specialist Maths and Physics.",
+ "description": "Study hubs for Year Ten: Psychology, Specialist Maths, Physics and Methods.",
  "start_url": "index.html",
  "scope": "./",
  "display": "standalone",

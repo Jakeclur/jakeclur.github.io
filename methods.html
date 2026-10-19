@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Methods Study Hub</title>
+<script>try{var t=localStorage.getItem("yt-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1d2433;--mu:#5b6578;--ac:#5b3fd0;--ac2:#e9e4ff;--bd:#dde1ea;--ok:#1f8f55;--bx:#fff6dc;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141c;--card:#1b1e29;--tx:#e8eaf2;--mu:#9aa3b8;--ac:#a58bff;--ac2:#2b2552;--bd:#2d3243;--ok:#4cc98a;--bx:#2f2a16}}
+:root[data-theme="dark"]{--bg:#12141c;--card:#1b1e29;--tx:#e8eaf2;--mu:#9aa3b8;--ac:#a58bff;--ac2:#2b2552;--bd:#2d3243;--ok:#4cc98a;--bx:#2f2a16}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 Georgia,"Times New Roman",serif}
+header{padding:20px 16px 8px;max-width:860px;margin:auto}
+h1{margin:0;font:700 24px system-ui,sans-serif}h2{font:700 20px system-ui,sans-serif;margin:0 0 6px}h3{font:600 15px system-ui,sans-serif;margin:14px 0 4px;color:var(--ac)}
+.sub{color:var(--mu);font:14px system-ui,sans-serif}
+nav{position:sticky;top:env(safe-area-inset-top,0px);background:var(--bg);z-index:5;padding:8px 16px;max-width:860px;margin:auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--bd)}
+button,.chip{font:600 13px system-ui,sans-serif;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:999px;padding:6px 12px;cursor:pointer;text-decoration:none}
+button.on,.chip.on{background:var(--ac);color:#fff;border-color:var(--ac)}
+main{max-width:860px;margin:auto;padding:8px 16px 60px}
+section{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin:14px 0}
+.wk{display:inline-block;font:600 12px system-ui,sans-serif;background:var(--ac2);color:var(--ac);border-radius:6px;padding:2px 8px;margin-bottom:6px}
+.box{background:var(--bx);border-radius:10px;padding:8px 12px;margin:8px 0;font-size:15px}
+.th p{margin:6px 0}.th ul{margin:4px 0 4px 20px;padding:0}
+.q{border-top:1px solid var(--bd);padding:10px 0}
+.q>div.h{display:flex;gap:8px;align-items:flex-start}
+.tag{font:700 11px system-ui,sans-serif;border-radius:5px;padding:2px 6px;white-space:nowrap;margin-top:3px}
+.t-c{background:#dff3ff;color:#0a5a8a}.t-h{background:#e3f6e8;color:#1b6b3a}.t-x{background:#ffe7d6;color:#9a4a10}
+details summary{cursor:pointer;color:var(--ac);font:600 13px system-ui,sans-serif;margin-top:4px}
+.sol{margin-top:6px;padding:8px 12px;border-left:3px solid var(--ac);background:var(--ac2);border-radius:0 8px 8px 0;font-size:15px}
+label.d{font:13px system-ui,sans-serif;color:var(--mu);margin-left:auto;white-space:nowrap}
+#bar{height:6px;background:var(--bd);border-radius:6px;overflow:hidden;margin-top:8px}#bar i{display:block;height:100%;background:var(--ok);width:0}
+footer{text-align:center;color:var(--mu);font:12px system-ui,sans-serif;padding:20px}
+
+#tut{position:fixed;right:calc(14px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:20;background:var(--ac);color:#fff;border-color:var(--ac);font-size:15px;padding:12px 18px;box-shadow:0 4px 16px rgba(0,0,0,.3);animation:pl 2.2s ease-in-out 4}@keyframes pl{50%{transform:scale(1.08)}}
+#dr{position:fixed;top:0;right:0;bottom:0;width:min(400px,100%);background:var(--card);border-left:1px solid var(--bd);z-index:30;display:flex;flex-direction:column;transform:translateX(105%);transition:transform .25s;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);box-shadow:-6px 0 24px rgba(0,0,0,.18)}
+#dr.open{transform:none}
+#dr .hd{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--bd);font:700 16px system-ui,sans-serif}
+#msgs{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.m{max-width:92%;padding:8px 12px;border-radius:12px;font:15px/1.5 system-ui,sans-serif;white-space:pre-wrap;word-wrap:break-word}
+.m.u{align-self:flex-end;background:var(--ac);color:#fff}.m.a{align-self:flex-start;background:var(--ac2)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;padding:0 14px 8px}
+#tf{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--bd)}
+#ti{flex:1;font:16px system-ui,sans-serif;padding:8px 10px;border-radius:10px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);resize:none}
+
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 0 0;align-items:center}.acts button{font-size:12px;padding:4px 10px}
+.ai{display:inline-block}
+#sq{flex:1 1 100%;font:15px system-ui,sans-serif;padding:7px 12px;border-radius:999px;border:1px solid var(--bd);background:var(--card);color:var(--tx)}
+.fcard{min-height:130px;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;border-radius:14px;border:2px solid var(--ac);background:var(--ac2);cursor:pointer;font:600 18px/1.4 system-ui,sans-serif;margin-bottom:8px;user-select:none}
+.fcard.bk{background:var(--card);font-weight:400;font-size:17px}
+table{border-collapse:collapse;width:100%;font-size:14px;margin-top:8px}td{border-top:1px solid var(--bd);padding:6px 8px;vertical-align:top}
+.rs{margin-top:8px}
+section{scroll-margin-top:calc(var(--nh,150px) + env(safe-area-inset-top,0px) + 14px)}
+
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 2px;font-size:.95em;line-height:1.25}
+.nu{border-bottom:1px solid currentColor;padding:0 3px}.de{padding:0 3px}
+.rd{white-space:nowrap}.ov{border-top:1px solid currentColor;margin-left:1px;padding:0 1px}
+sup{font-size:.7em;line-height:0}
+
+nav{flex-direction:column;align-items:stretch;gap:6px}
+.tabs{display:flex;gap:6px;align-items:center;width:100%}.tab{font-size:15px;padding:8px 16px}
+.chips2{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;-webkit-overflow-scrolling:touch}.chips2 button{white-space:nowrap;font-weight:500}.chips2 small{opacity:.7}
+.tb{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px}.tc{border:1px solid var(--bd);border-radius:12px;padding:12px}
+.ex{border-top:1px solid var(--bd);padding:10px 0}
+.q{scroll-margin-top:calc(var(--nh,100px) + 14px)}
+#kp{display:none;padding:10px 14px;border-top:1px solid var(--bd);font:13px/1.45 system-ui,sans-serif;color:var(--mu)}#kp input{width:100%;margin:6px 0;font:14px system-ui,sans-serif;padding:8px;border-radius:8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx)}
+
+.opts{display:grid;gap:6px;margin:8px 0}.opt{text-align:left;border-radius:10px;font:400 15px/1.4 Georgia,serif;padding:8px 12px;white-space:normal}
+.opt.ok{background:#d9f5e3;border-color:#1f8f55;color:#10331f}.opt.no{background:#fde0e0;border-color:#d33;color:#4a1010}
+
+html{-webkit-text-size-adjust:100%}body{overflow-x:hidden;overflow-wrap:anywhere}
+table{display:block;overflow-x:auto}
+@media(max-width:560px){header{padding:14px 12px 6px}h1{font-size:20px}nav{padding:6px 10px}.tab{flex:1;padding:8px 6px;font-size:14px;text-align:center}main{padding:6px 10px 76px}section{padding:12px;border-radius:12px}.grid{grid-template-columns:1fr}.q>div.h{flex-wrap:wrap}label.d{margin-left:0}.fcard{min-height:110px;font-size:17px}#dr{width:100%}#tut{padding:11px 15px;font-size:14px}.acts button{font-size:12px}}
+.fig{margin:8px 0;color:var(--tx)}.fig svg{max-width:100%}
+
+/* ---- mobile polish v2 ---- */
+button,label{touch-action:manipulation}
+@media(max-width:640px){
+ body{font-size:15.5px}
+ header{padding:12px 12px 4px}h1{font-size:19px}header .sub{font-size:13px}
+ nav{padding:6px 8px;gap:4px}
+ .tabs{gap:4px}.tab{flex:1;min-height:44px;font-size:14px;padding:6px 4px;white-space:nowrap}
+ #th{min-height:44px;min-width:44px;padding:6px 10px}
+ .chips2{gap:6px;margin:0 -8px;padding:2px 8px 6px;scroll-snap-type:x proximity}
+ .chips2 button{min-height:40px;padding:6px 12px;font-size:13px;scroll-snap-align:start}
+ main{padding:6px 8px 92px}
+ section{padding:12px 11px;margin:10px 0;border-radius:12px}
+ h2{font-size:18px}h3{font-size:14px}
+ .tb{gap:6px}#sq{font-size:16px;min-height:44px}
+ .tb button,.acts button{min-height:40px;padding:6px 12px;font-size:13px}
+ .q{padding:12px 0}
+ .q>div.h{flex-direction:column;gap:6px}
+ label.d{margin-left:0;display:flex;align-items:center;gap:8px;min-height:36px;font-size:14px}
+ label.d input{width:22px;height:22px}
+ details summary{padding:10px 0;font-size:14px}
+ .sol{padding:8px 10px;font-size:15px;overflow-x:auto}
+ .th,.ex{overflow-x:auto}
+ .opts .opt{min-height:44px;padding:10px 12px}
+ #msgs{padding:10px}#ti{font-size:16px}#tf{padding:8px 10px}
+ #tut{bottom:calc(14px + env(safe-area-inset-bottom,0px));right:calc(10px + env(safe-area-inset-right,0px));min-height:46px;padding:10px 14px;font-size:14px}
+ .tc{padding:12px}.fcard{min-height:120px;font-size:17px;padding:14px}
+ .fig{overflow-x:auto}.fig svg{max-width:100%;height:auto}
+ table{font-size:13px}
+}
+@media(max-width:380px){body{font-size:15px}.tab{font-size:13px;padding:6px 2px}.chips2 button{font-size:12.5px;padding:6px 10px}}
+@supports(height:100dvh){@media(max-width:640px){#dr{height:100dvh;bottom:auto}}}
+@media(max-height:480px) and (orientation:landscape){nav{position:static}.q{scroll-margin-top:14px}}
+
+/* ---- features: ratings, spaced flashcards, quiz ---- */
+.rate{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0 0;font:13px system-ui,sans-serif;color:var(--mu)}
+.rb{font:600 12.5px system-ui,sans-serif;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:999px;padding:6px 12px;cursor:pointer}
+.rb.on.g{background:#d9f5e3;border-color:#1f8f55;color:#10331f}.rb.on.n{background:#fff1c9;border-color:#d9a400;color:#4a3a00}.rb.on.x{background:#fde0e0;border-color:#d33;color:#4a1010}
+#fcr .rb{padding:10px 16px;font-size:14px}#fcr .rb.g{border-color:#1f8f55}#fcr .rb.n{border-color:#d9a400}#fcr .rb.x{border-color:#d33}
+.fcstat{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 10px;font:14px system-ui,sans-serif}
+.qzq{font-size:17px;margin:6px 0 10px}
+@media(max-width:640px){.rb{min-height:40px}.qzq{font-size:16px}#fcr .rb{flex:1;min-height:46px}}
+
+/* ---- responsive fixes (all pages) ---- */
+/* keep the topic chip row inside the screen and let it scroll sideways */
+nav{flex-wrap:nowrap;min-width:0}.chips2{min-width:0;max-width:100%}
+/* tab row: equal-width tabs, the dark-mode button always fully visible, icon above label on narrow screens */
+.tabs{align-items:stretch}
+.tab{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:0}
+#th{flex:none}
+@media(max-width:640px){.tabs{gap:4px}.tab{flex:1 1 0}}
+@media(max-width:480px){.tab{flex-direction:column;gap:0;line-height:1.2;font-size:12.5px;padding:5px 2px}.tab .te{font-size:18px;line-height:1.15}}
+/* ---- methods additions: boxes, tables, calculator, checklist ---- */
+:root{--bxb:#eaf0fa;--bxg:#e8f4ec;--cxn:#d9a400;--cxg:#d33}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bxb:#1b2a44;--bxg:#1a3326}}
+:root[data-theme="dark"]{--bxb:#1b2a44;--bxg:#1a3326}
+.box{border-left:4px solid #d9a400}
+.box.ex{background:var(--bxb);border-left-color:#2f5fa8}
+.box.turn{background:var(--bxg);border-left-color:#2e7d4f}
+.box p{margin:4px 0}.box>b:first-child{display:block;font:700 13px system-ui,sans-serif;margin-bottom:2px}
+.th ol{margin:4px 0 8px 22px;padding:0}.th li{margin:3px 0}
+.th code,.sol code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--ac2);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.th details{border:1px solid var(--bd);border-radius:10px;padding:2px 12px;margin:8px 0}
+.th details summary{padding:8px 0}
+.tw{overflow-x:auto;margin:8px 0;max-width:100%;-webkit-overflow-scrolling:touch}
+.tw table{display:table;width:100%;min-width:460px;margin-top:0}
+.tw th,.tw td{border:1px solid var(--bd);padding:6px 8px;text-align:left;vertical-align:top;font-size:14px}
+.tw th{background:var(--ac2);font:600 13px system-ui,sans-serif}
+.tw caption{caption-side:top;text-align:left;font:600 13px system-ui,sans-serif;padding:0 0 6px;color:var(--mu)}
+.cl{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.cl input{margin-top:4px;width:20px;height:20px;flex:none}
+.mk{display:grid;grid-template-columns:20fr 35fr 25fr 20fr;gap:3px}
+.mk button{border:0;border-radius:6px;color:#fff;padding:9px 6px;text-align:left;font:600 12.5px/1.3 system-ui,sans-serif;min-width:0;overflow-wrap:normal}
+.mk button b{display:block;font:700 20px Georgia,serif}
+.mk .m1{background:#2f5fa8}.mk .m2{background:#0e6b73}.mk .m3{background:#7a4fa0}.mk .m4{background:#b45f06}
+.dts{list-style:none;margin:0 0 6px;padding:0;display:flex;flex-wrap:wrap;gap:4px 18px;font:14px system-ui,sans-serif}
+.cx{border:1px solid var(--bd);border-radius:12px;padding:12px;margin:10px 0}
+.cxg{display:grid;grid-template-columns:minmax(190px,250px) minmax(0,1fr);gap:14px;align-items:start}
+.cxr table{display:table;width:100%;min-width:0}
+.cxr th{text-align:left;font:600 13px system-ui,sans-serif;padding:4px}
+.cxr td{padding:4px;border-top:0}
+.cxr input{width:100%;min-width:0;font:16px system-ui,sans-serif;padding:6px 8px;border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:8px}
+.cxo{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));gap:8px;margin:12px 0 0}
+.cxo div{border:1px solid var(--bd);border-radius:8px;padding:8px 10px;background:var(--bg);min-width:0}
+.cxo span{display:block;font:12.5px system-ui,sans-serif;color:var(--mu)}
+.cxo b{font:700 18px Georgia,serif;overflow-wrap:anywhere}
+svg.chart{width:100%;height:auto;display:block;background:var(--bg);border:1px solid var(--bd);border-radius:8px}
+svg.chart .axis{stroke:var(--mu);stroke-width:1}svg.chart .tick{stroke:var(--bd);stroke-width:1}
+svg.chart text{fill:var(--mu);font-size:12px;font-family:system-ui,sans-serif}
+svg.chart .pt{fill:var(--ac)}svg.chart .fit{stroke:var(--ok);stroke-width:2;fill:none}
+svg.chart .fitx{stroke:var(--ok);stroke-width:2;fill:none;stroke-dasharray:6 5}
+svg.chart .need{stroke:var(--cxn);stroke-width:2;fill:none;stroke-dasharray:2 5}
+svg.chart .goal{stroke:var(--cxg);stroke-width:1;stroke-dasharray:4 4}
+.lg{display:flex;flex-wrap:wrap;gap:4px 16px;font:13px system-ui,sans-serif;color:var(--mu);margin:8px 0 0}
+.lg i{display:inline-block;width:22px;height:0;border-top:3px solid;vertical-align:middle;margin-right:6px}
+.lg .l1{border-color:var(--ok)}.lg .l2{border-color:var(--cxn);border-top-style:dotted}.lg .l3{border-color:var(--cxg);border-top-style:dashed;border-top-width:1px}
+@media(max-width:700px){.cxg{grid-template-columns:1fr}}
+@media(max-width:560px){.mk{grid-template-columns:1fr 1fr}.cl{min-height:44px;align-items:center}.cl input{margin-top:0}.cx{padding:10px}.cxo b{font-size:16px}}
+.tw td,.tw th{overflow-wrap:break-word;word-break:normal}
+.tw th{white-space:nowrap}
+.tw td{min-width:5.5em}
+svg.chart.nw text{font-size:14px}
+@media(max-width:560px){.cxo div{padding:7px 8px}.cxo span{font-size:12px}}
+</style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#5b3fd0"><link rel="apple-touch-icon" href="icon-180.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Year 10">
+</head><body>
+<div style="max-width:860px;margin:auto;padding:10px 16px 0;font:600 14px system-ui,sans-serif"><a href="index.html" style="color:var(--ac);text-decoration:none">← Year Ten</a></div>
+<header><h1 id="h1"></h1>
+<div class="sub" id="hsub"></div>
+<div id="bar"><i></i></div><div class="sub" id="pc" style="margin-top:4px"></div></header>
+<nav id="nav"></nav>
+<main id="main"></main>
+<footer><button id="rb">Reset ticks & flags</button><br><br><span id="ftx"></span></footer>
+<button id="tut" aria-label="Open study tutor">💬 Ask the tutor</button>
+<aside id="dr" aria-label="Study tutor"><div class="hd"><span>Study tutor</span><span><button id="kb" style="display:none" aria-label="API key settings">🔑 Key</button> <button id="tx">✕</button></span></div>
+<div id="msgs"><div class="m a" id="hi"></div></div>
+<div class="chips" id="ch"></div>
+<div id="kp"><b>Use the tutor in this file</b><br>This copy is open outside Claude, so it needs your own Anthropic API key (from console.anthropic.com; API usage is billed separately from a claude.ai plan). The key is kept only in this browser and sent only to Anthropic.<input id="ki" type="password" placeholder="sk-ant-…" autocomplete="off"><button id="ks">Save key</button> <button id="kc">Remove key</button> <span id="kst"></span></div>
+<div id="tf"><textarea id="ti" rows="2" placeholder="Type your question…"></textarea><button id="ts">Send</button></div></aside>
+<script>
+/*==== CONTENT START: edit everything between the markers, leave the logic below alone ====*/
+const SITE={
+key:"meth",
+title:"Methods Study Hub",
+sub:"Closing the Gap report: Year 10 problem-solving and modelling task (Univariate and Bivariate Data). Learn each criterion, try the questions, then use the calculator and checklist before you submit.",
+foot:"Based on the Closing the Gap PSMT guide. The 2015–17 and 2020–22 figures come from your task spreadsheets. The 2005–07 and 2010–12 figures were gathered from search results, so check them against the ABS tables and cite the ABS, not this hub. Questions and worked answers were written for this hub, so check details against your task sheet and teacher. The task is individual and is checked for plagiarism: rewrite everything in your own words and make your own modelling decisions.",
+link:"",
+hi:"Hi! Ask me anything about the Closing the Gap report: observations, assumptions, the line of best fit, evaluating your model or how the marking guide works. I can explain methods and check your working, but I won't write your report for you.",
+sys:"You are a friendly maths tutor for an Australian (Queensland) Year 10 student working on a problem-solving and modelling task about Closing the Gap: modelling the gap in life expectancy between First Nations and non-Indigenous Australians using univariate and bivariate data, and judging whether Australia is on track to close it by 2031. The report is marked on Formulate (4 marks), Solve (7), Evaluate and verify (5) and Communicate (4). Topics: report structure and word budget, observations (It is observed that / It is justified by), assumptions with reasons and effects, mathematical translation and a decision rule for on track, the ABS and AIHW life expectancy data (3-year periods, midpoint years, published gaps, the 2020-22 method change, rounding), scatterplots, least-squares line of best fit, slope and intercept, r and R², prediction and extrapolation, the rate needed to reach a gap of 0 by 2031, residuals, verification and sensitivity, strengths and limitations, mathematical language, referencing and the 12-slide presentation. Teach the method, not just the answer: if they ask for a hint give a nudge first; if they paste their working, check it line by line and point out the first mistake. The task is individual and assessed, so explain ideas, give small examples and feedback on their own writing, but do not write sections of their report for them. Use respectful language about First Nations people and only claim causes that a source supports. Be concise. Write maths in plain text with Unicode (², √, ≈, −); never use LaTeX or markdown headings.",
+sug:["Explain observation vs assumption","How do I find the slope by hand?","What does r = −0.93 tell me?","Check my working (I'll paste it)"]
+};
+const Q=(t,r,q,a)=>({t,r,q,a});
+const D=[
+{id:"1",wk:"Start here",title:"1 Task and report structure",
+th:`<p>This is the Year 10 problem-solving and modelling task (FIA4, Univariate and Bivariate Data). You use data to decide whether this statement is supported:</p>
+<div class="box ex"><b>Statement to evaluate</b><p>Australia is on track to close the gap in life expectancy between First Nations and non-Indigenous Australians by 2031.</p></div>
+<h3>Marks and due dates</h3>
+<div class="tw"><table><thead><tr><th>Criterion</th><th>Marks</th><th>Share</th><th>What it rewards</th></tr></thead><tbody>
+<tr><td><b>Formulate</b></td><td>4</td><td>20%</td><td>Justified observations, assumptions and mathematical translation</td></tr>
+<tr><td><b>Solve</b></td><td>7</td><td>35%</td><td>Accurate maths, efficient use of technology, a complete solution</td></tr>
+<tr><td><b>Evaluate and verify</b></td><td>5</td><td>25%</td><td>Verified results, reasonableness, strengths and limitations</td></tr>
+<tr><td><b>Communicate</b></td><td>4</td><td>20%</td><td>Correct language, logical layout, justified decisions, oral presentation</td></tr>
+</tbody></table></div>
+<p>The total is 20 marks. Solve is the biggest share, but Formulate and Evaluate together are worth 9 marks, nearly half.</p>
+<ul><li><b>Week 2 Friday:</b> Formulate complete</li><li><b>Week 3 Friday:</b> Solve complete</li><li><b>Week 4 Friday:</b> Evaluation and full draft</li><li><b>Week 5 Friday:</b> Final copy</li><li><b>Weeks 6–7:</b> 12-slide oral presentation</li></ul>
+<h3>Report structure</h3>
+<p>Use the scaffold your teacher gave you. Each heading lines up with part of the marking guide.</p>
+<div class="tw"><table><thead><tr><th>Scaffold heading</th><th>What goes in it</th><th>Criterion</th><th>Words</th></tr></thead><tbody>
+<tr><td>Introduction</td><td>The context, the statement you are evaluating, and a one-line outline of your approach.</td><td>Communicate</td><td>about 100</td></tr>
+<tr><td>Observations, Assumptions, Mathematical translation</td><td>What you notice, what you assume (with reasons), and how the question becomes maths.</td><td>Formulate</td><td>about 450</td></tr>
+<tr><td>Develop a model, Interpret the model, Answer the question</td><td>Gap calculations, graph, line of best fit, meaning of the numbers, prediction for 2031, answer.</td><td>Solve</td><td>about 550</td></tr>
+<tr><td>Verify results, Justification, Strengths and limitations</td><td>Checks on your numbers, whether the answer is reasonable, strengths and limitations of the model.</td><td>Evaluate and verify</td><td>about 500</td></tr>
+<tr><td>Conclusion</td><td>Restate the problem, results and answer; recommendations.</td><td>Communicate</td><td>about 150</td></tr>
+<tr><td>References, Appendix</td><td>Sources; raw data, repeated calculations, screenshots of technology.</td><td>Not marked</td><td>not counted*</td></tr>
+</tbody></table></div>
+<p>The word budget is only a suggestion. It adds up to about 1750, which leaves room to spare under the 2000-word maximum. *Ask your teacher exactly what counts towards the 2000 words (for example captions, tables and references).</p>
+<div class="box"><b>⚠ Watch out</b><p>The appendix is not marked, so anything the marker needs to see must be in the main report. Put long working in the appendix, and the result and its meaning in the body.</p></div>
+<div class="box"><b>How to use this hub</b><p>The examples show the standard to aim for. Rewrite everything in your own words and make your own modelling decisions. Your teacher uses plagiarism-detection software and class cross-marking. Your decisions and reasoning are what get marked.</p></div>`,
+qs:[
+Q("c","Q1","Under which marking criterion do the scaffold headings “Verify results”, “Justification” and “Strengths and limitations” earn marks?","Evaluate and verify (5 marks)."),
+Q("c","Q2","Where should a long table of repeated calculations go, and what must still appear in the main report?","In the appendix. The appendix is not marked, so the main report must still contain the result and its meaning, for example the slope and what it says about the gap."),
+Q("c","Q3","Write each criterion’s marks as a percentage of 20. Which two criteria together are worth nearly half?","Formulate 4/20 = 20%, Solve 7/20 = 35%, Evaluate and verify 5/20 = 25%, Communicate 4/20 = 20%.<br>Formulate + Evaluate = 9/20 = 45%, nearly half."),
+Q("h","Q4","Add up the suggested word budget (Introduction, Formulate, Solve, Evaluate, Conclusion). How many words are spare under the 2000-word maximum, and how would you use them?","100 + 450 + 550 + 500 + 150 = 1750 words, so 2000 − 1750 = 250 words spare.<br>Sensible uses: extra interpretation in Solve, or a fuller evaluation of assumptions in Evaluate (the criterion where good reports often lose marks). Check with your teacher what counts towards the limit."),
+Q("h","Q5","Use the due dates to write a short weekly plan. For each Friday, say what must be finished and which scaffold headings it covers.","Sample plan (use your own wording):<br>Week 2 Friday: Observations, Assumptions, Mathematical translation (Formulate).<br>Week 3 Friday: Develop a model, Interpret the model, Answer the question (Solve).<br>Week 4 Friday: Verify, Justification, Strengths and limitations, plus a full draft with Introduction and Conclusion.<br>Week 5 Friday: final copy, references and appendix checked.<br>Weeks 6–7: 12-slide presentation."),
+Q("x","Q6","A classmate plans to write “see appendix” for the whole Solve section. Explain why this puts marks at risk.","The appendix is not marked. Solve is the largest criterion (7 marks) and rewards a complete solution, so the marker must see the model, the graph, the interpretation, the 2031 prediction and the answer in the main report. Only repeated working and raw data belong in the appendix.")
+]},
+{id:"2",wk:"Week 2",title:"2 Formulate (4 marks)",
+th:`<p>Formulate means turning the real-world question into a mathematical one. The top band asks for <b>justified</b> assumptions, <b>justified</b> observations and a <b>justified</b> mathematical translation.</p>
+<h3>Observations</h3>
+<p>An observation is something you notice from the task or the data. Give the source, then say why it matters for your model. A repeating pattern makes every observation justified:</p>
+<div class="box ex"><b>Example wording</b>
+<p><b>It is observed that</b> the target is to close the life expectancy gap by 2031. <b>It is justified by</b> the fact that “on track” can only be judged against a deadline, so the model needs to predict the gap in 2031 (task sheet).</p>
+<p><b>It is observed that</b> both data sets are reported for the same periods. <b>It is justified by</b> the fact that matching periods let me subtract corresponding values to find the gap for each period.</p>
+<p><b>It is observed that</b> the data comes from the Australian Bureau of Statistics (ABS), which estimates life expectancy from registered deaths and Census population counts, and is published by the Australian Institute of Health and Welfare (AIHW). <b>It is justified by</b> the sources named in the spreadsheets, so I treat it as reliable but not exact.</p></div>
+<div class="box turn"><b>Your turn</b><p>Find an observation about the data itself (for example, which group has the larger gap, or how many time points you have) and write it with “It is observed that” and “It is justified by”.</p></div>
+<h3>Assumptions</h3>
+<p>An assumption is something you accept as true to make the model workable. Each needs a reason and an effect on the model:</p>
+<div class="tw"><table><thead><tr><th>Assumption</th><th>Because</th><th>Effect on the model</th></tr></thead><tbody>
+<tr><td>The Indigenous and non-Indigenous populations do not overlap.</td><td>The task sheet states it.</td><td>Each group can be analysed separately, and the gap is a simple subtraction.</td></tr>
+<tr><td>A 3-year period can be treated as its midpoint year (2020–22 becomes 2021).</td><td>Each value is an average over the period.</td><td>Lets time go on the x-axis, but adds a small error of up to a year.</td></tr>
+<tr><td>The gap changes at a roughly constant rate (linear trend).</td><td>The scatterplot looks roughly straight (check yours).</td><td>A straight line cannot show progress speeding up or slowing down.</td></tr>
+<tr><td>The trend continues unchanged to 2031.</td><td>There are no data after 2022 to test otherwise.</td><td>The 2031 prediction is extrapolation, so it is less reliable.</td></tr>
+<tr><td>Males and females are modelled separately.</td><td>Their gaps are different sizes.</td><td>Gives two conclusions that may differ.</td></tr>
+<tr><td>The ABS estimates are accurate enough to model.</td><td>Official source built from death registrations and Census counts.</td><td>Any error in the estimates carries into the trend.</td></tr>
+</tbody></table></div>
+<div class="box"><b>⚠ Watch out</b><p>You will come back to every assumption in Evaluate. The QCAA’s top sample lost its only mark because it never judged its results against its assumptions. Write assumptions you can honestly test later.</p></div>
+<h3>Mathematical translation</h3>
+<p>This is where the real-world question becomes variables, a model and a decision rule. Define each of these:</p>
+<ul>
+<li><b>Variables:</b> <code>t</code> = time (year, or years since your first data point) and <code>G</code> = gap in years (non-Indigenous life expectancy minus Indigenous life expectancy).</li>
+<li><b>Model:</b> <code>G = mt + c</code>, a line of best fit through the (t, G) points.</li>
+<li><b>Meaning of the slope m:</b> negative means the gap is closing, near zero means constant, positive means growing. These match the three outcomes in the task sheet.</li>
+<li><b>Target in maths:</b> G = 0 in 2031.</li>
+<li><b>Decision rule:</b> state exactly what “on track” means. For example: the model predicts a gap of 0 by 2031, or the slope is at least as steep as the rate needed (latest gap divided by years remaining).</li></ul>
+<div class="box ex"><b>Example wording</b><p>I translate “close the gap” as G = 0. The rate of change needed from the latest data point (2021) to reach this in 2031 is the latest gap divided by 10 years. I will compare this with the slope of my model. If the modelled slope is much smaller in size, the gap is not closing quickly enough to be on track.</p></div>`,
+qs:[
+Q("c","Q1","Write an observation, using “It is observed that … It is justified by …”, about the fact that the life expectancy values are given for 3-year periods.","Sample (use your own words):<br>It is observed that each life expectancy value covers a 3-year period, such as 2020–22. It is justified by the fact that the ABS averages deaths over three years to get a stable estimate, so each value represents the whole period, not one year."),
+Q("c","Q2","Decide whether each statement is an observation or an assumption: (a) the two populations do not overlap; (b) the data come from the ABS; (c) the trend continues unchanged to 2031; (d) the data are given for the same periods for both groups.","(a) Assumption (stated by the task sheet, and accepted to make the model workable).<br>(b) Observation (you can see it from the source notes).<br>(c) Assumption (there are no data after 2022 to check it).<br>(d) Observation (you can see it in the spreadsheets)."),
+Q("c","Q3","State what the slope m of the line G = mt + c means when (a) m < 0, (b) m is close to 0, (c) m > 0.","(a) The gap is decreasing, so it is closing.<br>(b) The gap is roughly constant.<br>(c) The gap is increasing, so it is widening."),
+Q("h","Q4","Define your variables with units, write the model equation, and state the target “close the gap by 2031” in maths.","Let t = years since 2006 (so 2031 is t = 25) and G = gap in years (non-Indigenous minus Indigenous life expectancy). Model: G = mt + c. Target: G = 0 when t = 25."),
+Q("h","Q5","Write a decision rule for “on track”. Include a comparison with the rate needed.","Sample: The statement is supported if the model predicts a gap of 0 or less in 2031. Equivalently, the size of the slope must be at least the rate needed, which is the latest gap ÷ (2031 − 2021) = latest gap ÷ 10. If the slope is much smaller in size than this, the gap is not closing fast enough to be on track."),
+Q("h","Q6","Write two assumptions for your model. Give each a reason (“because”) and its effect on the model.","Sample (rewrite in your own words):<br>1. The gap changes at a constant rate. Because the scatterplot looks roughly straight. Effect: a straight line cannot show progress speeding up or slowing down.<br>2. A 3-year period can be treated as its midpoint year. Because each value is an average over the period. Effect: allows a time axis but adds an error of up to a year."),
+Q("x","Q7","The top QCAA sample lost its only mark because its evaluation never judged results against its assumptions. This assumption is badly written: “The data are perfect.” Explain what is wrong with it and rewrite it so you could test it later.","It cannot be tested, gives no reason, and is untrue (the ABS data are estimates with uncertainty). A testable version: “The ABS estimates are accurate enough to model, because they come from death registrations and Census counts. Any error in the estimates carries into the trend, which I will compare with the 95% confidence intervals in Evaluate.”")
+]},
+{id:"3",wk:"Weeks 2–3",title:"3 The data",
+th:`<p>Your two spreadsheets give two periods. The task sheet allows you to source more, and four points make a much better model than two.</p>
+<div class="tw"><table><caption>Life expectancy at birth (years), male / female</caption><thead><tr><th>Period</th><th>Midpoint</th><th>Indigenous</th><th>Non-Indigenous</th><th>Published gap</th><th>Where from</th></tr></thead><tbody>
+<tr><td>2005–07</td><td>2006</td><td>67.2 / 72.9</td><td>78.7 / 82.6</td><td>11.5 / 9.7</td><td>ABS (extra data)</td></tr>
+<tr><td>2010–12</td><td>2011</td><td>69.1 / 73.7</td><td>79.7 / 83.1</td><td>10.6 / 9.5</td><td>ABS (extra data)</td></tr>
+<tr><td>2015–17</td><td>2016</td><td>71.6 / 75.6</td><td>80.2 / 83.4</td><td>8.6 / 7.8</td><td>Your 2020 spreadsheet</td></tr>
+<tr><td>2020–22</td><td>2021</td><td>71.9 / 75.6</td><td>80.6 / 83.8</td><td>8.8 / 8.1</td><td>Your 2024 spreadsheet</td></tr>
+</tbody></table></div>
+<div class="box"><b>⚠ Verify before you use</b><p>The 2015–17 and 2020–22 rows come from your spreadsheets. The 2005–07 and 2010–12 rows were gathered from search results, so check them against the ABS tables yourself and cite the ABS, not this hub. Sources differ slightly on the 2005–07 gap (the Productivity Commission uses 11.4 and 9.6).</p></div>
+<h3>Comparability: a strength of your Evaluate section</h3>
+<ul>
+<li><b>Method change.</b> The ABS changed its estimation method for 2020–22 and recalculated 2015–17 with it. The recalculated 2015–17 gaps are 8.7 and 8.0, not 8.6 and 7.8. Check the ABS 2020–22 release, then say which version you use and why.</li>
+<li><b>Population change.</b> The ABS cautioned that comparisons between older periods should be read carefully because of how the population was counted.</li>
+<li><b>Rounding.</b> Subtracting rounded life expectancies sometimes differs by 0.1 from the published gap. Use the published gap and say so.</li>
+<li><b>Estimates, not measurements.</b> Life expectancy is calculated from death registrations and Census counts, and adjusted for how Indigenous status is recorded. The 2024 file gives 95% confidence intervals you can use to discuss uncertainty.</li></ul>
+<p>The topic is about real people and communities. Write respectfully, use the terms from the task sheet (First Nations, non-Indigenous), describe what the numbers show without blame or stereotypes, and only claim causes you can support with a source.</p>`,
+qs:[
+Q("c","Q1","Calculate the gap (non-Indigenous minus Indigenous) for 2005–07, for males and for females.","Males: 78.7 − 67.2 = 11.5 years.<br>Females: 82.6 − 72.9 = 9.7 years."),
+Q("c","Q2","Give the midpoint year of each period, and then the number of years since 2006: 2005–07, 2010–12, 2015–17, 2020–22.","Midpoints: 2006, 2011, 2016, 2021.<br>Years since 2006: 0, 5, 10, 15."),
+Q("c","Q3","Subtract the 2020–22 life expectancies for males (80.6 and 71.9) and for females (83.8 and 75.6). Compare with the published gaps of 8.8 and 8.1. Why do they differ?","Males: 80.6 − 71.9 = 8.7 (published 8.8). Females: 83.8 − 75.6 = 8.2 (published 8.1).<br>The published gaps are calculated from unrounded values, so subtracting the rounded figures can be 0.1 out. Use the published gaps and say so in the report."),
+Q("h","Q4","The ABS recalculated 2015–17 with its new method, giving gaps of 8.7 (males) and 8.0 (females) instead of 8.6 and 7.8. Which version would you use, and how would you justify the choice?","Either choice can earn marks if it is justified. A strong choice: use the recalculated values because they use the same method as 2020–22, so the last two points are comparable. Then state that 2005–07 and 2010–12 used the older method, list this as a limitation, and test how much the prediction changes (a sensitivity check). Explaining the choice matters more than which you pick."),
+Q("h","Q5","Why do we treat a 3-year period as its midpoint year? Name the assumption and the error it adds.","Each value is an average over the 3 years, so the midpoint is the fairest single time for it (2020–22 becomes 2021). The error is up to about a year in where each point sits on the time axis. It is small compared with a 15-year spread, but it should be stated as an assumption."),
+Q("x","Q6","Males: Indigenous life expectancy rose from 67.2 (2005–07) to 71.9 (2020–22), and non-Indigenous rose from 78.7 to 80.6. Work out each increase and compare with the change in the published gap (11.5 to 8.8). Why can the gap close even though both groups improved?","Indigenous: 71.9 − 67.2 = 4.7 years. Non-Indigenous: 80.6 − 78.7 = 1.9 years.<br>Indigenous life expectancy rose by 2.8 years more (4.7 − 1.9). The published gap fell by 2.7 (11.5 − 8.8); the 0.1 difference is rounding.<br>The gap closes when the group with the lower life expectancy improves faster, even though both groups improve.")
+]},
+{id:"4",wk:"Week 3",title:"4 Solve (7 marks)",
+th:`<p>The top band needs accurate maths, efficient use of technology and a complete solution, meaning you answer the question you set.</p>
+<ol>
+<li><b>Calculate the gap</b> for each period: gap = non-Indigenous minus Indigenous, for males and for females separately.</li>
+<li><b>Choose your time variable.</b> Midpoint years (2006, 2011, 2016, 2021) or years since 2006 (0, 5, 10, 15). The second gives an intercept you can interpret.</li>
+<li><b>Draw a scatterplot</b> of gap against time for each sex. Title it, label the axes with units, and say what you see (direction, strength, any outlier).</li>
+<li><b>Fit a line of best fit with technology</b> and report the equation, <code>r</code> and <code>R²</code>.</li>
+<li><b>Interpret the model in context.</b> Slope: “the gap changes by about … years each year”. Intercept: “the modelled gap in 2006 was …”.</li>
+<li><b>Predict.</b> Use the line to find the gap in 2031, and the year the line reaches 0.</li>
+<li><b>Compare with the rate needed.</b> Needed rate = latest gap ÷ (2031 − 2021). Is your slope close to it?</li>
+<li><b>Answer the question.</b> State clearly, using your decision rule, whether Australia is on track.</li></ol>
+<h3>The least-squares line by hand</h3>
+<p>Use this to check technology. Find the mean of x and the mean of y, then:</p>
+<ul><li>Sxy = the sum of (x − mean of x)(y − mean of y)</li><li>Sxx = the sum of (x − mean of x)²</li><li>Slope m = Sxy ÷ Sxx</li><li>Intercept c = mean of y − m × mean of x</li><li>r = Sxy ÷ √(Sxx × Syy), where Syy = the sum of (y − mean of y)²</li></ul>
+<h3>Technology</h3>
+<details><summary>Excel</summary><p>Put the years in column A and the gaps in column B. Then use:</p><ul>
+<li><code>=SLOPE(B2:B5, A2:A5)</code> and <code>=INTERCEPT(B2:B5, A2:A5)</code></li>
+<li><code>=CORREL(A2:A5, B2:B5)</code> for r, and <code>=RSQ(B2:B5, A2:A5)</code> for R²</li>
+<li><code>=FORECAST.LINEAR(2031, B2:B5, A2:A5)</code> for the predicted gap in 2031</li>
+<li>Or insert a scatter chart, add a linear trendline, and tick “display equation” and “display R-squared”.</li></ul><p>Screenshot the sheet and chart for the appendix.</p></details>
+<details><summary>Desmos</summary><p>Add a table with columns x₁ and y₁ and enter your points. In a new line type <code>y₁ ~ mx₁ + b</code>. Desmos shows the best-fit values of m and b, and r and R² below. Add the line <code>x = 2031</code> to mark the target year.</p></details>
+<details><summary>TI-Nspire CX</summary><p>In a Lists and Spreadsheet page, enter the time values in one column and the gaps in another, and name the columns. Then go to Menu, Statistics, Stat Calculations, Linear Regression (mx+b). Choose your X and Y lists. The output includes m, b, r and R².</p></details>
+<div class="box turn"><b>Your turn</b><p>Do the same working for females, then compare with males. Use the 🧮 Calculator in the Learn tab to check your numbers. Then decide whether a straight line is a good model for your data, and what you would say to justify it.</p></div>`,
+qs:[
+Q("c","Q1","List what a scatterplot of gap against time must include for full marks, and what you should say about it in words.","Include: a title, both axes labelled with units (year or years since 2006; gap in years), a sensible scale, and the plotted points (with the line of best fit if you add it).<br>Say in words: the direction (negative: the gap decreases as time increases), the strength (how close the points are to a line), and whether there is any outlier."),
+Q("c","Q2","Female gaps, with x = years since 2006: (0, 9.7), (5, 9.5), (10, 7.8), (15, 8.1). Find the mean of x and the mean of y, then Sxy and Sxx.","Mean of x = 7.5. Mean of y = (9.7 + 9.5 + 7.8 + 8.1) ÷ 4 = 35.1 ÷ 4 = 8.775.<br>Products (x − 7.5)(y − 8.775): −6.9375, −1.8125, −2.4375, −5.0625. So Sxy = −16.25.<br>Sxx = 56.25 + 6.25 + 6.25 + 56.25 = 125."),
+Q("c","Q3","Use your answers to find the slope m and the intercept c for the female model.","m = Sxy ÷ Sxx = −16.25 ÷ 125 = −0.13.<br>c = 8.775 − (−0.13)(7.5) = 8.775 + 0.975 = 9.75.<br>The model is G = 9.75 − 0.13x."),
+Q("c","Q4","Use G = 9.75 − 0.13x to predict the female gap in 2031. Take care with x.","x is years since 2006, so 2031 is x = 25 (not 2031).<br>G = 9.75 − 0.13 × 25 = 9.75 − 3.25 = 6.5 years."),
+Q("h","Q5","For the female model, find the year the line reaches 0, the rate needed from 2021 to reach 0 by 2031, and how many times faster the gap would need to close. Is Australia on track for females?","Line reaches 0 when 9.75 − 0.13x = 0, so x = 75, which is 2081.<br>Rate needed = 8.1 ÷ 10 = 0.81 years per year. 0.81 ÷ 0.13 ≈ 6.2, so the gap would need to close about 6.2 times faster.<br>Conclusion: the trend is in the right direction but far too slow, so the model says the female gap is not on track to close by 2031."),
+Q("h","Q6","Calculate r and R² for the female model. Syy (the sum of (y − 8.775)²) is 2.7875.","r = Sxy ÷ √(Sxx × Syy) = −16.25 ÷ √(125 × 2.7875) = −16.25 ÷ √(348.4375) ≈ −16.25 ÷ 18.667 ≈ −0.871.<br>R² = (−0.871)² ≈ 0.758.<br>A strong negative linear relationship, though with 4 points this is weak evidence."),
+Q("h","Q7","Write one or two sentences interpreting the slope and intercept of the female model G = 9.75 − 0.13x.","Sample (use your own words): The slope of −0.13 means the model predicts the female gap shrinks by about 0.13 years each year. The intercept of 9.75 means the modelled gap in 2006 was about 9.75 years (the published value was 9.7)."),
+Q("h","Q8","Compare the male model (G = 11.39 − 0.202x) with the female model. Which gap is closing faster, and do the two models reach the same conclusion about 2031?","The male slope (−0.202) is steeper than the female slope (−0.13), so the male gap is closing faster per year, though it started larger.<br>Predictions for 2031 are about 6.34 (males) and 6.5 (females), both far from 0. The needed rates (0.88 and 0.81) are far above the modelled rates. Both models reach the same conclusion: not on track."),
+Q("x","Q9","Data are in Excel with years in A2:A5 and gaps in B2:B5. Write the formulas for the slope, intercept, r, R², and the predicted gap in 2031.","=SLOPE(B2:B5, A2:A5)<br>=INTERCEPT(B2:B5, A2:A5)<br>=CORREL(A2:A5, B2:B5)<br>=RSQ(B2:B5, A2:A5)<br>=FORECAST.LINEAR(2031, B2:B5, A2:A5)<br>Note: if column A holds midpoint years (2006 to 2021) then 2031 is correct in FORECAST. If column A holds years since 2006, use 25."),
+Q("x","Q10","Fit a line through only the two male points (2016, 8.6) and (2021, 8.8). Find the slope, predict the 2031 gap, and explain what this shows about using two points.","Slope = (8.8 − 8.6) ÷ 5 = 0.04. With x = years since 2006 (10 and 15): c = 8.6 − 0.04 × 10 = 8.2, so G = 8.2 + 0.04x, and at x = 25: G = 9.2 years.<br>The slope is positive and the 2031 gap is bigger, the opposite of the four-point result. A line through two points always fits perfectly (r = 1), so r says nothing about quality. This is a good limitation to explain, and a reason to source more data.")
+]}
+,
+{id:"5",wk:"Week 4",title:"5 Evaluate and verify (5 marks)",
+th:`<p>The top band needs verified results, justified statements about reasonableness that consider your assumptions and your observations, and justified strengths and limitations.</p>
+<h3>Verify your results</h3>
+<ul>
+<li><b>Check by two methods.</b> Recompute the slope by hand and with technology and show they agree.</li>
+<li><b>Check the fit.</b> Compare each predicted value with the actual one. Residuals should be small and roughly balanced between positive and negative.</li>
+<li><b>Test sensitivity.</b> Re-run the model with the revised 2015–17 value, or without one point, and report how much the prediction changes.</li>
+<li><b>Check the sign and size.</b> Does a negative slope match the falling gaps in the table? Is a 2031 prediction between the latest gap and 0 sensible?</li></ul>
+<h3>Justify the reasonableness of your answer</h3>
+<p>Go back through your assumptions and observations one by one and say whether each held up.</p>
+<div class="box ex"><b>Example wording</b>
+<p><b>Assumption: linear trend.</b> The gap fell quickly from 2006 to 2016 but was almost flat from 2016 to 2021, so a straight line may overstate recent progress. My r value of −0.93 supports a linear fit, but with four points this is weak evidence. This makes the 2031 prediction an optimistic estimate.</p>
+<p><b>Observation: estimates, not exact values.</b> The 2024 file gives 95% confidence intervals, and a change of 0.2 years between periods is small compared with this uncertainty. So I cannot be sure the gap changed at all between 2016 and 2021.</p></div>
+<h3>Strengths and limitations</h3>
+<p>Each statement needs an effect, and ideally an improvement.</p>
+<div class="tw"><table><thead><tr><th>Strengths</th><th>Limitations</th></tr></thead><tbody>
+<tr><td>Uses official ABS data that is consistent for both groups, so the gap is a fair comparison.</td><td>Only four points, so r and the line are fragile. A new data point could change the prediction a lot.</td></tr>
+<tr><td>The model is simple to interpret: slope = years of gap closed per year.</td><td>2031 is 10 years beyond the data (extrapolation), so the prediction is uncertain.</td></tr>
+<tr><td>Four time points, spanning 15 years, show a long-term pattern, not just one change.</td><td>The method changed between releases, so older and newer points may not be fully comparable.</td></tr>
+<tr><td>Comparing the modelled slope with the rate needed gives a clear, testable answer.</td><td>The model ignores causes such as health programs and population changes.</td></tr>
+</tbody></table></div>
+<div class="box ex"><b>Example wording</b><p>A limitation is that the model uses only four data points. This means a single revised estimate could noticeably change the slope. To improve it, I could add data for more periods, or use the confidence intervals to give a range for the prediction.</p></div>`,
+qs:[
+Q("c","Q1","Residual = actual − predicted. Find the residuals for the female model G = 9.75 − 0.13x at x = 0, 5, 10, 15 (actual gaps 9.7, 9.5, 7.8, 8.1). Check their sum and name the largest.","Predicted: 9.75, 9.10, 8.45, 7.80.<br>Residuals: 9.7 − 9.75 = −0.05; 9.5 − 9.10 = +0.40; 7.8 − 8.45 = −0.65; 8.1 − 7.80 = +0.30.<br>Sum: −0.05 + 0.40 − 0.65 + 0.30 = 0, as it should be for a least-squares line.<br>The largest is −0.65 at x = 10 (2016), where the fit is weakest."),
+Q("c","Q2","A student substitutes x = 2031 into G = 11.39 − 0.202x, where x is years since 2006. What do they get, and what went wrong?","G = 11.39 − 0.202 × 2031 = 11.39 − 410.262 = −398.9 years, which is nonsense.<br>x is years since 2006, so 2031 is x = 25. Then G = 11.39 − 5.05 = 6.34. Checking that a prediction is sensible catches this kind of error."),
+Q("c","Q3","Rewrite this limitation so it has an effect and an improvement: “There are only four data points.”","Sample: There are only four data points, so one revised estimate could change the slope noticeably and r is weak evidence of a linear trend. To improve this, I could add data for more periods or use the confidence intervals to give a range for the prediction."),
+Q("h","Q4","Sensitivity: the recalculated female gaps are 9.7, 9.5, 8.0, 8.1 (with 8.0 replacing 7.8 for 2015–17). Fit the line again and compare with the original (slope −0.13, 2031 prediction 6.5).","Mean of y = 35.3 ÷ 4 = 8.825. Sxy = −15.75 and Sxx = 125, so m = −0.126.<br>c = 8.825 + 0.126 × 7.5 = 9.77. The 2031 prediction is 9.77 − 0.126 × 25 = 6.62.<br>The slope changed from −0.130 to −0.126 and the prediction from 6.50 to 6.62 (about 0.12 years). The conclusion is unchanged: the model is not sensitive to this choice, and the gap is still far from 0 in 2031."),
+Q("h","Q5","The male gap was 8.6 in 2015–17 and 8.8 in 2020–22. Explain why you cannot be sure the gap actually widened.","A rise of 0.2 years is small compared with the uncertainty in the estimates. The 2024 spreadsheet gives 95% confidence intervals, and the ABS also changed its method (the recalculated 2015–17 male gap is 8.7, so the change is only 0.1). The data do not show whether the gap really changed between 2016 and 2021."),
+Q("h","Q6","Justify the reasonableness of the linear-trend assumption using the male gaps. Compare the average fall per year from 2006 to 2016 with the change from 2016 to 2021.","2006 to 2016: (11.5 − 8.6) ÷ 10 = 0.29 years per year (falling).<br>2016 to 2021: 8.6 to 8.8, a rise of 0.2 over 5 years.<br>The recent trend is not a steady fall, so a straight line (slope −0.202) may overstate recent progress. This makes the 2031 prediction an optimistic estimate, and the conclusion “not on track” is, if anything, stronger."),
+Q("x","Q7","Take three of the assumptions from Formulate. For each, write one sentence judging whether it held up, using evidence from your results.","Sample (use your own evidence):<br>Linear trend: held up moderately (r ≈ −0.93) but the 2016 to 2021 flattening suggests it may overstate progress.<br>Midpoint years: held up, as the error of up to one year is small against a 15-year spread.<br>Trend continues to 2031: cannot be tested with the data, so the 2031 prediction is uncertain."),
+Q("x","Q8","The data cover 15 years and the prediction is 10 years beyond the last point. Explain why this makes the prediction less reliable than predicting a value inside the data.","Interpolation (inside the data) is backed by points on both sides. Extrapolation (outside) assumes the trend continues unchanged, which cannot be checked. Here the prediction reaches two-thirds as far beyond the data as the data span (10 ÷ 15), and policies, population counts or methods could change in that time, so a small change in slope has a large effect on the 2031 gap.")
+]},
+{id:"6",wk:"Weeks 4–5",title:"6 Communicate (4 marks)",
+th:`<p>Use correct mathematical language, organise the report logically, justify your decisions, and make sure it can be read without the task sheet. The oral presentation counts here, and you cannot earn all four marks without a complete one.</p>
+<h3>Mathematical language to use correctly</h3>
+<div class="tw"><table><thead><tr><th>Term</th><th>Use it like this</th></tr></thead><tbody>
+<tr><td>Gap</td><td>Non-Indigenous life expectancy minus Indigenous life expectancy, in years.</td></tr>
+<tr><td>Scatterplot, trend</td><td>“The scatterplot shows a negative trend: the gap decreases as time increases.”</td></tr>
+<tr><td>Line of best fit, linear model</td><td>“I fitted a line of best fit using Excel’s linear regression.”</td></tr>
+<tr><td>Gradient (slope), intercept</td><td>“The gradient of −0.202 means the gap decreases by about 0.2 years each year.”</td></tr>
+<tr><td>Correlation coefficient, r</td><td>“r = −0.93 shows a strong negative linear correlation.”</td></tr>
+<tr><td>Interpolation, extrapolation</td><td>“Predicting 2031 is extrapolation, because 2031 is outside my data.”</td></tr>
+<tr><td>Residual</td><td>“The residual is the actual value minus the predicted value.”</td></tr>
+<tr><td>Outlier</td><td>A point far from the pattern. Say whether you found one and what you did.</td></tr>
+<tr><td>95% confidence interval</td><td>A range that is likely to contain the true value, which shows uncertainty in an estimate.</td></tr>
+</tbody></table></div>
+<p>Correlation does not mean causation. A trend in the gap does not on its own explain why the gap changed.</p>
+<h3>Presentation of the report</h3>
+<ul>
+<li>Number and title every table and figure, label axes with units, refer to each in the text, and put the source under it.</li>
+<li>Start the report with the context and the statement, so a reader with no task sheet knows what you are doing.</li>
+<li>Define “on track” once, early, and use the same words each time.</li>
+<li>Give each section a clear job and keep to the scaffold headings.</li>
+<li>Use in-text citations such as (AIHW, 2024) that match your reference list.</li></ul>
+<div class="box ex"><b>Reference list format (Harvard style; check your school’s preferred style)</b>
+<p>Australian Bureau of Statistics (2023) <i>Aboriginal and Torres Strait Islander life expectancy, 2020–2022</i>. Available at: [URL from the spreadsheet source note] (Accessed: [the date you accessed it]).</p>
+<p>Australian Institute of Health and Welfare (2024) <i>Measure 1.19 Life expectancy at birth</i>, Aboriginal and Torres Strait Islander Health Performance Framework. Available at: [URL] (Accessed: [date]).</p>
+<p>Australian Bureau of Statistics (2018) <i>Life tables for Aboriginal and Torres Strait Islander Australians, 2015–2017</i>, Cat. no. 3302.0.55.003.</p></div>
+<p>The 2024 spreadsheet’s source line has an “accessed [insert date]” placeholder. Fill in the real date you accessed it.</p>
+<h3>The 12-slide presentation</h3>
+<p>Use the REALM template if it differs, but a typical flow follows the report:</p>
+<ol><li>Title and the statement</li><li>Context: what Closing the Gap is</li><li>Observations</li><li>Assumptions</li><li>Mathematical translation</li><li>The data</li><li>The model</li><li>Interpreting the model</li><li>The 2031 prediction and answer</li><li>Verification</li><li>Strengths and limitations</li><li>Conclusion and recommendations</li></ol>`,
+qs:[
+Q("c","Q1","Define interpolation and extrapolation. Which one is predicting the gap in 2031 from data for 2006 to 2021?","Interpolation is predicting inside the range of the data. Extrapolation is predicting outside it. Predicting 2031 is extrapolation, because 2031 is outside the data (2006 to 2021), so it is less reliable."),
+Q("c","Q2","A student writes: “r = −0.93 proves that health programs closed the gap.” Correct the sentence.","Correct: “r = −0.93 shows a strong negative linear correlation between time and the gap.” Correlation does not mean causation, so the trend alone does not explain why the gap changed. A cause can only be claimed if a source supports it."),
+Q("c","Q3","Write a good caption for a scatterplot of the male gap against year.","Sample: “Figure 1: Life expectancy gap (non-Indigenous minus Indigenous, years) for males against year, 2006 to 2021. Source: ABS (2018, 2023).” It is numbered, titled, says what is plotted with units, and gives the source."),
+Q("h","Q4","Write the in-text citation and the reference-list entry for the AIHW life expectancy measure, using the Harvard format shown in this hub. Use placeholders for the URL and date.","In text: (AIHW, 2024).<br>Reference list: Australian Institute of Health and Welfare (2024) <i>Measure 1.19 Life expectancy at birth</i>, Aboriginal and Torres Strait Islander Health Performance Framework. Available at: [URL] (Accessed: [the date you accessed it]).<br>Fill in the real URL and the real access date."),
+Q("h","Q5","Using the typical 12-slide flow in this hub, which slide introduces your decision rule, which one shows the 2031 prediction and answer, and what comes after the answer?","The decision rule belongs on slide 5 (Mathematical translation). The 2031 prediction and the answer are slide 9. After the answer come Verification (slide 10), Strengths and limitations (slide 11), then the Conclusion and recommendations (slide 12)."),
+Q("h","Q6","Rewrite this sentence so it is respectful and does not claim a cause without evidence: “Indigenous people die younger because of their lifestyle.”","Sample: “The ABS estimates that life expectancy at birth for First Nations males was 71.9 years in 2020–22, compared with 80.6 years for non-Indigenous males.” State what the numbers show, use the terms from the task sheet, avoid blame or stereotypes, and only give causes that a cited source supports."),
+Q("x","Q7","Describe what each of the three sentences of a short Introduction should do (about 100 words in total), without writing the introduction itself.","Sentence 1: the context (what Closing the Gap is and why life expectancy matters). Sentence 2: the statement you are evaluating (2031 target). Sentence 3: a one-line outline of your approach (calculate the gap, fit a linear model, compare the trend with the rate needed). Then write it in your own words so a reader with no task sheet understands.")
+]},
+{id:"7",wk:"Weeks 4–5",title:"7 What the QCAA samples show",
+th:`<p>The QCAA publishes annotated sample responses to its senior Maths Methods problem-solving task. They are Year 11 and 12 work, but they use the same four criteria as your task, so they show what markers reward.</p>
+<div class="tw"><table><thead><tr><th>High sample (19/20)</th><th>Mid sample (12/20)</th></tr></thead><tbody>
+<tr><td>The introduction states the task, the approach and the finding.</td><td>Showed a data table with no source.</td></tr>
+<tr><td>Each observation cites its source and explains how the data was collected.</td><td>Listed strengths and limitations without explaining their effect.</td></tr>
+<tr><td>Assumptions are numbered, each with a reason and its effect on the model.</td><td>Did not fully connect the model’s results back to the question.</td></tr>
+<tr><td>Models were compared with a measurable test, not just by eye.</td><td>Had a very brief conclusion.</td></tr>
+<tr><td>Code and repeated calculations are in the appendix.</td><td>No in-text referencing or reference list.</td></tr>
+<tr><td>Strengths and limitations each give an effect and a way to improve.</td><td></td></tr>
+<tr><td>It lost one mark: its evaluation did not consider its assumptions.</td><td></td></tr>
+</tbody></table></div>
+<div class="box"><b>The pattern</b><p>The stronger report justifies, cites and links every decision. The weaker report states things without backing them up.</p></div>`,
+qs:[
+Q("c","Q1","Which sample would you expect each feature to come from, high or mid? (a) Data table with no source. (b) Numbered assumptions with reasons and effects. (c) Very brief conclusion. (d) Repeated calculations in the appendix.","(a) Mid. (b) High. (c) Mid. (d) High."),
+Q("c","Q2","Why did the top sample lose its only mark, and how will you avoid the same loss?","Its evaluation never considered its assumptions. Avoid it by going back through each assumption in Evaluate and saying whether it held up, using evidence from your results (for example r, residuals and sensitivity checks)."),
+Q("c","Q3","A report has a table of life expectancy figures with no source underneath. Which sample feature is this, and how do you fix it?","It matches the mid sample (a data table with no source). Fix it by putting the source under the table (for example, ABS, 2023), referring to the table in the text, and adding the full reference to the reference list."),
+Q("h","Q4","Rewrite this weak strength so it matches the high sample: “The model is good.”","Sample: “The model is simple to interpret, because the slope is the number of years of gap closed per year. This makes it easy to compare with the rate needed, giving a clear, testable answer to the question.” A strength needs a reason and an effect."),
+Q("h","Q5","Rewrite this weak conclusion so it links back to the question: “So the gap is closing.”","Sample structure: restate the problem (is Australia on track to close the gap by 2031?), give the key results (slope, 2031 prediction, rate needed), answer the question using your decision rule, then add one or two recommendations or next steps."),
+Q("x","Q6","Audit your own draft against the high-sample list. Write down three things on that list your draft is still missing and what you will do about each.","Sample audit (use your own draft): No effect on a limitation: add the effect and an improvement. No reference to a source under Table 1: add the source and a reference-list entry. Assumptions not judged in Evaluate: add one sentence per assumption saying whether it held.")
+]}
+];
+const GR=[["Getting started",["1"]],["Weeks 2–3: Formulate, data and Solve",["2","3","4"]],["Weeks 4–5: Evaluate and Communicate",["5","6","7"]]];
+const SH={"1":"Task & structure","2":"Formulate","3":"The data","4":"Solve","5":"Evaluate","6":"Communicate","7":"QCAA samples"};
+const BL={"1":"Marks, due dates, the report scaffold and a word budget.","2":"Observations, assumptions with reasons and effects, and the maths translation.","3":"Four time points, midpoint years, published gaps and comparability.","4":"Scatterplot, least-squares line, r, R², the 2031 prediction and the rate needed.","5":"Residuals, sensitivity checks, reasonableness, strengths and limitations.","6":"Mathematical language, figures, referencing and the 12 slides.","7":"What the high (19/20) and mid (12/20) samples did differently."};
+const EX={
+"1":[["The marks are Formulate 4, Solve 7, Evaluate and verify 5, Communicate 4. What fraction of the 20 marks do Formulate and Evaluate together make up, and what does that tell you about where to spend time?","Formulate + Evaluate = 4 + 5 = 9 marks, so 9/20 = 45%, nearly half.<br>Solve has the single biggest share (7/20 = 35%), but a report that is strong only in Solve can still lose nearly half the marks. Give Formulate and Evaluate real time, not a rushed paragraph."],["A student plans 600 words on Formulate, 150 on Solve and 100 on Evaluate. Why is this a poor split, and what would be better?","Solve (7 marks) and Evaluate (5 marks) are worth more than Formulate (4 marks), but get far fewer words. A closer split follows the suggested budget: about 450 for Formulate, 550 for Solve and 500 for Evaluate, with about 100 for the Introduction and 150 for the Conclusion."]],
+"2":[["Write an observation about the data with “It is observed that … It is justified by …”.","It is observed that the life expectancy gap is larger for males than for females in every period (for example 11.5 and 9.7 years in 2005–07). It is justified by the published gaps in the spreadsheets, so the model should treat males and females separately because they behave differently."],["Translate “Australia is on track to close the gap by 2031” into maths.","Variables: t = years since 2006 and G = gap in years (non-Indigenous minus Indigenous).<br>Model: G = mt + c from a line of best fit.<br>Target: G = 0 at t = 25 (2031).<br>Decision rule: the statement is supported if the model predicts G ≤ 0 in 2031, or if the size of the slope is at least the rate needed, which is the latest gap ÷ 10."]],
+"3":[["Convert the period 2010–12 into a midpoint year and years since 2006, and find the male gap from the life expectancies 79.7 and 69.1.","Midpoint of 2010–12 is 2011, so years since 2006 is 5.<br>Gap = 79.7 − 69.1 = 10.6 years, which matches the published gap."],["For 2020–22 the male life expectancies are 80.6 and 71.9. Calculate the gap and compare with the published 8.8.","80.6 − 71.9 = 8.7, but the published gap is 8.8. The published value is calculated from unrounded figures, so use the published gap and say so in the report."]],
+"4":[["Fit a line of best fit by hand to the male gaps (x = years since 2006): (0, 11.5), (5, 10.6), (10, 8.6), (15, 8.8). Then predict 2031 and compare with the rate needed.","Mean of x = 7.5 and mean of y = 9.875.<div class=\"tw\"><table><thead><tr><th>x</th><th>y</th><th>x − 7.5</th><th>y − 9.875</th><th>Product</th><th>(x − 7.5)²</th></tr></thead><tbody><tr><td>0</td><td>11.5</td><td>−7.5</td><td>1.625</td><td>−12.1875</td><td>56.25</td></tr><tr><td>5</td><td>10.6</td><td>−2.5</td><td>0.725</td><td>−1.8125</td><td>6.25</td></tr><tr><td>10</td><td>8.6</td><td>2.5</td><td>−1.275</td><td>−3.1875</td><td>6.25</td></tr><tr><td>15</td><td>8.8</td><td>7.5</td><td>−1.075</td><td>−8.0625</td><td>56.25</td></tr><tr><td><b>sum</b></td><td></td><td></td><td></td><td><b>−25.25</b></td><td><b>125</b></td></tr></tbody></table></div>Slope m = −25.25 ÷ 125 = −0.202 years per year.<br>Intercept c = 9.875 − (−0.202)(7.5) = 11.39, so G = 11.39 − 0.202x.<br>r ≈ −0.926 and R² ≈ 0.858 (a strong negative linear relationship).<br>Prediction for 2031 (x = 25): G = 11.39 − 0.202 × 25 = 6.34 years.<br>The line reaches 0 when x = 11.39 ÷ 0.202 ≈ 56.4, about the year 2062.<br>Rate needed from 2021: 8.8 ÷ 10 = 0.88 years per year. The model’s slope is 0.202, so the gap would need to close about 4.4 times faster."],["Write a sentence interpreting the male model G = 11.39 − 0.202x in context.","The slope of −0.202 means the model predicts the male gap shrinks by about 0.2 years each year. Closing the 8.8-year gap by 2031 would need about 0.88 years each year, so the trend is moving in the right direction but too slowly to reach 0 by 2031. The intercept of 11.39 is the modelled gap in 2006 (the published value was 11.5)."]],
+"5":[["Find the residuals for the male model G = 11.39 − 0.202x and say what they show.","Predicted: 11.39, 10.38, 9.37, 8.36 at x = 0, 5, 10, 15.<br>Residuals (actual − predicted): +0.11, +0.22, −0.77, +0.44.<br>They add to 0 (as they should). The largest, −0.77 at 2016, shows the fit is weakest there. That is worth a sentence."],["Test sensitivity: refit the male line with the revised 2015–17 gap of 8.7 instead of 8.6.","Data: (0, 11.5), (5, 10.6), (10, 8.7), (15, 8.8). Mean of y = 9.9. Sxy = −25 and Sxx = 125, so m = −0.200 and c = 11.4.<br>2031 prediction: 11.4 − 0.2 × 25 = 6.4 (compared with 6.34).<br>The prediction changes by only 0.06 years, so the conclusion is not sensitive to this choice. That is a strong sentence for Evaluate."]],
+"6":[["Rewrite this weak sentence using correct mathematical language: “The line goes down so the gap gets smaller.”","“The gradient of the line of best fit is −0.202, so the model predicts the gap decreases by about 0.2 years each year.” It names the gradient, gives its value with units, and says what it means in context."],["Build the reference-list entry for the ABS 2015–17 life tables, using the details in this hub.","Australian Bureau of Statistics (2018) <i>Life tables for Aboriginal and Torres Strait Islander Australians, 2015–2017</i>, Cat. no. 3302.0.55.003.<br>In text: (ABS, 2018). Always check the details against the real source and add the URL and access date if your style asks for them."]],
+"7":[["Does this describe the high or mid sample? “It stated assumptions in a list but never said how each affects the model.”","Mid-type work. Strong work gives each assumption a reason and its effect on the model. Without the effect, a marker cannot see how the assumption changes the results."],["The high sample lost one mark. What is the lesson for your Evaluate section?","Its evaluation did not consider its assumptions, so the lesson is to go back through every assumption and judge whether it held up. A table with columns Assumption, Did it hold? and Evidence is a quick way to check you have covered each one."]]
+};
+const FC=[
+["Gap","Non-Indigenous life expectancy minus Indigenous life expectancy, in years."],
+["Marks for each criterion","Formulate 4, Solve 7, Evaluate and verify 5, Communicate 4 (out of 20)."],
+["Observation pattern","“It is observed that … It is justified by …” Give the source and why it matters."],
+["Assumption","Something you accept as true to make the model workable. Give a reason and its effect on the model."],
+["Meaning of the slope m","Negative: the gap is closing. Near 0: constant. Positive: the gap is growing."],
+["Target in maths","G = 0 in 2031 (t = 25 when t is years since 2006)."],
+["Decision rule for “on track”","Say exactly what it means, for example: the model predicts a gap of 0 by 2031, or the slope is at least as steep as the rate needed."],
+["Rate needed","Latest gap ÷ (2031 − year of latest data). For a gap of 8.8 in 2021 it is 0.88 years per year."],
+["Midpoint year","The middle year of a 3-year period: 2020–22 becomes 2021."],
+["Why use years since 2006?","The intercept then means the modelled gap in 2006, and the numbers are small (0, 5, 10, 15)."],
+["Slope of the least-squares line","m = Sxy ÷ Sxx, where Sxy is the sum of (x − mean of x)(y − mean of y) and Sxx is the sum of (x − mean of x)²."],
+["Intercept of the least-squares line","c = mean of y − m × mean of x."],
+["Correlation coefficient r","Between −1 and 1. The sign gives the direction and the size gives the strength of the linear relationship."],
+["R²","r squared: the proportion of the variation in the gap explained by the linear model."],
+["Residual","Actual value − predicted value. For a least-squares line the residuals add to 0."],
+["Interpolation vs extrapolation","Interpolation predicts inside the data. Extrapolation predicts outside it and is less reliable."],
+["Male model (4 points)","G = 11.39 − 0.202x. Prediction for 2031 is 6.34. The line reaches 0 about 2062."],
+["Female model (4 points)","G = 9.75 − 0.13x. Prediction for 2031 is 6.5. The line reaches 0 about 2081."],
+["Male: rate needed vs model","0.88 needed against 0.202 modelled: about 4.4 times faster."],
+["Excel functions","SLOPE, INTERCEPT, CORREL, RSQ and FORECAST.LINEAR(2031, y-range, x-range)."],
+["Desmos regression","Enter a table of points, then type y₁ ~ mx₁ + b."],
+["TI-Nspire regression","Menu, Statistics, Stat Calculations, Linear Regression (mx+b)."],
+["Two-point warning","A line through two points always fits perfectly (r = 1 or −1), so r says nothing about quality."],
+["2020–22 method change","The ABS recalculated 2015–17 gaps as 8.7 (males) and 8.0 (females). Say which version you use and why."],
+["Rounding in the gap","Subtracting rounded figures can differ by 0.1 from the published gap. Use the published gap and say so."],
+["95% confidence interval","A range likely to contain the true value. It shows the uncertainty in an estimate."],
+["Correlation and causation","A strong correlation does not mean one thing caused the other. Only claim causes a source supports."],
+["Strengths and limitations","Each statement needs an effect, and ideally an improvement."],
+["What the top QCAA sample lost a mark for","Its evaluation did not consider its assumptions."],
+["Appendix","Not marked. Raw data and repeated calculations go there, but the result and meaning must be in the main report."],
+["Length limits","Under 2000 words and 10 pages. Ask what counts towards the words."],
+["Referencing","Harvard style, in-text citations like (AIHW, 2024) that match the reference list, with a real access date."],
+["Respectful language","Use First Nations and non-Indigenous. Describe what the numbers show without blame or stereotypes."],
+["The oral presentation","12 slides in Weeks 6–7. You cannot earn all 4 Communicate marks without a complete one."]
+];
+const BK={
+"crit":{t:"Report and criteria quiz",sh:"Report & criteria quiz",tag:"Quiz 1",parts:[
+{n:"Report and criteria",mc:[
+{q:"How many marks are for Evaluate and verify?",o:["4","5","7","20"],a:1,e:"Formulate 4, Solve 7, Evaluate and verify 5, Communicate 4, out of 20."},
+{q:"What percentage of the 20 marks is Solve (7 marks)?",o:["20%","25%","35%","40%"],a:2,e:"7/20 = 35%."},
+{q:"Where do long tables of repeated calculations belong?",o:["In the Introduction","In the Conclusion","In the appendix","On the slides only"],a:2,e:"The appendix is not marked, so keep results and their meaning in the body and put repeated working in the appendix."},
+{q:"Which statement is an assumption, not an observation?",o:["The data come from the ABS.","Both groups are reported for the same periods.","The trend continues unchanged to 2031.","The task sheet gives a 2031 target."],a:2,e:"There are no data after 2022 to check the trend continues, so we accept it as true to make the model workable."},
+{q:"Which wording follows the observation pattern?",o:["The gap is large.","It is observed that the data are in 3-year periods. It is justified by the fact that each value is an average over the period.","I think the data are good.","See the appendix."],a:1,e:"State what you notice, then say why it is justified (source or reason)."},
+{q:"Which is the best decision rule for “on track”?",o:["The gap is getting smaller.","The latest gap is smaller than the first gap.","r is close to −1.","The model predicts a gap of 0 by 2031, or the slope is at least as steep as the rate needed."],a:3,e:"A decision rule must be exact. A smaller gap or a strong r does not decide whether 2031 is reached."},
+{q:"The top QCAA sample lost its one mark because its evaluation:",o:["Had no graph","Did not consider its assumptions","Used the wrong data","Was too long"],a:1,e:"It never judged its results against its assumptions."},
+{q:"What does each strength or limitation need to earn full credit?",o:["A reference","A longer paragraph","An effect, and ideally an improvement","A graph"],a:2,e:"The mid sample listed strengths and limitations without explaining their effect."}],
+sr:[
+{q:"Explain in two or three sentences why every observation needs a “justified by” reason.",a:"A reason shows the observation matters for the model and comes from a source or from the data, not a guess. The top band asks for justified observations, and the reason is what links the observation to a modelling decision."},
+{q:"List four things a good scatterplot needs.",a:"A title, both axes labelled with units, a sensible scale, the plotted points (and the line of best fit if shown), plus a sentence describing direction, strength and any outlier."},
+{q:"Write the target “close the gap by 2031” in maths using G and t (years since 2006).",a:"G = 0 when t = 25."}]}]},
+"model":{t:"Modelling and data quiz",sh:"Modelling & data quiz",tag:"Quiz 2",parts:[
+{n:"Modelling and data",mc:[
+{q:"The published male gap for 2005–07 is found as 78.7 − 67.2. What is it?",o:["10.5","11.5","12.9","145.9"],a:1,e:"78.7 − 67.2 = 11.5 years."},
+{q:"What is the midpoint year of the period 2015–17?",o:["2015","2016","2017","2018"],a:1,e:"The middle year of 2015, 2016 and 2017 is 2016."},
+{q:"A slope of −0.202 in G = 11.39 − 0.202x means:",o:["The gap increases by 0.2 years each year","The gap decreases by about 0.2 years each year","The gap was 0.2 years in 2006","r is −0.2"],a:1,e:"The gradient is the change in the gap per year; negative means the gap is closing."},
+{q:"With G = 11.39 − 0.202x (x = years since 2006), the predicted gap in 2021 is:",o:["3.03","8.17","8.36","11.39"],a:2,e:"x = 15, so G = 11.39 − 3.03 = 8.36."},
+{q:"The latest gap is 8.8 in 2021. The rate needed to reach 0 in 2031 is:",o:["0.088","0.88","8.8","88"],a:1,e:"8.8 ÷ 10 years = 0.88 years per year."},
+{q:"A line of best fit through only two points has r equal to:",o:["Always 0","Always 1 or −1","Always 0.5","It depends on the data"],a:1,e:"Two points always lie exactly on a line, so r tells you nothing about model quality."},
+{q:"Predicting the gap in 2031 from data up to 2021 is:",o:["Interpolation","Extrapolation","A residual","An outlier"],a:1,e:"2031 is outside the range of the data."},
+{q:"A residual is:",o:["Predicted − actual","Actual − predicted","Actual ÷ predicted","The slope"],a:1,e:"Residual = actual value − predicted value."},
+{q:"Which Excel function gives the predicted gap in 2031?",o:["SLOPE","CORREL","RSQ","FORECAST.LINEAR"],a:3,e:"FORECAST.LINEAR(2031, y-range, x-range) predicts a value from the line of best fit."},
+{q:"r = −0.93 shows:",o:["The gap is caused by time","A strong negative linear correlation","The gap reaches 0 in 2031","The model has no error"],a:1,e:"The sign gives the direction and the size gives the strength. Correlation does not show cause."}],
+sr:[
+{q:"For the female data the sums are Sxy = −16.25 and Sxx = 125. Find the slope, then the intercept given the mean of y is 8.775 and the mean of x is 7.5.",a:"m = −16.25 ÷ 125 = −0.13. c = 8.775 − (−0.13)(7.5) = 9.75. So G = 9.75 − 0.13x."},
+{q:"A shrinking gap does not by itself show why the gap changed. Explain.",a:"Correlation does not mean causation. The gap could shrink because Indigenous life expectancy rose faster, or for several reasons together. Only claim causes that a cited source supports."},
+{q:"In G = 11.39 − 0.202x, what does the intercept mean?",a:"The modelled gap in 2006 (x = 0), about 11.39 years. The published value was 11.5."}]}]}
+};
+/*==== CONTENT END ====*/
+const TAG=/(<\/?(?:b|i|br|p|ul|ol|li|sup|sub|code|table|thead|tbody|tr|td|th|caption|details|summary)>|<div class="[a-z0-9 -]+">|<\/div>)/;
+const W=/[A-Za-z0-9₀-₉²³ⁿπθ√ᾱ̄ᵖ.|^Δ]/;
+function mt(t,i,dir){let d=0;for(let k=i;k>=0&&k<t.length;k+=dir){const c=t[k];if("([".includes(c))d+=dir==-1?-1:1;else if(")]".includes(c))d+=dir==-1?1:-1;if(d==0)return k}return -1}
+function st(x){return /^[(\[]/.test(x)&&mt(x,0,1)==x.length-1?x.slice(1,-1):x}
+function fr(t){
+ for(let i=0;i<t.length;i++){
+  if(t[i]!="/")continue;
+  let l=i-1,r=i+1,l2=l,r2=r;
+  while(t[l2]==" ")l2--;while(t[r2]==" ")r2++;
+  if(")]".includes(t[l2]||"#")&&"([".includes(t[r2]||"#")){l=l2;r=r2}else if(t[l]==" "||t[r]==" ")continue;
+  let ls,re;
+  if(")]".includes(t[l])){ls=mt(t,l,-1);if(ls<0)continue}else{ls=l;while(ls>=0&&W.test(t[ls]))ls--;ls++}
+  if("([".includes(t[r])){re=mt(t,r,1);if(re<0)continue}else{re=r;while(re<t.length){if(W.test(t[re]))re++;else if(t[re]=="("&&t[re-1]=="^"){const j=mt(t,re,1);if(j<0)break;re=j+1}else break}re--;while(t[re]==".")re--}
+  if(ls>l||re<r)continue;
+  const A0=t.slice(ls,l+1),B0=t.slice(r,re+1),bad=x=>!/^[(\[]/.test(x)&&/[A-Za-z]{3,}/.test(x);if(bad(A0)||bad(B0))continue;
+  const h='<span class=fr><span class=nu>'+fr(st(t.slice(ls,l+1)))+'</span><span class=de>'+fr(st(t.slice(r,re+1)))+'</span></span>';
+  t=t.slice(0,ls)+h+t.slice(re+1);i=ls+h.length-1}
+ return t}
+function fm(h){
+ h=h.split(TAG).map((x,i)=>i%2?x:fr(x)).join("");
+ h=h.replace(/\^\(([^()]*)\)/g,"<sup>$1</sup>").replace(/\^([A-Za-z0-9])/g,"<sup>$1</sup>");
+ return h.replace(/√(\([^()]*\)|[A-Za-z0-9₀-₉²]+)/g,(m,g)=>'<span class=rd>√<span class=ov>'+g.replace(/^\((.*)\)$/,"$1")+"</span></span>")}
+
+document.title=SITE.title;document.getElementById("h1").textContent=SITE.title;document.getElementById("hsub").textContent=SITE.sub;document.getElementById("ftx").textContent=SITE.foot;document.getElementById("hi").textContent=SITE.hi;
+const nav=document.getElementById("nav"),main=document.getElementById("main");
+let P={};try{P=JSON.parse(localStorage.getItem(SITE.key+"-prog")||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem(SITE.key+"-prog",JSON.stringify(P))}catch(e){}};
+let pg="learn",tp="ov",filt="all",qry="";
+const tl={c:"In class",h:"At home",x:"Extension"};
+const fc={i:0,f:false,o:FC.map((_,i)=>i)};
+const plain=h=>h.replace(/<[^>]+>/g," ").toLowerCase();
+const esc=t=>t.replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;");
+const Qm={};D.forEach(s=>s.qs.forEach(q=>Qm[s.id+q.r]=q));
+const dn=s=>s.qs.filter(q=>P[s.id+q.r]).length;
+function stat(){let t=0,d=0;D.forEach(s=>{t+=s.qs.length;d+=dn(s)});const p=Math.round(100*d/t);document.querySelector("#bar i").style.width=p+"%";document.getElementById("pc").textContent=d+" of "+t+" questions done ("+p+"%)";navR()}
+function navR(){
+ const T=[["learn","📖 Learn"],["q","✏️ Questions"],["rev","🃏 Revise"]];
+ let h='<div class="tabs">'+T.map(t=>`<button class="tab${pg==t[0]?" on":""}" data-go="${t[0]}">${t[1]}</button>`).join("")+'<button id="th" style="margin-left:auto" aria-label="Toggle dark mode">◐</button></div>';
+ if(pg=="learn")h+='<div class="chips2"><button data-go="learn/ov" class="${tp=="ov"?"on":""}">Overview</button>'.replace('${tp=="ov"?"on":""}',tp=="ov"?"on":"")+D.map(s=>`<button data-go="learn/${s.id}" class="${tp==s.id?"on":""}">${s.id} ${SH[s.id]}</button>`).join("")+"</div>";
+ if(pg=="q")h+=`<div class="chips2"><button data-go="q/all" class="${tp=="all"?"on":""}">All topics</button>`+D.map(s=>`<button data-go="q/${s.id}" class="${tp==s.id?"on":""}">${s.id} ${SH[s.id]} <small>${dn(s)}/${s.qs.length}</small></button>`).join("")+"</div>";
+ if(pg=="rev")h+='<div class="chips2">'+[["fc","🃏 Flashcards"]].concat(Object.keys(BK).map(k=>[k,BK[k].sh||BK[k].t])).map(x=>`<button data-go="rev/${x[0]}" class="${tp==x[0]?"on":""}">${x[1]}</button>`).join("")+"</div>";
+ nav.innerHTML=h;setNH()}
+function go(p,t){pg=p;tp=t||(p=="learn"?"ov":p=="q"?D[0].id:"fc");render();try{history.replaceState(null,"","#"+pg+(tp?"/"+tp:""))}catch(e){}window.scrollTo(0,0)}
+function ovP(){
+ const g=(t,ids)=>`<h3>${t}</h3><div class="grid">`+ids.map(id=>{const s=D.find(x=>x.id==id);return `<div class="tc"><b>${s.id} ${SH[id]}</b><div class="sub" style="margin:4px 0 8px">${fm(BL[id])}</div><div class="acts"><button data-go="learn/${id}">📖 Learn</button><button data-go="q/${id}">✏️ ${dn(s)}/${s.qs.length}</button></div></div>`}).join("")+"</div>";
+ return `<section><h2>Welcome</h2><p class="sub">Use <b>Learn</b> for the theory and worked examples, <b>Questions</b> for practice (split into In class, At home and Extension) and <b>Revise</b> for flashcards. The tutor button (bottom right) can explain anything or check your working.</p>${GR.map(x=>g(x[0],x[1])).join("")}</section>`}
+function learnP(){
+ if(tp=="ov")return ovP();
+ const i=D.findIndex(s=>s.id==tp),s=D[i];
+ return `<section><span class="wk">${s.wk}</span><h2>${s.title}</h2><div class="th">${fm(s.th)}</div>${s.fig?`<div class="fig">${s.fig}</div>`:""}<h3>Worked examples</h3>`+EX[s.id].map((e,j)=>`<div class="ex"><b>Example ${j+1}.</b> ${fm(e[0])}${e[2]?`<div class="fig">${e[2]}</div>`:""}<div class="sol">${fm(e[1])}</div></div>`).join("")+`<div class="acts" style="margin-top:14px"><button class="on" data-go="q/${s.id}">✏️ Practise “${SH[s.id]}” (${s.qs.length} questions)</button></div><div class="acts">${i>0?`<button data-go="learn/${D[i-1].id}">◀ ${D[i-1].id} ${SH[D[i-1].id]}</button>`:""}${i<D.length-1?`<button data-go="learn/${D[i+1].id}">${D[i+1].id} ${SH[D[i+1].id]} ▶</button>`:""}</div></section>`}
+function qCard(s,q){const key=s.id+q.r,fl=P["f:"+key];return `<div class="q" id="q-${key}"><div class="h"><div><b>${q.r}</b> ${fm(q.q)}${q.fig?`<div class="fig">${q.fig}</div>`:""}</div><label class="d"><input type="checkbox" data-k="${key}" ${P[key]?"checked":""}> done</label></div><div class="acts"><button data-star="${key}" class="${fl?"on":""}">${fl?"★ Flagged":"☆ Flag"}</button><button class="ai" data-ask="${key}" data-m="hint">💡 Hint</button><button class="ai" data-ask="${key}" data-m="sim">🔁 Similar question</button><button class="ai" data-ask="${key}" data-m="chk">✅ Check my answer</button></div><details><summary>Show solution</summary><div class="sol">${fm(q.a)}${q.afig?`<div class="fig">${q.afig}</div>`:""}</div></details></div>`}
+const FL=[["all","All"],["c","In class"],["h","At home"],["x","Extension"],["f","★ Flagged"]];
+function qP(){return `<div class="tb"><input id="sq" type="search" placeholder="Search all questions and solutions…" value="${esc(qry)}">`+FL.map(f=>`<button data-f="${f[0]}" class="${f[0]==filt?"on":""}">${f[1]}</button>`).join("")+`<button id="rn">🎲 Random</button></div><div id="res"></div>`}
+function fill(){
+ const k=qry.toLowerCase(),all=tp=="all"||!!k;
+ const ok=(s,q)=>(filt=="all"||(filt=="f"?P["f:"+s.id+q.r]:q.t==filt))&&(!k||plain(q.r+" "+q.q+" "+q.a).includes(k));
+ let h="";
+ D.forEach(s=>{if(!all&&s.id!=tp)return;const qs=s.qs.filter(q=>ok(s,q));if(!qs.length)return;
+  h+=`<section><span class="wk">${s.wk}</span> <span class="wk">${dn(s)}/${s.qs.length} done</span><h2>${s.title}</h2><div class="acts" style="margin:0 0 4px"><button data-go="learn/${s.id}">📖 Theory: ${SH[s.id]}</button></div>`;
+  ["c","h","x"].forEach(t=>{const g=qs.filter(q=>q.t==t);if(g.length)h+=`<h3>${s.np?"Practice":tl[t]} (${g.length})</h3>`+g.map(q=>qCard(s,q)).join("")});
+  h+="</section>"});
+ document.getElementById("res").innerHTML=h||"<p class=sub>No questions match. Try another search or filter.</p>"}
+function drawFC(){const c=document.getElementById("fcard");if(!c)return;const x=FC[fc.o[fc.i]];c.className="fcard"+(fc.f?" bk":"");c.innerHTML=fm(fc.f?x[1]:x[0]);document.getElementById("fcn").textContent=(fc.i+1)+" / "+FC.length+(fc.f?"":" (tap card to flip)")}
+function revP(){return `<section id="FC"><span class="wk">Revision</span><h2>Flashcards & cheat sheet</h2><div id="fcard" class="fcard" tabindex="0"></div><div class="acts"><button id="fp">◀ Prev</button><button id="fn">Next ▶</button><button id="fs">🔀 Shuffle</button><span class="sub" id="fcn"></span></div><details class="rs"><summary>Show all cards as a cheat sheet</summary><table>${FC.map(x=>`<tr><td><b>${fm(x[0])}</b></td><td>${fm(x[1])}</td></tr>`).join("")}</table></details></section>`}
+
+const LT="ABCD";
+function mcCard(k){const [id,pi,i]=k.split("."),m=BK[id].parts[pi].mc[+i],c=P["m:"+k],done=c!==undefined;
+ return `<div class="q" id="c-${k}"><div><b>${+i+1}.</b> ${fm(m.q)}</div><div class="opts">`+m.o.map((x,j)=>`<button class="opt${done?(j==m.a?" ok":j==c?" no":""):""}" data-mc="${k}" data-j="${j}"><b>${LT[j]}</b>&nbsp; ${fm(x)}</button>`).join("")+`</div>`+(done?`<div class="sol">${c==m.a?"✓ Correct.":"✗ Not quite. The answer is "+LT[m.a]+"."} ${fm(m.e||"")} <button data-retry="${k}" style="margin-left:6px">↺ Retry</button></div>`:"")+`</div>`}
+function bkScore(){const e=document.getElementById("bks");if(!e||!BK[tp])return;let a=0,c=0,t=0;BK[tp].parts.forEach((p,pi)=>p.mc.forEach((m,i)=>{t++;const v=P["m:"+tp+"."+pi+"."+i];if(v!==undefined){a++;if(v==m.a)c++}}));e.textContent="Multiple choice: "+c+" correct out of "+a+" answered ("+t+" total)"}
+function bkP(id){const b=BK[id];
+ let h=`<section><span class="wk">${b.tag}</span><h2>${b.t}</h2><p class="sub">Tap an answer to check it instantly. For short response, try it on paper first, then reveal the answer. <span id="bks"></span></p>`;
+ b.parts.forEach((p,pi)=>{h+=`<h3>${p.n}: multiple choice (${p.mc.length})</h3>`+p.mc.map((m,i)=>mcCard(id+"."+pi+"."+i)).join("")+`<h3>${p.n}: short response (${p.sr.length})</h3>`+p.sr.map((x,i)=>{const k="bk:"+id+"."+pi+"."+i;return `<div class="q"><div class="h"><div><b>${i+1}.</b> ${fm(x.q)}</div><label class="d"><input type="checkbox" data-k="${k}" ${P[k]?"checked":""}> done</label></div><details><summary>Show answer</summary><div class="sol">${fm(x.a)}</div></details></div>`}).join("")});
+ return h+"</section>"}
+function render(){main.innerHTML=pg=="learn"?learnP():pg=="q"?qP():(tp=="fc"?revP():bkP(tp));if(pg=="q")fill();drawFC();stat();bkScore()}
+function rnd(){const all=[];D.forEach(s=>s.qs.forEach(q=>{if(!P[s.id+q.r])all.push([s,q])}));if(!all.length)return;const [s,q]=all[Math.floor(Math.random()*all.length)];filt="all";qry="";pg="q";tp=s.id;render();const e=document.getElementById("q-"+s.id+q.r);e.scrollIntoView({block:"center"});e.style.outline="2px solid var(--ac)";setTimeout(()=>e.style.outline="",2500)}
+function onc(e){
+ const t=e.target.closest("button,#fcard");if(!t)return;
+ if(t.id=="th"){const r=document.documentElement;const dk=r.dataset.theme=="dark"||(r.dataset.theme!="light"&&matchMedia("(prefers-color-scheme:dark)").matches);r.dataset.theme=dk?"light":"dark";try{localStorage.setItem("yt-theme",r.dataset.theme)}catch(e){};return}
+ if(t.dataset.mc||t.dataset.retry){const k=t.dataset.mc||t.dataset.retry;if(t.dataset.mc)P["m:"+k]=+t.dataset.j;else delete P["m:"+k];save();const e=document.getElementById("c-"+k);if(e)e.outerHTML=mcCard(k);bkScore();return}
+ if(t.dataset.go){const a=t.dataset.go.split("/");go(a[0],a[1]);return}
+ if(t.dataset.f){filt=t.dataset.f;main.querySelectorAll("[data-f]").forEach(b=>b.className=b.dataset.f==filt?"on":"");fill();return}
+ if(t.id=="rn"){rnd();return}
+ if(t.dataset.star){const k=t.dataset.star;P["f:"+k]=!P["f:"+k];save();t.className=P["f:"+k]?"on":"";t.textContent=P["f:"+k]?"★ Flagged":"☆ Flag";return}
+ if(t.dataset.ask){const q=Qm[t.dataset.ask],tx=plain(q.q).replace(/\s+/g," ").trim(),m=t.dataset.m;
+  dr.classList.add("open");
+  if(m=="chk"){ti.value="Here is my attempt at this question: "+tx+"\n\nMy working:\n";ti.focus();return}
+  ti.value=m=="hint"?"Give me a hint (not the full solution) for this question: "+tx:"Make a similar practice question to this one with different details. Do not give the solution until I answer. Original: "+tx;send();return}
+ if(t.id=="fcard"){fc.f=!fc.f;drawFC()}
+ if(t.id=="fn"){fc.i=(fc.i+1)%FC.length;fc.f=false;drawFC()}
+ if(t.id=="fp"){fc.i=(fc.i+FC.length-1)%FC.length;fc.f=false;drawFC()}
+ if(t.id=="fs"){fc.o.sort(()=>Math.random()-.5);fc.i=0;fc.f=false;drawFC()}}
+main.addEventListener("click",onc);nav.addEventListener("click",onc);
+main.addEventListener("change",e=>{const i=e.target;if(i.dataset.k){P[i.dataset.k]=i.checked;save();stat()}});
+main.addEventListener("input",e=>{if(e.target.id=="sq"){qry=e.target.value.trim();fill()}});
+const setNH=()=>document.documentElement.style.setProperty("--nh",nav.offsetHeight+"px");
+addEventListener("resize",setNH);try{new ResizeObserver(setNH).observe(nav)}catch(e){}
+try{const h=location.hash.slice(1).split("/");if(["learn","q","rev"].includes(h[0])){pg=h[0];tp=h[1]||(pg=="learn"?"ov":pg=="q"?D[0].id:"fc");if(pg=="rev"){if(!["fc"].concat(Object.keys(BK)).includes(tp))tp="fc"}else if(tp!="ov"&&tp!="all"&&!D.some(x=>x.id==tp))tp=pg=="learn"?"ov":D[0].id}}catch(e){}
+render();
+const rb=document.getElementById("rb");let arm=false;
+rb.onclick=()=>{if(!arm){arm=true;rb.textContent="Click again to confirm reset";setTimeout(()=>{arm=false;rb.textContent="Reset ticks & flags"},4000);return}P={};save();arm=false;rb.textContent="Reset ticks & flags";render()};
+const SYS=SITE.sys;
+let smp=null,hist=[],busy=false,ready=false,warned=false;
+const dr=document.getElementById("dr"),tut=document.getElementById("tut"),ms=document.getElementById("msgs"),ti=document.getElementById("ti");
+const MODEL="claude-haiku-5-5";let key="";try{key=localStorage.getItem(SITE.key+"-key")||""}catch(e){}
+const kp=document.getElementById("kp"),kb=document.getElementById("kb"),kst=document.getElementById("kst");
+const fin=()=>{ready=true;kb.style.display=smp?"none":"inline-block";if(!smp&&!key)kp.style.display="block"};
+try{window.claude?claude.use("sample").then(x=>{smp=x;fin()}).catch(fin):fin()}catch(e){fin()}
+kb.onclick=()=>{kp.style.display=kp.style.display=="block"?"none":"block"};
+document.getElementById("ks").onclick=()=>{const v=document.getElementById("ki").value.trim();if(!v){kst.textContent="Paste a key first.";return}key=v;try{localStorage.setItem(SITE.key+"-key",v)}catch(e){}document.getElementById("ki").value="";kst.textContent="Saved. Ask a question!"};
+document.getElementById("kc").onclick=()=>{key="";try{localStorage.removeItem(SITE.key+"-key")}catch(e){}kst.textContent="Key removed."};
+async function viaKey(m){const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:MODEL,max_tokens:1000,system:SYS,messages:m})});let d={};try{d=await r.json()}catch(e){}if(!r.ok)throw new Error(r.status==401?"badkey":(d.error&&d.error.message)||"HTTP "+r.status);return d.content.filter(c=>c.type=="text").map(c=>c.text).join("")}
+const LINK=SITE.link||"(the published page)";
+function noAI(){if(ready)kp.style.display="block";add("a",ready?"This copy is open outside Claude, so the tutor needs your own Anthropic API key. Paste it in the box below."+(SITE.link?"\nOr use the published page, where the tutor works without a key:\n"+SITE.link:""):"Still connecting to the tutor. Try again in a moment.")}
+tut.onclick=()=>{dr.classList.add("open");if(!smp&&!key&&ready&&!warned){warned=true;noAI()}};document.getElementById("tx").onclick=()=>dr.classList.remove("open");
+const SUG=SITE.sug;
+document.getElementById("ch").innerHTML=SUG.map(t=>`<button class="chip">${t}</button>`).join("");
+document.querySelectorAll("#ch .chip").forEach(b=>b.onclick=()=>{ti.value=b.textContent;ti.focus()});
+function add(c,t){const d=document.createElement("div");d.className="m "+c;d.textContent=t;ms.appendChild(d);ms.scrollTop=ms.scrollHeight;return d}
+async function send(){
+ const q=ti.value.trim();if(!q||busy)return;if(!smp&&!key){noAI();return}busy=true;ti.value="";add("u",q);hist.push({role:"user",content:q});
+ const b=add("a","Thinking…");let m=hist.slice(-12);while(m.length&&m[0].role!="user")m.shift();
+ const raw=m;m=m.map((x,i)=>i==0?{role:"user",content:SYS+"\n\nStudent: "+x.content}:x);
+ try{let tx;if(smp){const r=await smp(m,{cache:false,onText:o=>{b.textContent=o.text;ms.scrollTop=ms.scrollHeight}});tx=r.text}else tx=await viaKey(raw);b.textContent=tx;hist.push({role:"assistant",content:tx})}
+ catch(e){hist.pop();b.textContent=e&&e.message=="badkey"?"Anthropic rejected that API key. Check it with the 🔑 Key button.":e&&e.name=="TypeError"&&!smp?"Couldn’t reach Anthropic. Check your internet connection (and that nothing is blocking api.anthropic.com).":e&&e.code=="not_granted"?"The tutor needs your permission to run. Reload and allow it when asked.":e&&e.code=="rate_limited"?"Too many questions too quickly. Wait a moment and try again.":"Sorry, something went wrong. Try again."}
+ busy=false}
+document.getElementById("ts").onclick=send;
+ti.addEventListener("keydown",e=>{if(e.key=="Enter"&&!e.shiftKey){e.preventDefault();send()}});
+
+</script><script>
+/* ===== Feature pack: self-rating, spaced flashcards (Leitner boxes), Quiz me ===== */
+(function(){
+const LB={g:"Got it",n:"Nearly",x:"Not yet"},IC={g:"✅",n:"🟡",x:"❌"},DAY=864e5;
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const hash=s=>{let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))|0;return(h>>>0).toString(36)};
+const $=id=>document.getElementById(id);
+const nm=s=>(typeof SH!=="undefined"&&SH[s.id])||s.title;
+
+/* ---------- Feature 3: self-rating on every question ---------- */
+function setRating(key,v){
+  if(P["r:"+key]==v){delete P["r:"+key];delete P["rt:"+key]}
+  else{P["r:"+key]=v;P["rt:"+key]=Date.now();if(v=="g")P[key]=true}
+  save();return P["r:"+key]
+}
+const origQ=qCard;
+qCard=function(s,q){
+  const key=s.id+q.r,r=P["r:"+key];
+  const row='<div class="rate"><span>How did it go?</span>'+["g","n","x"].map(k=>'<button class="rb'+(r==k?" on "+k:"")+'" data-rate="'+k+'" data-rk="'+key+'">'+IC[k]+" "+LB[k]+"</button>").join("")+"</div>";
+  return origQ(s,q).replace("<details>",row+"<details>")
+};
+FL.push(["w","⚠ Needs work"]);
+const origFill=fill;
+fill=function(){
+  const w=filt=="w";if(w)filt="all";
+  origFill();
+  if(w){filt="w";prune()}
+};
+function prune(){
+  const res=$("res");if(!res)return;
+  res.querySelectorAll(".q").forEach(el=>{const v=P["r:"+el.id.slice(2)];if(v!="n"&&v!="x")el.remove()});
+  res.querySelectorAll("section").forEach(sec=>{
+    if(!sec.querySelector(".q")){sec.remove();return}
+    sec.querySelectorAll("h3").forEach(h=>{let n=h.nextElementSibling,c=0;while(n&&n.tagName!="H3"){if(n.classList.contains("q"))c++;n=n.nextElementSibling}
+      if(!c)h.remove();else h.textContent=h.textContent.replace(/\(\d+\)\s*$/,"("+c+")")})
+  });
+  if(!res.querySelector(".q"))res.innerHTML='<p class="sub">Nothing is marked “Nearly” or “Not yet”. Rate questions after you try them and they will collect here.</p>'
+}
+
+/* ---------- Feature 1: spaced flashcards ---------- */
+const INT=[0,1,3,7,14];          // days until the next review for boxes 1 to 5
+const ck=i=>"c:"+hash(FC[i][0]);
+const cst=i=>P[ck(i)]||null;
+const isDue=i=>{const c=cst(i);return!c||c.d<=Date.now()};
+const dueList=()=>FC.map((_,i)=>i).filter(isDue);
+function gradeCard(i,v){
+  const c=cst(i)||{b:0,d:0};let b=c.b,d;
+  if(v=="a"){b=0;d=Date.now()+10*60e3}
+  else if(v=="n"){d=Date.now()+Math.max(1,Math.round(INT[b]/2))*DAY}
+  else{b=Math.min(4,b+1);d=Date.now()+INT[b]*DAY}
+  P[ck(i)]={b:b,d:d,t:Date.now()};save();return P[ck(i)]
+}
+function nextDue(){
+  let m=Infinity;FC.forEach((_,i)=>{const c=cst(i);if(c&&c.d<m)m=c.d});
+  if(m===Infinity)return"";const h=Math.max(1,Math.round((m-Date.now())/36e5));
+  return h<24?"in about "+h+" hour"+(h==1?"":"s"):"in about "+Math.round(h/24)+" day"+(Math.round(h/24)==1?"":"s")
+}
+const mode=()=>P["cmode"]||"due";
+function syncFC(){fc.o=mode()=="due"?shuffle(dueList()):FC.map((_,i)=>i);fc.i=0;fc.f=false}
+revP=function(){
+  syncFC();const due=dueList().length,m=mode();
+  return'<section id="FC"><span class="wk">Revision</span><h2>Flashcards &amp; cheat sheet</h2>'+
+  '<div class="fcstat"><span><b id="fcdue">'+due+'</b> due today · '+(FC.length-due)+' not due</span><span class="acts"><button data-fcm="due" class="'+(m=="due"?"on":"")+'">Study due cards</button><button data-fcm="all" class="'+(m=="all"?"on":"")+'">All cards</button></span></div>'+
+  '<div id="fcard" class="fcard" tabindex="0"></div>'+
+  '<div id="fcr" class="acts" style="display:none"><button class="rb x" data-fcr="a">🔁 Again</button><button class="rb n" data-fcr="n">🟡 Almost</button><button class="rb g" data-fcr="g">✅ Got it</button></div>'+
+  '<div class="acts"><button id="fp">◀ Prev</button><button id="fn">Next ▶</button><button id="fs">🔀 Shuffle</button><span class="sub" id="fcn"></span></div>'+
+  '<p class="sub" style="margin:8px 0 0">Flip the card, then rate yourself. “Again” brings it back soon, “Got it” moves it to a longer gap (1, 3, 7, then 14 days).</p>'+
+  '<details class="rs"><summary>Show all cards as a cheat sheet</summary><table>'+FC.map(x=>"<tr><td><b>"+fm(x[0])+"</b></td><td>"+fm(x[1])+"</td></tr>").join("")+"</table></details></section>"
+};
+drawFC=function(){
+  const c=$("fcard");if(!c)return;
+  const r=$("fcr"),n=$("fcn");
+  if(!fc.o.length){c.className="fcard";c.innerHTML=(mode()=="due"?"🎉 All caught up!<br><small>No cards are due right now"+(nextDue()?". The next one is due "+nextDue():"")+".</small>":"No cards yet.");r.style.display="none";n.textContent="";return}
+  const x=FC[fc.o[fc.i]];
+  c.className="fcard"+(fc.f?" bk":"");c.innerHTML=fm(fc.f?x[1]:x[0]);
+  r.style.display=fc.f?"flex":"none";
+  n.textContent=(fc.i+1)+" / "+fc.o.length+(fc.f?"":" (tap card to flip)")
+};
+
+/* ---------- Feature 2: Quiz me (mixed, shuffled practice) ---------- */
+let qz={step:"setup",sel:null,n:10,pri:true,list:[],i:0,show:false,res:[]};
+const allQ=()=>{const a=[];D.forEach(s=>s.qs.forEach(q=>a.push({s:s,q:q,key:s.id+q.r})));return a};
+function buildList(sel,n,pri,only){
+  let pool=allQ().filter(x=>sel.has(x.s.id)&&(!only||only.has(x.key)));
+  const w=x=>{if(!pri)return Math.random();const v=P["r:"+x.key];const base=v=="x"?3:v=="n"?2:!v?1.2:0.25;return base*(0.6+Math.random())};
+  pool=pool.map(x=>({x:x,w:w(x)})).sort((a,b)=>b.w-a.w).slice(0,n).map(o=>o.x);
+  return shuffle(pool)
+}
+function startQuiz(){
+  const sel=qz.sel||new Set(D.map(s=>s.id));
+  qz.list=buildList(sel,qz.n,qz.pri,null);qz.i=0;qz.show=false;qz.res=[];qz.step=qz.list.length?"run":"setup"
+}
+function quizP(){
+  if(qz.step=="run")return qRun();
+  if(qz.step=="end")return qEnd();
+  const sel=qz.sel||(qz.sel=new Set(D.map(s=>s.id)));
+  const rated=allQ().filter(x=>P["r:"+x.key]=="n"||P["r:"+x.key]=="x").length;
+  return'<section><span class="wk">Mixed practice</span><h2>🎯 Quiz me</h2>'+
+  '<p class="sub">A shuffled mix of questions from the topics you choose. Mixing topics trains you to decide <i>which</i> method to use, and trying an answer before looking is one of the best ways to learn. Work each one on paper, then check and rate yourself.</p>'+
+  '<h3>Topics</h3><div class="acts">'+D.map(s=>'<button data-qt="'+s.id+'" class="'+(sel.has(s.id)?"on":"")+'">'+s.id+" "+nm(s)+"</button>").join("")+"</div>"+
+  '<div class="acts"><button data-qall="1">Select all</button><button data-qnone="1">Clear</button></div>'+
+  '<h3>Number of questions</h3><div class="acts">'+[5,10,15,20].map(n=>'<button data-qn="'+n+'" class="'+(qz.n==n?"on":"")+'">'+n+"</button>").join("")+"</div>"+
+  '<label class="d" style="display:flex;gap:8px;align-items:center;margin:12px 0"><input type="checkbox" id="qpri" '+(qz.pri?"checked":"")+'> Prioritise questions I have not got yet'+(rated?" ("+rated+" marked to practise)":"")+"</label>"+
+  '<div class="acts"><button class="on" data-qstart="1">Start quiz</button></div></section>'
+}
+function qRun(){
+  const it=qz.list[qz.i],s=it.s,q=it.q;
+  let h='<section><span class="wk">Question '+(qz.i+1)+" of "+qz.list.length+"</span> <span class=\"wk\">"+s.id+" "+nm(s)+"</span>"+
+  '<div style="height:6px;background:var(--bd);border-radius:6px;overflow:hidden;margin:6px 0 10px"><i style="display:block;height:100%;width:'+Math.round(100*qz.i/qz.list.length)+'%;background:var(--ok,#1f8f55)"></i></div>'+
+  '<div class="qzq"><b>'+q.r+"</b> "+fm(q.q)+(q.fig?'<div class="fig">'+q.fig+"</div>":"")+"</div>";
+  if(!qz.show)h+='<p class="sub">Try it on paper first.</p><div class="acts"><button class="on" data-qshow="1">Show solution</button><button data-qstop="1">Stop quiz</button></div>';
+  else h+='<div class="sol">'+fm(q.a)+(q.afig?'<div class="fig">'+q.afig+"</div>":"")+'</div><div class="rate"><span>How did it go?</span>'+["g","n","x"].map(k=>'<button class="rb" data-qr="'+k+'">'+IC[k]+" "+LB[k]+"</button>").join("")+"</div>";
+  return h+"</section>"
+}
+function qEnd(){
+  const c={g:0,n:0,x:0};qz.res.forEach(r=>c[r.v]++);const t=qz.res.length||1;
+  const miss=qz.res.filter(r=>r.v!="g");
+  let h='<section><span class="wk">Quiz finished</span><h2>🎉 '+c.g+" of "+qz.res.length+" got it</h2>"+
+  '<p class="sub">✅ '+c.g+" got it · 🟡 "+c.n+" nearly · ❌ "+c.x+" not yet ("+Math.round(100*c.g/t)+"% got it). Your ratings were saved, so “Needs work” on the Questions page and the next quiz will use them.</p>";
+  if(miss.length){h+="<h3>To revisit ("+miss.length+")</h3>"+miss.map(r=>{const it=qz.list.find(x=>x.key==r.key);return'<div class="q"><div class="h"><div><b>'+it.s.id+" "+it.q.r+"</b> "+fm(it.q.q)+'</div></div><div class="acts"><button data-qopen="'+r.key+'">Open in Questions</button></div></div>'}).join("")}
+  h+='<div class="acts" style="margin-top:12px">'+(miss.length?'<button class="on" data-qretry="1">Retry the ones I missed</button>':"")+'<button data-qnew="1">New quiz</button></div></section>';
+  return h
+}
+const origBk=bkP;
+bkP=function(id){return id=="quiz"?quizP():origBk(id)};
+const origNav=navR;
+navR=function(){
+  origNav();
+  if(pg=="rev"){const c=nav.querySelector(".chips2");if(c){const b=document.createElement("button");b.setAttribute("data-go","rev/quiz");b.className=tp=="quiz"?"on":"";b.textContent="🎯 Quiz me";c.insertBefore(b,c.children[1]||null)}}
+};
+const origQP=qP;
+qP=function(){return origQP().replace('<button id="rn">','<button data-go="rev/quiz">🎯 Quiz me</button><button id="rn">')};
+
+/* ---------- click handling (runs before the page's own handler) ---------- */
+function redrawQuiz(scroll){main.innerHTML=quizP();if(scroll)window.scrollTo(0,0)}
+function handle(e){
+  const t=e.target.closest?e.target.closest("button,#fcard"):null;if(!t)return;
+  const d=t.dataset||{};
+  const stop=()=>{e.stopPropagation();e.preventDefault()};
+  if(d.rate){stop();const k=d.rk,v=setRating(k,d.rate),row=t.parentElement;
+    row.querySelectorAll(".rb").forEach(x=>{x.className="rb"+(v==x.dataset.rate?" on "+x.dataset.rate:"")});
+    if(v=="g"){const cb=document.querySelector('input[data-k="'+k+'"]');if(cb)cb.checked=true}
+    stat();return}
+  if(pg=="rev"&&tp=="fc"){
+    if(t.id=="fcard"){stop();if(fc.o.length){fc.f=!fc.f;drawFC()}return}
+    if(t.id=="fn"){stop();if(fc.o.length){fc.i=(fc.i+1)%fc.o.length;fc.f=false;drawFC()}return}
+    if(t.id=="fp"){stop();if(fc.o.length){fc.i=(fc.i+fc.o.length-1)%fc.o.length;fc.f=false;drawFC()}return}
+    if(t.id=="fs"){stop();fc.o=shuffle(fc.o);fc.i=0;fc.f=false;drawFC();return}
+    if(d.fcm){stop();P["cmode"]=d.fcm;save();main.innerHTML=revP();drawFC();return}
+    if(d.fcr){stop();if(!fc.o.length)return;const idx=fc.o[fc.i];gradeCard(idx,d.fcr);
+      if(mode()=="due"){fc.o.splice(fc.i,1);if(d.fcr=="a")fc.o.push(idx);if(fc.i>=fc.o.length)fc.i=0}
+      else fc.i=(fc.i+1)%fc.o.length;
+      fc.f=false;const el=$("fcdue");if(el)el.textContent=dueList().length;drawFC();return}
+  }
+  if(pg=="rev"&&tp=="quiz"){
+    if(d.qt){stop();const s=qz.sel||(qz.sel=new Set());s.has(d.qt)?s.delete(d.qt):s.add(d.qt);redrawQuiz();return}
+    if(d.qall){stop();qz.sel=new Set(D.map(s=>s.id));redrawQuiz();return}
+    if(d.qnone){stop();qz.sel=new Set();redrawQuiz();return}
+    if(d.qn){stop();qz.n=+d.qn;redrawQuiz();return}
+    if(d.qstart){stop();const cb=$("qpri");if(cb)qz.pri=cb.checked;if(!qz.sel||!qz.sel.size)qz.sel=new Set(D.map(s=>s.id));startQuiz();redrawQuiz(true);return}
+    if(d.qshow){stop();qz.show=true;redrawQuiz();return}
+    if(d.qstop){stop();qz.step="setup";redrawQuiz(true);return}
+    if(d.qr){stop();const it=qz.list[qz.i];P["r:"+it.key]=d.qr;P["rt:"+it.key]=Date.now();if(d.qr=="g")P[it.key]=true;save();stat();
+      qz.res.push({key:it.key,v:d.qr});qz.i++;qz.show=false;if(qz.i>=qz.list.length)qz.step="end";redrawQuiz(true);return}
+    if(d.qretry){stop();const only=new Set(qz.res.filter(r=>r.v!="g").map(r=>r.key));qz.list=shuffle(allQ().filter(x=>only.has(x.key)));qz.i=0;qz.show=false;qz.res=[];qz.step="run";redrawQuiz(true);return}
+    if(d.qnew){stop();qz.step="setup";redrawQuiz(true);return}
+    if(d.qopen){stop();const key=d.qopen,s=D.find(x=>Qm[key]&&x.qs.indexOf(Qm[key])>-1);pg="q";tp=s?s.id:tp;filt="all";qry="";render();const el=$("q-"+key);if(el){el.scrollIntoView({block:"center"});el.style.outline="2px solid var(--ac)";setTimeout(()=>{el.style.outline=""},2500)}return}
+  }
+}
+main.addEventListener("click",handle,true);
+window.__yt={ck:ck,setRating:setRating,gradeCard:gradeCard,dueList:dueList,buildList:buildList,handle:handle,quiz:()=>qz,startQuiz:startQuiz,quizP:quizP,qRun:qRun,qEnd:qEnd,syncFC:syncFC,INT:INT};
+render();
+})();
+</script>
+<script>
+/* ===== Methods pack: Closing the Gap calculator, final checklist, overview strip ===== */
+(function(){
+const $=id=>document.getElementById(id);
+const NS="http://www.w3.org/2000/svg";
+
+/* ---------- Calculator ---------- */
+const PRE={
+ m:{label:"Males (4 points)",rows:[[2006,11.5],[2011,10.6],[2016,8.6],[2021,8.8]]},
+ f:{label:"Females (4 points)",rows:[[2006,9.7],[2011,9.5],[2016,7.8],[2021,8.1]]},
+ mr:{label:"Males, revised 2015–17",rows:[[2006,11.5],[2011,10.6],[2016,8.7],[2021,8.8]]},
+ fr:{label:"Females, revised 2015–17",rows:[[2006,9.7],[2011,9.5],[2016,8.0],[2021,8.1]]},
+ m2:{label:"Males, two points only",rows:[[2016,8.6],[2021,8.8]]}
+};
+let rows=PRE.m.rows.map(r=>r.slice()),cur="m";
+const fx=(v,d)=>isFinite(v)?v.toFixed(d):"not available";
+
+function calcP(){
+ return '<section><span class="wk">Tool</span><h2>🧮 Check your working</h2>'+
+ '<p class="sub">Edit the numbers or load a preset to see the line of best fit, the prediction and the rate needed. Use it to check your hand and Excel results, and to see how sensitive the answer is to your choices.</p>'+
+ '<div class="cx"><div class="acts" id="cxp" role="group" aria-label="Load a data set"></div>'+
+ '<div class="cxg"><div class="cxr"><table><thead><tr><th>Year</th><th>Gap</th><th></th></tr></thead><tbody id="cxrows"></tbody></table>'+
+ '<div class="acts"><button id="cxadd" type="button">Add row</button></div></div>'+
+ '<div><svg id="cxsvg" class="chart" viewBox="0 0 640 340" role="img" aria-label="Scatterplot of gap against year with line of best fit"></svg>'+
+ '<div class="lg"><span><i class="l1"></i>Line of best fit</span><span><i class="l2"></i>Rate needed to reach 0 in 2031</span><span><i class="l3"></i>2031</span></div></div></div>'+
+ '<div class="cxo" id="cxo" aria-live="polite"></div><p class="sub" id="cxm"></p></div>'+
+ '<div class="box"><b>⚠ What the presets teach</b><p>Load “Males, two points only”. The line now slopes upwards and predicts a larger gap in 2031, the opposite of the four-point result. A line through two points always fits perfectly (r = 1 or −1), so r tells you nothing. This is a good limitation to explain in Evaluate, and a reason to source more data.</p></div>'+
+ '<div class="acts"><button data-go="learn/4">📖 Back to Solve</button><button data-go="q/4">✏️ Solve questions</button></div></section>'
+}
+
+function el(name,attrs,text){const e=document.createElementNS(NS,name);for(const k in attrs)e.setAttribute(k,attrs[k]);if(text!==undefined)e.textContent=text;return e}
+
+function cxDraw(svg,pts,f){
+ while(svg.firstChild)svg.removeChild(svg.firstChild);
+ const nw=window.innerWidth<560,W=nw?380:640,H=nw?330:340,L=nw?44:52,R=nw?14:20,T=14,B=44;let xmin=2004,xmax=2034,ymax=12;
+ svg.setAttribute("viewBox","0 0 "+W+" "+H);svg.classList.toggle("nw",nw);
+ if(pts.length)xmin=Math.min(xmin,Math.floor(pts[0][0]/5)*5-1);
+ pts.forEach(p=>{ymax=Math.max(ymax,Math.ceil(p[1])+1)});
+ if(f)ymax=Math.max(ymax,Math.ceil(f.c)+1);
+ ymax=Math.ceil(ymax/2)*2;
+ const X=v=>L+(v-xmin)/(xmax-xmin)*(W-L-R),Y=v=>H-B-(v/ymax)*(H-T-B);
+ for(let yt=0;yt<=ymax;yt+=2){svg.appendChild(el("line",{x1:L,x2:W-R,y1:Y(yt),y2:Y(yt),"class":"tick"}));svg.appendChild(el("text",{x:L-8,y:Y(yt)+4,"text-anchor":"end"},String(yt)))}
+ for(let xt=Math.ceil(xmin/5)*5;xt<=xmax;xt+=5){svg.appendChild(el("line",{x1:X(xt),x2:X(xt),y1:T,y2:H-B,"class":"tick"}));svg.appendChild(el("text",{x:X(xt),y:H-B+18,"text-anchor":"middle"},String(xt)))}
+ svg.appendChild(el("line",{x1:L,x2:L,y1:T,y2:H-B,"class":"axis"}));
+ svg.appendChild(el("line",{x1:L,x2:W-R,y1:H-B,y2:H-B,"class":"axis"}));
+ svg.appendChild(el("text",{x:(L+W-R)/2,y:H-8,"text-anchor":"middle"},"Year (midpoint of period)"));
+ svg.appendChild(el("text",{x:14,y:(T+H-B)/2,"text-anchor":"middle",transform:"rotate(-90 14 "+((T+H-B)/2)+")"},"Gap (years)"));
+ svg.appendChild(el("line",{x1:X(2031),x2:X(2031),y1:T,y2:H-B,"class":"goal"}));
+ svg.appendChild(el("text",{x:X(2031)-4,y:T+12,"text-anchor":"end"},"2031"));
+ if(f){
+  const xa=pts[0][0],xb=f.last[0];
+  svg.appendChild(el("line",{x1:X(xa),y1:Y(f.c+f.m*(xa-f.y0)),x2:X(xb),y2:Y(f.c+f.m*(xb-f.y0)),"class":"fit"}));
+  svg.appendChild(el("line",{x1:X(xb),y1:Y(f.c+f.m*(xb-f.y0)),x2:X(2031),y2:Y(Math.max(0,f.c+f.m*(2031-f.y0))),"class":"fitx"}));
+  svg.appendChild(el("line",{x1:X(xb),y1:Y(f.last[1]),x2:X(2031),y2:Y(0),"class":"need"}))}
+ pts.forEach(p=>svg.appendChild(el("circle",{cx:X(p[0]),cy:Y(p[1]),r:5,"class":"pt"})))
+}
+
+function cxUpdate(){
+ const out=$("cxo"),msg=$("cxm"),svg=$("cxsvg");if(!out)return;
+ const pts=rows.filter(r=>isFinite(r[0])&&isFinite(r[1])).sort((a,b)=>a[0]-b[0]);
+ out.innerHTML="";msg.textContent="";
+ if(pts.length<2){msg.textContent="Enter at least two rows with a year and a gap to fit a line.";cxDraw(svg,pts,null);return}
+ const y0=pts[0][0],n=pts.length,xs=pts.map(p=>p[0]-y0),ys=pts.map(p=>p[1]);
+ const xm=xs.reduce((a,b)=>a+b,0)/n,ym=ys.reduce((a,b)=>a+b,0)/n;
+ let sxy=0,sxx=0,syy=0;
+ for(let i=0;i<n;i++){sxy+=(xs[i]-xm)*(ys[i]-ym);sxx+=Math.pow(xs[i]-xm,2);syy+=Math.pow(ys[i]-ym,2)}
+ if(sxx===0){msg.textContent="The years need to be different from each other.";cxDraw(svg,pts,null);return}
+ const m=sxy/sxx,c=ym-m*xm,r=syy===0?NaN:sxy/Math.sqrt(sxx*syy),pred=c+m*(2031-y0),last=pts[n-1];
+ const need=last[1]/(2031-last[0]),zero=m<0?y0-c/m:null;
+ const items=[
+  ["Equation (x = years since "+y0+")","G = "+fx(c,2)+(m<0?" − ":" + ")+fx(Math.abs(m),3)+"x"],
+  ["Slope m (years per year)",fx(m,3)],
+  ["r",fx(r,3)],
+  ["R²",isFinite(r)?fx(r*r,3):"not available"],
+  ["Predicted gap in 2031",fx(pred,2)+" years"],
+  ["Year the line reaches 0",zero===null?"never (slope is not negative)":"about "+Math.round(zero)],
+  ["Rate needed ("+last[0]+" to 2031)",fx(need,3)+" per year"],
+  ["Needed rate ÷ model rate",m<0?fx(need/Math.abs(m),1)+" times":"not available"]
+ ];
+ items.forEach(it=>{const d=document.createElement("div"),s=document.createElement("span"),b=document.createElement("b");s.textContent=it[0];b.textContent=it[1];d.appendChild(s);d.appendChild(b);out.appendChild(d)});
+ if(n===2)msg.textContent="With only two points a straight line always fits perfectly, so r = 1 or −1 tells you nothing about how good the model is.";
+ else if(m>=0)msg.textContent="The slope is not negative, so this model says the gap is not closing.";
+ else if(pred>0)msg.textContent="The model predicts a gap still above 0 in 2031, and the rate needed is larger than the model’s rate of change.";
+ else msg.textContent="The model predicts the gap reaches 0 by 2031.";
+ cxDraw(svg,pts,{m:m,c:c,y0:y0,last:last})
+}
+
+function cxRows(){
+ const tb=$("cxrows");if(!tb)return;tb.innerHTML="";
+ rows.forEach((r,i)=>{
+  const tr=document.createElement("tr");
+  tr.innerHTML='<td><input type="number" inputmode="decimal" step="1" aria-label="Year, row '+(i+1)+'" value="'+r[0]+'"></td><td><input type="number" inputmode="decimal" step="0.1" aria-label="Gap in years, row '+(i+1)+'" value="'+r[1]+'"></td><td><button type="button" aria-label="Remove row '+(i+1)+'">×</button></td>';
+  const ins=tr.querySelectorAll("input");
+  ins[0].addEventListener("input",()=>{rows[i][0]=ins[0].value===""?NaN:parseFloat(ins[0].value);cur="";cxMark();cxUpdate()});
+  ins[1].addEventListener("input",()=>{rows[i][1]=ins[1].value===""?NaN:parseFloat(ins[1].value);cur="";cxMark();cxUpdate()});
+  tr.querySelector("button").addEventListener("click",()=>{rows.splice(i,1);cur="";cxMark();cxRows();cxUpdate()});
+  tb.appendChild(tr)})
+}
+function cxMark(){const b=$("cxp");if(!b)return;[].forEach.call(b.children,x=>x.classList.toggle("on",x.dataset.k===cur))}
+function cxInit(){
+ const pb=$("cxp");if(!pb)return;pb.innerHTML="";
+ Object.keys(PRE).forEach(k=>{const b=document.createElement("button");b.type="button";b.textContent=PRE[k].label;b.dataset.k=k;
+  b.addEventListener("click",()=>{cur=k;rows=PRE[k].rows.map(r=>r.slice());cxRows();cxUpdate();cxMark()});pb.appendChild(b)});
+ $("cxadd").addEventListener("click",()=>{const l=rows.length?rows[rows.length-1]:[2021,8];rows.push([l[0]+5,l[1]]);cur="";cxMark();cxRows();cxUpdate()});
+ cxRows();cxUpdate();cxMark()
+}
+
+let rt=null;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{if(pg=="learn"&&tp=="calc")cxUpdate()},150)});
+
+/* ---------- Final checklist ---------- */
+const CK=[
+["Formulate",[
+ "Observations have a source and a reason (“It is observed that … It is justified by …”).",
+ "Assumptions each have a reason and an effect on the model.",
+ "“On track” is defined in mathematical terms, with variables and a decision rule."]],
+["Solve",[
+ "Gaps calculated for males and females, with the working shown.",
+ "Scatterplot is titled, axes are labelled with units, and the trend is described.",
+ "Line of best fit found with technology, with equation, r and R².",
+ "Slope and intercept interpreted in context.",
+ "2031 prediction and the rate needed are compared, and the question is answered."]],
+["Evaluate and verify",[
+ "Results checked by a second method or tool.",
+ "Reasonableness judged against every assumption and observation.",
+ "Strengths and limitations each have an effect and an improvement."]],
+["Communicate",[
+ "Report can be read without the task sheet, and follows the scaffold headings.",
+ "Mathematical terms used correctly; tables and figures are numbered, titled and sourced.",
+ "In-text citations match the reference list, with a real accessed date.",
+ "Under 2000 words and 10 pages, with working in the appendix.",
+ "Own words throughout; 12-slide presentation complete."]]
+];
+function chkP(){
+ let n=0,h='<section><span class="wk">Before you submit</span><h2>✅ Final checklist</h2><p class="sub">Tick items as you finish them. Ticks are saved in this browser. <b id="ckc"></b></p>';
+ CK.forEach(g=>{h+="<h3>"+g[0]+"</h3>";g[1].forEach(t=>{const k="ck:"+(n++);h+='<div class="q"><label class="cl"><input type="checkbox" data-k="'+k+'" '+(P[k]?"checked":"")+'><span>'+fm(t)+"</span></label></div>"})});
+ return h+"</section>"
+}
+function chkCount(){
+ const e=$("ckc");if(!e)return;const all=main.querySelectorAll('input[data-k^="ck:"]');let d=0;all.forEach(i=>{if(i.checked)d++});
+ e.textContent=d+" of "+all.length+" ticked"
+}
+main.addEventListener("change",e=>{const i=e.target;if(i.dataset&&i.dataset.k&&i.dataset.k.indexOf("ck:")==0)chkCount()});
+
+/* ---------- wire into the page ---------- */
+const oLearn=learnP;
+learnP=function(){return tp=="calc"?calcP():oLearn()};
+const oBk=bkP;
+bkP=function(id){return id=="chk"?chkP():oBk(id)};
+const oOv=ovP;
+ovP=function(){
+ const extra='<h3>At a glance</h3><div class="mk" role="list" aria-label="Marks by criterion">'+
+  '<button class="m1" role="listitem" data-go="learn/2"><b>4</b>Formulate</button><button class="m2" role="listitem" data-go="learn/4"><b>7</b>Solve</button><button class="m3" role="listitem" data-go="learn/5"><b>5</b>Evaluate</button><button class="m4" role="listitem" data-go="learn/6"><b>4</b>Communicate</button></div>'+
+  '<p class="sub" style="margin:6px 0 10px">Out of 20. Formulate and Evaluate together are worth 9 marks.</p>'+
+  '<ul class="dts"><li><b>Wk 2 Fri:</b> Formulate complete</li><li><b>Wk 3 Fri:</b> Solve complete</li><li><b>Wk 4 Fri:</b> Evaluation and full draft</li><li><b>Wk 5 Fri:</b> Final copy</li><li><b>Wk 6–7:</b> 12-slide oral presentation</li></ul>'+
+  '<h3>Tools</h3><div class="grid"><div class="tc"><b>🧮 Calculator</b><div class="sub" style="margin:4px 0 8px">Fit a line, see r, R², the 2031 prediction and the rate needed. Edit the data to test sensitivity.</div><div class="acts"><button data-go="learn/calc">Open</button></div></div>'+
+  '<div class="tc"><b>✅ Final checklist</b><div class="sub" style="margin:4px 0 8px">Tick off every mark-earning item before you submit.</div><div class="acts"><button data-go="rev/chk">Open</button></div></div></div>';
+ const h=oOv(),i=h.lastIndexOf("</section>");
+ return i<0?h+extra:h.slice(0,i)+extra+h.slice(i)
+};
+const oNav=navR;
+navR=function(){
+ oNav();
+ const c=nav.querySelector(".chips2");if(!c)return;
+ const add=(go,on,txt)=>{const b=document.createElement("button");b.setAttribute("data-go",go);b.className=on?"on":"";b.textContent=txt;c.appendChild(b)};
+ if(pg=="learn")add("learn/calc",tp=="calc","🧮 Calculator");
+ if(pg=="rev")add("rev/chk",tp=="chk","✅ Final checklist")
+};
+const oRender=render;
+render=function(){oRender();if(pg=="learn"&&tp=="calc")cxInit();if(pg=="rev"&&tp=="chk")chkCount()};
+try{const h=location.hash.slice(1).split("/");if(h[0]=="learn"&&h[1]=="calc"){pg="learn";tp="calc"}else if(h[0]=="rev"&&h[1]=="chk"){pg="rev";tp="chk"}}catch(e){}
+render();
+})();
+</script>
+<script>
+/* Tabs: put the icon above the label on narrow phones so all three tabs and the dark-mode button fit */
+(function(){if(typeof navR!=="function")return;var o=navR;navR=function(){o();var b=document.querySelectorAll(".tab");for(var i=0;i<b.length;i++){var t=b[i].textContent,k=t.indexOf(" ");if(k>0&&!b[i].querySelector(".te")){b[i].innerHTML='<span class="te"></span><span class="tl"></span>';b[i].firstChild.textContent=t.slice(0,k);b[i].lastChild.textContent=t.slice(k+1)}}};navR()})();
+</script>
+<script>
+/* Offline support: registers sw.js when the site is served over https */
+if("serviceWorker" in navigator&&/^https?:/.test(location.protocol)){
+ addEventListener("load",function(){
+  var had=!!navigator.serviceWorker.controller;
+  navigator.serviceWorker.register("sw.js").catch(function(){});
+  navigator.serviceWorker.addEventListener("controllerchange",function(){
+   if(!had){had=true;return}
+   if(document.getElementById("ytupd"))return;
+   var b=document.createElement("div");b.id="ytupd";
+   b.style.cssText="position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:99;background:#1d2433;color:#fff;padding:10px 14px;border-radius:12px;font:600 14px system-ui,sans-serif;box-shadow:0 6px 20px rgba(0,0,0,.35);display:flex;gap:10px;align-items:center";
+   var t=document.createElement("span");t.textContent="A new version is ready.";
+   var k=document.createElement("button");k.textContent="Refresh";k.style.cssText="font:600 13px system-ui,sans-serif;border:0;border-radius:999px;padding:6px 12px;background:#a58bff;color:#12141c;cursor:pointer";
+   k.onclick=function(){location.reload()};b.appendChild(t);b.appendChild(k);document.body.appendChild(b)
+  })
+ })
+}
+</script>
+</body></html>

@@ -82,6 +82,39 @@ html{-webkit-text-size-adjust:100%}body{overflow-x:hidden;overflow-wrap:anywhere
 table{display:block;overflow-x:auto}
 @media(max-width:560px){header{padding:14px 12px 6px}h1{font-size:20px}nav{padding:6px 10px}.tab{flex:1;padding:8px 6px;font-size:14px;text-align:center}main{padding:6px 10px 76px}section{padding:12px;border-radius:12px}.grid{grid-template-columns:1fr}.q>div.h{flex-wrap:wrap}label.d{margin-left:0}.fcard{min-height:110px;font-size:17px}#dr{width:100%}#tut{padding:11px 15px;font-size:14px}.acts button{font-size:12px}}
 
+/* ---- mobile polish v2 ---- */
+button,label{touch-action:manipulation}
+@media(max-width:640px){
+ body{font-size:15.5px}
+ header{padding:12px 12px 4px}h1{font-size:19px}header .sub{font-size:13px}
+ nav{padding:6px 8px;gap:4px}
+ .tabs{gap:4px}.tab{flex:1;min-height:44px;font-size:14px;padding:6px 4px;white-space:nowrap}
+ #th{min-height:44px;min-width:44px;padding:6px 10px}
+ .chips2{gap:6px;margin:0 -8px;padding:2px 8px 6px;scroll-snap-type:x proximity}
+ .chips2 button{min-height:40px;padding:6px 12px;font-size:13px;scroll-snap-align:start}
+ main{padding:6px 8px 92px}
+ section{padding:12px 11px;margin:10px 0;border-radius:12px}
+ h2{font-size:18px}h3{font-size:14px}
+ .tb{gap:6px}#sq{font-size:16px;min-height:44px}
+ .tb button,.acts button{min-height:40px;padding:6px 12px;font-size:13px}
+ .q{padding:12px 0}
+ .q>div.h{flex-direction:column;gap:6px}
+ label.d{margin-left:0;display:flex;align-items:center;gap:8px;min-height:36px;font-size:14px}
+ label.d input{width:22px;height:22px}
+ details summary{padding:10px 0;font-size:14px}
+ .sol{padding:8px 10px;font-size:15px;overflow-x:auto}
+ .th,.ex{overflow-x:auto}
+ .opts .opt{min-height:44px;padding:10px 12px}
+ #msgs{padding:10px}#ti{font-size:16px}#tf{padding:8px 10px}
+ #tut{bottom:calc(14px + env(safe-area-inset-bottom,0px));right:calc(10px + env(safe-area-inset-right,0px));min-height:46px;padding:10px 14px;font-size:14px}
+ .tc{padding:12px}.fcard{min-height:120px;font-size:17px;padding:14px}
+ .fig{overflow-x:auto}.fig svg{max-width:100%;height:auto}
+ table{font-size:13px}
+}
+@media(max-width:380px){body{font-size:15px}.tab{font-size:13px;padding:6px 2px}.chips2 button{font-size:12.5px;padding:6px 10px}}
+@supports(height:100dvh){@media(max-width:640px){#dr{height:100dvh;bottom:auto}}}
+@media(max-height:480px) and (orientation:landscape){nav{position:static}.q{scroll-margin-top:14px}}
+
 /* ---- features: ratings, spaced flashcards, quiz ---- */
 .rate{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:8px 0 0;font:13px system-ui,sans-serif;color:var(--mu)}
 .rb{font:600 12.5px system-ui,sans-serif;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:999px;padding:6px 12px;cursor:pointer}
@@ -90,6 +123,16 @@ table{display:block;overflow-x:auto}
 .fcstat{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 10px;font:14px system-ui,sans-serif}
 .qzq{font-size:17px;margin:6px 0 10px}
 @media(max-width:640px){.rb{min-height:40px}.qzq{font-size:16px}#fcr .rb{flex:1;min-height:46px}}
+
+/* ---- responsive fixes (all pages) ---- */
+/* keep the topic chip row inside the screen and let it scroll sideways */
+nav{flex-wrap:nowrap;min-width:0}.chips2{min-width:0;max-width:100%}
+/* tab row: equal-width tabs, the dark-mode button always fully visible, icon above label on narrow screens */
+.tabs{align-items:stretch}
+.tab{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:0}
+#th{flex:none}
+@media(max-width:640px){.tabs{gap:4px}.tab{flex:1 1 0}}
+@media(max-width:480px){.tab{flex-direction:column;gap:0;line-height:1.2;font-size:12.5px;padding:5px 2px}.tab .te{font-size:18px;line-height:1.15}}
 </style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#5b3fd0"><link rel="apple-touch-icon" href="icon-180.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Year 10">
 </head><body>
 <div style="max-width:860px;margin:auto;padding:10px 16px 0;font:600 14px system-ui,sans-serif"><a href="index.html" style="color:var(--ac);text-decoration:none">← Year Ten</a></div>
@@ -228,7 +271,7 @@ document.getElementById("ks").onclick=()=>{const v=document.getElementById("ki")
 document.getElementById("kc").onclick=()=>{key="";try{localStorage.removeItem(SITE.key+"-key")}catch(e){}kst.textContent="Key removed."};
 async function viaKey(m){const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:MODEL,max_tokens:1000,system:SYS,messages:m})});let d={};try{d=await r.json()}catch(e){}if(!r.ok)throw new Error(r.status==401?"badkey":(d.error&&d.error.message)||"HTTP "+r.status);return d.content.filter(c=>c.type=="text").map(c=>c.text).join("")}
 const LINK=SITE.link||"(the published page)";
-function noAI(){if(ready)kp.style.display="block";add("a",ready?"This copy is open outside Claude. Either paste your own API key in the box below, or use the published page where the tutor works without a key:\n"+LINK:"Still connecting to the tutor. Try again in a moment.")}
+function noAI(){if(ready)kp.style.display="block";add("a",ready?"This copy is open outside Claude, so the tutor needs your own Anthropic API key. Paste it in the box below."+(SITE.link?"\nOr use the published page, where the tutor works without a key:\n"+SITE.link:""):"Still connecting to the tutor. Try again in a moment.")}
 tut.onclick=()=>{dr.classList.add("open");if(!smp&&!key&&ready&&!warned){warned=true;noAI()}};document.getElementById("tx").onclick=()=>dr.classList.remove("open");
 const SUG=SITE.sug;
 document.getElementById("ch").innerHTML=SUG.map(t=>`<button class="chip">${t}</button>`).join("");
@@ -417,6 +460,10 @@ main.addEventListener("click",handle,true);
 window.__yt={ck:ck,setRating:setRating,gradeCard:gradeCard,dueList:dueList,buildList:buildList,handle:handle,quiz:()=>qz,startQuiz:startQuiz,quizP:quizP,qRun:qRun,qEnd:qEnd,syncFC:syncFC,INT:INT};
 render();
 })();
+</script>
+<script>
+/* Tabs: put the icon above the label on narrow phones so all three tabs and the dark-mode button fit */
+(function(){if(typeof navR!=="function")return;var o=navR;navR=function(){o();var b=document.querySelectorAll(".tab");for(var i=0;i<b.length;i++){var t=b[i].textContent,k=t.indexOf(" ");if(k>0&&!b[i].querySelector(".te")){b[i].innerHTML='<span class="te"></span><span class="tl"></span>';b[i].firstChild.textContent=t.slice(0,k);b[i].lastChild.textContent=t.slice(k+1)}}};navR()})();
 </script>
 <script>
 /* Offline support: registers sw.js when the site is served over https */

@@ -114,6 +114,16 @@ button,label{touch-action:manipulation}
 .fcstat{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin:6px 0 10px;font:14px system-ui,sans-serif}
 .qzq{font-size:17px;margin:6px 0 10px}
 @media(max-width:640px){.rb{min-height:40px}.qzq{font-size:16px}#fcr .rb{flex:1;min-height:46px}}
+
+/* ---- responsive fixes (all pages) ---- */
+/* keep the topic chip row inside the screen and let it scroll sideways */
+nav{flex-wrap:nowrap;min-width:0}.chips2{min-width:0;max-width:100%}
+/* tab row: equal-width tabs, the dark-mode button always fully visible, icon above label on narrow screens */
+.tabs{align-items:stretch}
+.tab{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-width:0}
+#th{flex:none}
+@media(max-width:640px){.tabs{gap:4px}.tab{flex:1 1 0}}
+@media(max-width:480px){.tab{flex-direction:column;gap:0;line-height:1.2;font-size:12.5px;padding:5px 2px}.tab .te{font-size:18px;line-height:1.15}}
 </style><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#5b3fd0"><link rel="apple-touch-icon" href="icon-180.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Year 10">
 </head><body>
 <div style="max-width:860px;margin:auto;padding:10px 16px 0;font:600 14px system-ui,sans-serif"><a href="index.html" style="color:var(--ac);text-decoration:none">← Year Ten</a></div>
@@ -253,7 +263,7 @@ document.getElementById("ks").onclick=()=>{const v=document.getElementById("ki")
 document.getElementById("kc").onclick=()=>{key="";try{localStorage.removeItem(SITE.key+"-key")}catch(e){}kst.textContent="Key removed."};
 async function viaKey(m){const r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"content-type":"application/json","x-api-key":key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:MODEL,max_tokens:1000,system:SYS,messages:m})});let d={};try{d=await r.json()}catch(e){}if(!r.ok)throw new Error(r.status==401?"badkey":(d.error&&d.error.message)||"HTTP "+r.status);return d.content.filter(c=>c.type=="text").map(c=>c.text).join("")}
 const LINK=SITE.link||"(the published page)";
-function noAI(){if(ready)kp.style.display="block";add("a",ready?"This copy is open outside Claude. Either paste your own API key in the box below, or use the published page where the tutor works without a key:\n"+LINK:"Still connecting to the tutor. Try again in a moment.")}
+function noAI(){if(ready)kp.style.display="block";add("a",ready?"This copy is open outside Claude, so the tutor needs your own Anthropic API key. Paste it in the box below."+(SITE.link?"\nOr use the published page, where the tutor works without a key:\n"+SITE.link:""):"Still connecting to the tutor. Try again in a moment.")}
 tut.onclick=()=>{dr.classList.add("open");if(!smp&&!key&&ready&&!warned){warned=true;noAI()}};document.getElementById("tx").onclick=()=>dr.classList.remove("open");
 const SUG=SITE.sug;
 document.getElementById("ch").innerHTML=SUG.map(t=>`<button class="chip">${t}</button>`).join("");
@@ -442,6 +452,10 @@ main.addEventListener("click",handle,true);
 window.__yt={ck:ck,setRating:setRating,gradeCard:gradeCard,dueList:dueList,buildList:buildList,handle:handle,quiz:()=>qz,startQuiz:startQuiz,quizP:quizP,qRun:qRun,qEnd:qEnd,syncFC:syncFC,INT:INT};
 render();
 })();
+</script>
+<script>
+/* Tabs: put the icon above the label on narrow phones so all three tabs and the dark-mode button fit */
+(function(){if(typeof navR!=="function")return;var o=navR;navR=function(){o();var b=document.querySelectorAll(".tab");for(var i=0;i<b.length;i++){var t=b[i].textContent,k=t.indexOf(" ");if(k>0&&!b[i].querySelector(".te")){b[i].innerHTML='<span class="te"></span><span class="tl"></span>';b[i].firstChild.textContent=t.slice(0,k);b[i].lastChild.textContent=t.slice(k+1)}}};navR()})();
 </script>
 <script>
 /* Offline support: registers sw.js when the site is served over https */

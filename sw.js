@@ -1,7 +1,7 @@
 /* Year Ten Study Hub: offline support.
    Change VERSION whenever you upload new pages so phones refresh their saved copy. */
-const VERSION = "yt-v1";
-const FILES = ["./", "index.html", "psychology.html", "specialist-maths.html", "physics.html", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
+const VERSION = "yt-v3";
+const FILES = ["./", "index.html", "psychology.html", "specialist-maths.html", "physics.html", "methods.html", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(

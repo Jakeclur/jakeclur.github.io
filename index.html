@@ -56,7 +56,8 @@ main{padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px
 const SUBJECTS=[
  {name:"Psychology",emoji:"🧠",note:"Study hub",href:"psychology.html"},
  {name:"Specialist Maths",emoji:"📐",note:"Proof & complex numbers",href:"specialist-maths.html"},
- {name:"Physics",emoji:"⚛️",note:"Motion, forces & energy",href:"physics.html"}
+ {name:"Physics",emoji:"⚛️",note:"Motion, forces & energy",href:"physics.html"},
+ {name:"Methods",emoji:"📊",note:"Closing the Gap report",href:"methods.html"}
 ];
 document.getElementById("grid").innerHTML=SUBJECTS.map(s=>`<a class="tile" href="${s.href}"><span class="e">${s.emoji}</span><span class="n">${s.name}</span><span class="d">${s.note}</span></a>`).join("");
 document.getElementById("th").onclick=()=>{const r=document.documentElement;const dk=r.dataset.theme=="dark"||(r.dataset.theme!="light"&&matchMedia("(prefers-color-scheme:dark)").matches);r.dataset.theme=dk?"light":"dark";try{localStorage.setItem("yt-theme",r.dataset.theme)}catch(e){}};
