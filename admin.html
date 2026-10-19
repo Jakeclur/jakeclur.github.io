@@ -217,14 +217,26 @@ function pagesCard() {
   });
   var add = h("input", { type: "file", accept: ".html,text/html", multiple: "multiple" });
   add.onchange = function () {
-    Array.prototype.forEach.call(add.files, function (f) {
+    var jobs = Array.prototype.map.call(add.files, function (f) {
       var id = slug(f.name);
-      if (!id || id === "index" || id === "admin" || id === "login") return say("Skipped " + f.name + ": that name is reserved.", "er");
-      f.text().then(function (t) {
+      if (!id || id === "index" || id === "admin" || id === "login") { say("Skipped " + f.name + ": that name is reserved.", "er"); return null; }
+      return f.text().then(function (t) {
         var m = t.match(/<title>([^<]*)<\/title>/i), title = (m && m[1].trim()) || id, ex = S.vault.pages.filter(function (x) { return x.id === id; })[0];
         if (ex) { ex.html = t; say("Updated " + id + ".", "ok"); } else S.vault.pages.push({ id: id, title: title, emoji: "📄", note: "", html: t });
-        change();
+        return id;
       });
+    }).filter(Boolean);
+    Promise.all(jobs).then(function (ids) {
+      // A new page named like "religion-exam-1.html" is linked to the page called "religion" automatically.
+      var linked = [];
+      ids.forEach(function (id) {
+        var pg = S.vault.pages.filter(function (x) { return x.id === id; })[0];
+        if (!pg || pg.parent) return;
+        var par = topPages().filter(function (x) { return x !== pg && id.indexOf(x.id + "-") === 0; })[0];
+        if (par && !kids(pg.id).length) { pg.parent = par.id; linked.push(id + " → " + par.id); S.vault.users.forEach(function (u) { u.pages = u.pages.filter(function (y) { return y !== id; }); }); }
+      });
+      if (linked.length) say("Linked automatically: " + linked.join(", ") + ". Check them under Pages › Belongs to.", "ok");
+      change();
     });
   };
   c.appendChild(h("label", { text: "Add pages (choose one or more .html files)" })); c.appendChild(add);
