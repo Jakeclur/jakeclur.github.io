@@ -67,7 +67,7 @@
   }
 
   /* Build every public file from the vault.
-     vault = { pages:[{id,title,emoji,note,html}], users:[{name,salt,ku,iter,pages:[ids],disabled}] }
+     vault = { pages:[{id,title,emoji,note,html,parent?}], users:[{name,salt,ku,iter,pages:[ids],disabled}] }
      Returns { "access.json": text, "p/<id>.enc": text, "vault.enc": text }.
      Page keys are new on every build, so a removed user's old keys stop working on the new files. */
   async function build(vault, admin) {
@@ -81,8 +81,9 @@
     for (var j = 0; j < vault.users.length; j++) {
       var u = vault.users[j];
       if (u.disabled) continue;
-      var list = vault.pages.filter(function (p) { return u.pages.indexOf(p.id) >= 0; }).map(function (p) {
-        return { id: p.id, title: p.title, emoji: p.emoji, note: p.note, key: b64(keys[p.id]) };
+      // A page with a "parent" (e.g. a practice exam) is unlocked whenever its parent page is.
+      var list = vault.pages.filter(function (p) { return u.pages.indexOf(p.id) >= 0 || (p.parent && u.pages.indexOf(p.parent) >= 0); }).map(function (p) {
+        return { id: p.id, title: p.title, emoji: p.emoji, note: p.note, key: b64(keys[p.id]), hidden: !!p.parent };
       });
       var blob = await seal(unb64(u.ku), enc.encode(JSON.stringify({ name: u.name, pages: list })));
       users[await uid(u.name)] = { salt: u.salt, iter: u.iter, blob: blob };

@@ -82,7 +82,7 @@ function showGate(msg){document.getElementById("hub").hidden=true;document.getEl
 function showHub(s){
  document.getElementById("gate").hidden=true;document.getElementById("hub").hidden=false;document.getElementById("ft").hidden=false;
  document.getElementById("who").textContent="Signed in as "+s.name;
- document.getElementById("grid").innerHTML=s.pages.length?s.pages.map(p=>`<a class="tile" href="index.html?p=${encodeURIComponent(p.id)}"><span class="e">${esc(p.emoji||"📄")}</span><span class="n">${esc(p.title)}</span><span class="d">${esc(p.note||"")}</span></a>`).join(""):'<p class="sub">No pages are unlocked for your account yet. Ask the site owner.</p>'}
+ const tiles=s.pages.filter(p=>!p.hidden);document.getElementById("grid").innerHTML=tiles.length?tiles.map(p=>`<a class="tile" href="index.html?p=${encodeURIComponent(p.id)}"><span class="e">${esc(p.emoji||"📄")}</span><span class="n">${esc(p.title)}</span><span class="d">${esc(p.note||"")}</span></a>`).join(""):'<p class="sub">No pages are unlocked for your account yet. Ask the site owner.</p>'}
 async function openPage(s,id){
  const pg=s.pages.find(p=>p.id===id);
  if(!pg){history.replaceState(null,"","index.html");showHub(s);return}
@@ -90,6 +90,9 @@ async function openPage(s,id){
   const r=await fetch("p/"+encodeURIComponent(id)+".enc",{cache:"no-store"});if(!r.ok)throw 0;
   let html=await YTLock.decryptPage(await r.text(),pg.key);
   html=html.replace(/href="([a-z0-9-]+)\.html(#[^"]*)?"/g,(m,n,h)=>n==="index"?m:'href="index.html?p='+n+(h||"")+'"');
+  /* links built by the page's own scripts (like the exam buttons) are caught when clicked */
+  const shim='<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var m=(a.getAttribute("href")||"").match(/^([a-z0-9-]+)\\.html(#.*)?$/);if(m&&m[1]!=="index"){e.preventDefault();location.href="index.html?p="+m[1]+(m[2]||"")}},true)<\/script>';
+  html=/<\/head>/i.test(html)?html.replace(/<\/head>/i,()=>shim+"</head>"):shim+html;
   document.open();document.write(html);document.close();
  }catch(e){clearSess();history.replaceState(null,"","index.html");showGate("Your access changed or was removed. Please sign in again.")}
 }

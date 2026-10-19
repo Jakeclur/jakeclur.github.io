@@ -1,7 +1,7 @@
 /* Year Ten Study Hub: offline support.
    Only the sign-in page and the encrypted files are saved. Nothing readable is stored here.
    Change VERSION to make phones drop their old saved copy. */
-const VERSION = "yt-v4";
+const VERSION = "yt-v5";
 const FILES = ["./", "index.html", "lock.js", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {

@@ -58,6 +58,8 @@ function genPass() {
   return s;
 }
 function slug(s) { return s.toLowerCase().replace(/\.html?$/, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
+function topPages() { return S.vault.pages.filter(function (p) { return !p.parent; }); }
+function kids(id) { return S.vault.pages.filter(function (p) { return p.parent === id; }); }
 function findUser(name) { return S.vault.users.filter(function (u) { return u.name.toLowerCase() === name.trim().toLowerCase(); })[0]; }
 addEventListener("beforeunload", function (e) { if (S && S.dirty) { e.preventDefault(); e.returnValue = ""; } });
 
@@ -121,7 +123,7 @@ function accountsCard() {
     c.appendChild(h("div", { class: "it" }, [
       h("div", { class: "row sp" }, [
         h("div", {}, [h("b", { text: u.name }), " ", h("span", { class: "b " + (u.disabled ? "off" : "on"), text: u.disabled ? "Disabled" : "Active" }),
-          h("div", { class: "mu", text: u.pages.length + " of " + S.vault.pages.length + " pages unlocked" })]),
+          h("div", { class: "mu", text: topPages().filter(function (p) { return u.pages.indexOf(p.id) >= 0; }).length + " of " + topPages().length + " subjects unlocked" })]),
         h("div", { class: "row" }, [
           h("button", { text: "Settings", on: { click: function () { S.sel = u.name; main(); } } }),
           h("button", { class: "g", text: u.disabled ? "Enable" : "Disable", on: { click: function () { u.disabled = !u.disabled; change(); } } })])])]));
@@ -157,11 +159,11 @@ function settingsCard() {
     h("div", { class: "row sp" }, [h("h2", { text: "Settings: " + u.name }), h("button", { class: "g", text: "← Back", on: { click: function () { S.sel = null; main(); } } })]),
     h("p", { class: "mu", text: "Status: " + (u.disabled ? "Disabled (cannot sign in once published)" : "Active") })]);
   c.appendChild(h("h2", { text: "Pages", style: "margin-top:16px" }));
-  if (!S.vault.pages.length) c.appendChild(h("p", { class: "mu", text: "No pages yet. Add pages on the main screen." }));
-  S.vault.pages.forEach(function (pg) {
-    var on = u.pages.indexOf(pg.id) >= 0;
+  if (!topPages().length) c.appendChild(h("p", { class: "mu", text: "No pages yet. Add pages on the main screen." }));
+  topPages().forEach(function (pg) {
+    var on = u.pages.indexOf(pg.id) >= 0, k = kids(pg.id).length;
     c.appendChild(h("div", { class: "pg" }, [
-      h("div", {}, [h("b", { text: (pg.emoji || "") + " " + pg.title }), h("div", { class: on ? "ul" : "lk", text: on ? "🔓 Unlocked" : "🔒 Locked" })]),
+      h("div", {}, [h("b", { text: (pg.emoji || "") + " " + pg.title }), h("div", { class: on ? "ul" : "lk", text: (on ? "🔓 Unlocked" : "🔒 Locked") + (k ? " · includes " + k + " linked page" + (k > 1 ? "s" : "") + " (e.g. practice exams)" : "") })]),
       h("button", { class: on ? "d" : "", text: on ? "Lock" : "Unlock", on: { click: function () {
         u.pages = on ? u.pages.filter(function (x) { return x !== pg.id; }) : u.pages.concat(pg.id); change(); } } })]));
   });
@@ -183,6 +185,18 @@ function settingsCard() {
   return c;
 }
 
+function parentSelect(pg) {
+  var sel = h("select", { style: "width:100%;padding:10px 11px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit" },
+    [h("option", { value: "", text: "Nothing: this page has its own tile" })].concat(topPages().filter(function (x) { return x !== pg; }).map(function (x) { return h("option", { value: x.id, text: x.title }); })));
+  sel.value = pg.parent || "";
+  sel.onchange = function () {
+    if (sel.value) { pg.parent = sel.value; kids(pg.id).forEach(function (k) { delete k.parent; }); S.vault.users.forEach(function (u) { u.pages = u.pages.filter(function (x) { return x !== pg.id; }); }); }
+    else delete pg.parent;
+    change();
+  };
+  return sel;
+}
+
 function pagesCard() {
   var c = h("div", { class: "card" }, [h("h2", { text: "Pages (" + S.vault.pages.length + ")" })]);
   S.vault.pages.forEach(function (pg) {
@@ -195,8 +209,10 @@ function pagesCard() {
         h("button", { class: "d", text: "Remove", on: { click: function () {
           if (!confirm("Remove " + pg.id + " and unlock it from every account?")) return;
           S.vault.pages = S.vault.pages.filter(function (x) { return x !== pg; });
+          S.vault.pages.forEach(function (x) { if (x.parent === pg.id) delete x.parent; });
           S.vault.users.forEach(function (u) { u.pages = u.pages.filter(function (x) { return x !== pg.id; }); }); change(); } } })]),
       h("div", { class: "grid2", style: "margin-top:6px" }, [em, ti]), h("div", { style: "margin-top:8px" }, [no]),
+      h("label", { text: "Belongs to (a linked page is unlocked together with that page, and has no tile of its own)" }), parentSelect(pg),
       h("label", { text: "Replace with a newer file" }), rep]));
   });
   var add = h("input", { type: "file", accept: ".html,text/html", multiple: "multiple" });
