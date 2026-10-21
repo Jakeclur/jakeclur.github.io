@@ -10,7 +10,10 @@
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 Georgia,"Times New Roman",serif;display:flex;flex-direction:column;align-items:center}
-#th{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:calc(14px + env(safe-area-inset-right,0px));font:600 14px system-ui,sans-serif;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:999px;padding:7px 13px;cursor:pointer}
+#bar{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:calc(14px + env(safe-area-inset-right,0px));display:flex;gap:8px;z-index:5}
+.tb{display:inline-flex;align-items:center;gap:7px;font:600 14px system-ui,sans-serif;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:999px;padding:7px 14px;cursor:pointer;text-decoration:none}
+.tb:hover,.tb:focus-visible{border-color:var(--ac);outline:none}
+.tb svg{flex:none}
 main{width:100%;max-width:860px;padding:56px 18px 40px;margin:auto 0;text-align:center}
 h1{margin:0;font:800 clamp(40px,10vw,72px)/1.05 system-ui,sans-serif;letter-spacing:-.02em}
 h1 span{color:var(--ac)}
@@ -36,7 +39,7 @@ footer{color:var(--mu);font:12px system-ui,sans-serif;padding:0 16px 22px;text-a
 
 html{-webkit-text-size-adjust:100%}body{overflow-x:hidden}
 main{padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
-@media(max-width:560px){main{padding-top:64px;padding-bottom:28px}.sub{font-size:15px;margin-bottom:22px}.grid{gap:16px}a.tile{width:min(100%,230px)}a.tile .e{font-size:46px}a.tile .n{font-size:21px}.fb{margin-top:30px;padding:14px;border-radius:14px}.fb h2{font-size:20px}#th{padding:6px 11px}}
+@media(max-width:560px){main{padding-top:64px;padding-bottom:28px}.sub{font-size:15px;margin-bottom:22px}.grid{gap:16px}a.tile{width:min(100%,230px)}a.tile .e{font-size:46px}a.tile .n{font-size:21px}.fb{margin-top:30px;padding:14px;border-radius:14px}.fb h2{font-size:20px}.tb{padding:6px 11px}}
 @media(max-width:360px){a.tile{width:min(100%,200px)}a.tile .n{font-size:19px}}
 #gate{width:100%;max-width:380px;padding:56px 18px 40px;margin:auto 0;text-align:center}
 #gate h1{font-size:clamp(34px,9vw,54px)}
@@ -47,7 +50,7 @@ main{padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px
 footer a{color:var(--ac)}
 </style><script src="lock.js"></script><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#5b3fd0"><link rel="apple-touch-icon" href="icon-180.png"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Year 10">
 </head><body>
-<button id="th" aria-label="Toggle dark mode">◐</button>
+<div id="bar"><a class="tb" href="listen.html" aria-label="Listen to the podcasts"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/></svg>Listen</a><button class="tb" id="th" aria-label="Toggle dark mode">◐</button></div>
 <section id="gate" hidden>
 <form id="lf" autocomplete="on">
 <h1>Year <span>Ten</span></h1>

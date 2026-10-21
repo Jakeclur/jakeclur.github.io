@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Listen - Year Ten</title>
+<script>try{var t=localStorage.getItem("yt-theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<style>
+html,body{height:100%}
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1d2433;--mu:#5b6578;--ac:#5b3fd0;--ac2:#e9e4ff;--bd:#dde1ea;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12141c;--card:#1b1e29;--tx:#e8eaf2;--mu:#9aa3b8;--ac:#a58bff;--ac2:#2b2552;--bd:#2d3243}}
+:root[data-theme="dark"]{--bg:#12141c;--card:#1b1e29;--tx:#e8eaf2;--mu:#9aa3b8;--ac:#a58bff;--ac2:#2b2552;--bd:#2d3243}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 Georgia,"Times New Roman",serif;display:flex;flex-direction:column;align-items:center;overflow-x:hidden}
+#bar{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:calc(14px + env(safe-area-inset-right,0px));display:flex;gap:8px;z-index:5}
+.tb{display:inline-flex;align-items:center;gap:7px;font:600 14px system-ui,sans-serif;border:1px solid var(--bd);background:var(--card);color:var(--tx);border-radius:999px;padding:7px 14px;cursor:pointer;text-decoration:none}
+.tb:hover,.tb:focus-visible{border-color:var(--ac);outline:none}
+.tb[aria-current="page"]{background:var(--ac);border-color:var(--ac);color:var(--bg)}
+.tb svg{flex:none}
+main{width:100%;max-width:860px;padding:56px max(14px,env(safe-area-inset-right,0px)) 40px max(14px,env(safe-area-inset-left,0px));margin:auto 0;text-align:center}
+h1{margin:0;font:800 clamp(40px,10vw,72px)/1.05 system-ui,sans-serif;letter-spacing:-.02em}
+h1 span{color:var(--ac)}
+.sub{color:var(--mu);font:17px system-ui,sans-serif;margin:10px 0 34px}
+@media(max-width:560px){main{padding-top:64px;padding-bottom:28px}.sub{font-size:15px;margin-bottom:22px}.tb{padding:6px 11px}}
+#listen{text-align:left;max-width:680px;margin:0 auto}
+#listen h2{margin:0 0 4px;font:800 clamp(28px,7vw,40px)/1.1 system-ui,sans-serif;letter-spacing:-.01em;text-align:center}
+#listen>.sub{text-align:center;margin-bottom:26px}
+.back{display:block;margin:0 auto 22px;font:600 14px system-ui,sans-serif;background:none;border:0;color:var(--ac);cursor:pointer;padding:4px 8px}
+.ep{background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:18px;margin:0 0 18px}
+.ep h3{margin:0;font:700 21px/1.2 system-ui,sans-serif}
+.ep .meta{margin:3px 0 12px;font:13px system-ui,sans-serif;color:var(--mu)}
+.ep audio{width:100%;display:block;margin:0 0 10px}
+.ep .row{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:0 0 6px;font:13px system-ui,sans-serif;color:var(--mu)}
+.ep select{font:600 13px system-ui,sans-serif;border:1px solid var(--bd);background:var(--bg);color:var(--tx);border-radius:8px;padding:4px 6px}
+.ep details{margin-top:6px}
+.ep summary{cursor:pointer;font:600 14px system-ui,sans-serif;padding:6px 0}
+.ch{list-style:none;margin:6px 0 0;padding:0;border-top:1px solid var(--bd)}
+.ch li{margin:0}
+.ch button{display:flex;gap:12px;width:100%;text-align:left;font:15px/1.35 system-ui,sans-serif;background:none;border:0;border-bottom:1px solid var(--bd);color:var(--tx);padding:9px 6px;cursor:pointer}
+.ch button:hover,.ch button:focus-visible{background:var(--ac2);outline:none}
+.ch button.on{background:var(--ac2);font-weight:700}
+.ch .t{flex:none;width:3.4em;font-variant-numeric:tabular-nums;color:var(--mu)}
+.err{font:13px system-ui,sans-serif;color:var(--mu);margin:6px 0 0}
+</style>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#5b3fd0"><link rel="apple-touch-icon" href="icon-180.png">
+</head><body>
+<div id="bar"><a class="tb" href="index.html">Home</a><a class="tb" href="listen.html" aria-current="page"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 14v-2a9 9 0 0 1 18 0v2"/><rect x="3" y="14" width="4" height="7" rx="1.5"/><rect x="17" y="14" width="4" height="7" rx="1.5"/></svg>Listen</a><button class="tb" id="th" aria-label="Toggle dark mode">◐</button></div>
+<main>
+<h1>Year <span>Ten</span></h1>
+<div id="listen">
+<h2>Listen</h2>
+<p class="sub">Each subject as a podcast, with two hosts talking you through the whole study hub. Tap a chapter to jump to it.</p>
+<div id="eps"></div>
+</div>
+</main>
+<script>
+document.getElementById("th").onclick=()=>{const r=document.documentElement;const dk=r.dataset.theme=="dark"||(r.dataset.theme!="light"&&matchMedia("(prefers-color-scheme:dark)").matches);r.dataset.theme=dk?"light":"dark";try{localStorage.setItem("yt-theme",r.dataset.theme)}catch(e){}};
+/* ---- Podcasts. Audio files are in the audio folder. Chapter times are in seconds. ---- */
+const EPISODES=[
+ {title:"Year 10 Chemistry",meta:"Maya and Jack · about 47 min",src:"audio/chemistry.mp3",chapters:[[0,"Welcome to the lab"],[79,"1.1 Balancing equations, addition and decomposition"],[474,"1.2 Acids and bases"],[699,"1.3 Displacement and precipitation"],[946,"2.2 Relative formula mass and moles"],[1263,"2.3 Mass-to-mass calculations"],[1555,"3.1 Exothermic and endothermic reactions"],[1894,"3.2 Heat calculations with q = mCΔT"],[2241,"3.3 Enthalpy of combustion and calorimetry"],[2424,"4.1 Rates of reaction"],[2644,"Lightning round"],[2785,"Wrap up"]]},
+ {title:"Year 10 Psychology, part 1: The brain",meta:"Maya and Jack · about 33 min",src:"audio/psychology-1.mp3",chapters:[[0,"Welcome to the brain"],[65,"B1 The neuron"],[287,"B2 Hindbrain, midbrain and forebrain"],[573,"B3 The cortex and the four lobes"],[881,"B4 Language areas and localisation of function"],[1309,"B5 How we learned about the brain"],[1667,"B6 The nervous system"]]},
+ {title:"Year 10 Psychology, part 2: Intelligence and emotion",meta:"Maya and Jack · about 49 min",src:"audio/psychology-2.mp3",chapters:[[0,"I1 What is intelligence? The psychometric approach and IQ"],[317,"I2 How intelligence is measured"],[560,"I3 Validity and reliability of intelligence tests"],[829,"I4 Is intelligence inherited? Twin, family and adoption studies"],[1248,"I5 Nature versus nurture"],[1475,"I6 IQ and EQ: accurate, misleading, or both?"],[1695,"E1 Theories of emotion"],[2114,"E2 Coping and reappraisal"],[2267,"E3 Physiology of emotion: the limbic system and LeDoux"],[2487,"E4 Happiness and flow"],[2745,"Lightning round"],[2870,"Wrap up"]]},
+ {title:"Specialist Maths 1&2: Proof and complex numbers",meta:"Maya and Jack · about 44 min",src:"audio/specialist-maths.mp3",chapters:[[0,"Welcome to Specialist Maths"],[73,"7A Direct proof"],[424,"7B Proof by contrapositive"],[633,"7C Proof by contradiction"],[851,"7D Equivalent statements"],[1125,"7E Disproving statements"],[1463,"C1 Complex numbers: arithmetic and conjugates"],[1819,"C2 The Argand diagram, modulus, argument and polar form"],[2106,"C3 De Moivre, roots, polynomials and loci"],[2422,"Lightning round"],[2610,"Wrap up"]]}
+];
+(function(){
+ const $=id=>document.getElementById(id),fmt=t=>{t=Math.floor(t);const h=Math.floor(t/3600),m=Math.floor(t%3600/60),s=t%60;return (h?h+":"+String(m).padStart(2,"0"):m)+":"+String(s).padStart(2,"0")};
+ const players=[];
+ EPISODES.forEach(ep=>{
+  const card=document.createElement("article");card.className="ep";
+  const h=document.createElement("h3");h.textContent=ep.title;
+  const m=document.createElement("p");m.className="meta";m.textContent=ep.meta;
+  const a=document.createElement("audio");a.controls=true;a.preload="none";a.src=ep.src;a.setAttribute("aria-label",ep.title);
+  const row=document.createElement("div");row.className="row";
+  const lab=document.createElement("label");lab.textContent="Speed ";
+  const sel=document.createElement("select");[["0.9","0.9×"],["1","1×"],["1.25","1.25×"],["1.5","1.5×"],["1.75","1.75×"]].forEach(([v,t])=>{const o=document.createElement("option");o.value=v;o.textContent=t;if(v==="1")o.selected=true;sel.appendChild(o)});
+  sel.onchange=()=>{a.playbackRate=parseFloat(sel.value)};a.addEventListener("play",()=>{a.playbackRate=parseFloat(sel.value)});
+  lab.appendChild(sel);row.appendChild(lab);
+  const det=document.createElement("details");det.open=true;
+  const sm=document.createElement("summary");sm.textContent="Chapters ("+ep.chapters.length+")";det.appendChild(sm);
+  const ul=document.createElement("ul");ul.className="ch";
+  const btns=ep.chapters.map(([t,name])=>{const li=document.createElement("li"),b=document.createElement("button");b.type="button";
+   const ts=document.createElement("span");ts.className="t";ts.textContent=fmt(t);const nm=document.createElement("span");nm.textContent=name;b.append(ts,nm);
+   b.onclick=()=>{const go=()=>{a.currentTime=t;a.play().catch(()=>{})};if(a.readyState>0)go();else{a.addEventListener("loadedmetadata",go,{once:true});a.load()}};
+   li.appendChild(b);ul.appendChild(li);return b});
+  det.appendChild(ul);
+  const err=document.createElement("p");err.className="err";err.hidden=true;err.textContent="This episode couldn't load. Check your connection and try again.";
+  a.addEventListener("error",()=>{err.hidden=false});
+  a.addEventListener("play",()=>{err.hidden=true;players.forEach(p=>{if(p!==a)p.pause()})});
+  a.addEventListener("timeupdate",()=>{let cur=0;ep.chapters.forEach(([t],i)=>{if(a.currentTime>=t-0.5)cur=i});btns.forEach((b,i)=>b.classList.toggle("on",i===cur&&a.currentTime>0))});
+  players.push(a);
+  card.append(h,m,a,row,err,det);$("eps").appendChild(card)});
+})();
+</script>
+</body></html>

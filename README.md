@@ -17,3 +17,6 @@ account the admin has unlocked a page for can read it.
 
 Never put the plain `.html` study pages in this repo. Keep them on your device and add them through the admin page.
 Lose the admin password and the vault cannot be recovered.
+
+## Podcasts (public)
+`listen.html` and `audio/*.mp3` are plain files, not encrypted, so anyone with the site link can listen without signing in. The Listen button on the sign-in page and hub opens `listen.html`. To change episodes or chapter times, edit the `EPISODES` list in `listen.html`.

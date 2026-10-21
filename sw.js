@@ -1,8 +1,8 @@
 /* Year Ten Study Hub: offline support.
    Only the sign-in page and the encrypted files are saved. Nothing readable is stored here.
    Change VERSION to make phones drop their old saved copy. */
-const VERSION = "yt-v5";
-const FILES = ["./", "index.html", "lock.js", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
+const VERSION = "yt-v6";
+const FILES = ["./", "index.html", "lock.js", "listen.html", "manifest.webmanifest", "icon-180.png", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", e => {
   e.waitUntil(
@@ -24,7 +24,7 @@ self.addEventListener("fetch", e => {
   const r = e.request;
   if (r.method !== "GET") return;
   const u = new URL(r.url);
-  if (u.origin !== location.origin || u.pathname.endsWith("/admin.html") || u.pathname.endsWith("/vault.enc")) return;
+  if (u.origin !== location.origin || u.pathname.endsWith("/admin.html") || u.pathname.endsWith("/vault.enc") || u.pathname.indexOf("/audio/") !== -1) return;
   // Network first so access changes arrive straight away; saved copy only when offline.
   e.respondWith(
     fetch(r).then(res => { if (res.ok) { const copy = res.clone(); caches.open(VERSION).then(c => c.put(r, copy)); } return res; })
