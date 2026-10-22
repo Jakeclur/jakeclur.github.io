@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Account admin · Year Ten</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--tx:#1d2433;--mu:#5b6578;--ac:#5b3fd0;--ac2:#e9e4ff;--bd:#dde1ea;--er:#c0392b;--ok:#1e8e4e;--wn:#b9770e}
+@media(prefers-color-scheme:dark){:root{--bg:#12141c;--card:#1b1e29;--tx:#e8eaf2;--mu:#9aa3b8;--ac:#a58bff;--ac2:#2b2552;--bd:#2d3243;--er:#ff7b6b;--ok:#4cd08a;--wn:#f0b45a}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,sans-serif;padding:16px 16px 80px}
+.w{max-width:760px;margin:0 auto}
+h1{margin:8px 0 2px;font-size:28px}h1 span{color:var(--ac)}
+h2{margin:0 0 10px;font-size:19px}
+.sub{color:var(--mu);margin:0 0 16px;font-size:14px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px;margin:14px 0}
+label{display:block;font-weight:600;font-size:13px;margin:10px 0 4px}
+input[type=text],input[type=password],input[type=file]{width:100%;padding:10px 11px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit}
+button{font:600 14px system-ui,sans-serif;border:1px solid var(--ac);background:var(--ac);color:#fff;border-radius:999px;padding:8px 15px;cursor:pointer}
+button.g{background:transparent;color:var(--tx);border-color:var(--bd)}
+button.d{background:transparent;color:var(--er);border-color:var(--er)}
+button:disabled{opacity:.5;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row.sp{justify-content:space-between}
+.it{padding:11px 0;border-top:1px solid var(--bd)}.it:first-of-type{border-top:0}
+.b{display:inline-block;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;border:1px solid}
+.b.on{color:var(--ok);border-color:var(--ok)}.b.off{color:var(--er);border-color:var(--er)}
+.mu{color:var(--mu);font-size:13px}
+#msg{position:sticky;top:8px;z-index:5;margin:10px 0;padding:10px 14px;border-radius:10px;font-size:14px;display:none;border:1px solid var(--bd);background:var(--card)}
+#msg.er{display:block;color:var(--er);border-color:var(--er)}#msg.ok{display:block;color:var(--ok);border-color:var(--ok)}#msg.wn{display:block;color:var(--wn);border-color:var(--wn)}
+#dirty{display:none;color:var(--wn);font-weight:700;font-size:13px}
+.pg{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 0;border-top:1px solid var(--bd)}
+.pg button{min-width:92px}
+.lk{color:var(--er)}.ul{color:var(--ok)}
+.grid2{display:grid;grid-template-columns:70px 1fr;gap:8px}
+code{background:var(--ac2);padding:1px 6px;border-radius:6px}
+select{width:100%;padding:10px 11px;border:1px solid var(--bd);border-radius:10px;background:var(--bg);color:var(--tx);font:inherit}
+.yh{margin:16px 0 0;font-size:15px;color:var(--ac)}
+.b.ad{color:var(--ac);border-color:var(--ac)}
+.ck{display:flex;align-items:center;gap:8px;font-weight:400;font-size:15px;margin:8px 0}.ck input{width:20px;height:20px}
+</style></head><body><div class="w">
+<h1>Account <span>admin</span></h1>
+<p class="sub">Create accounts and choose what they can open. Works on your device; nothing you type is sent anywhere except GitHub when you publish.</p>
+<div id="msg" role="status"></div>
+<div id="app"></div>
+</div>
+<script src="lock.js"></script>
+<script src="ghpub.js"></script>
+<script>
+/* Account admin: create accounts and change what they can open. No page files are shown or changed here.
+   Signs in with a normal username and password whose account the owner has made an account admin. */
+var L = YTLock, P = YTPub, S = null, $app = document.getElementById("app");
+var YEARS = [["10", "Year 10"], ["11", "Year 11"]];
+
+function h(tag, props, kids) {
+  var e = document.createElement(tag);
+  for (var k in props || {}) { if (k === "on") for (var ev in props.on) e.addEventListener(ev, props.on[ev]); else if (k === "text") e.textContent = props[k]; else e.setAttribute(k, props[k]); }
+  (kids || []).forEach(function (c) { if (c != null) e.appendChild(typeof c === "string" ? document.createTextNode(c) : c); });
+  return e;
+}
+function say(text, kind) { var m = document.getElementById("msg"); m.className = text ? kind || "ok" : ""; m.textContent = text || ""; if (text) m.scrollIntoView({ block: "nearest" }); }
+function mark() { S.dirty = true; }
+function genPass() {
+  var a = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789", r = crypto.getRandomValues(new Uint8Array(14)), s = "";
+  for (var i = 0; i < r.length; i++) s += a[r[i] % a.length];
+  return s;
+}
+function same(a, b) { return a.trim().toLowerCase() === b.trim().toLowerCase(); }
+function findUser(name) { return S.dir.users.filter(function (u) { return same(u.name, name); })[0]; }
+function me() { return findUser(S.me); }
+function topPages() { return S.dir.pages.filter(function (p) { return !p.parent; }); }
+function yearOf(p) { return p.year || "10"; }
+// An account admin may only give out the pages they can open themselves.
+function mine() { var m = me(); return topPages().filter(function (p) { return m && m.pages.indexOf(p.id) >= 0; }); }
+function canEdit(u) {
+  if (!u || same(u.name, S.me) || L.isAdmin(u)) return false;             // never yourself or another admin
+  return !!(S.rights.manage || S.created.indexOf(u.name.toLowerCase()) >= 0);
+}
+addEventListener("beforeunload", function (e) { if (S && S.dirty) { e.preventDefault(); e.returnValue = ""; } });
+
+/* ---------- sign in ---------- */
+function loginScreen(msg) {
+  var u = h("input", { type: "text", autocomplete: "username", autocapitalize: "none", spellcheck: "false" }), p = h("input", { type: "password", autocomplete: "current-password" }), go = h("button", { text: "Sign in" });
+  async function run() {
+    go.disabled = true; say("Checking…", "wn");
+    try {
+      var acc = JSON.parse(await P.fresh("access.json")), s = await L.login(acc, u.value, p.value);
+      if (!s) { say("Wrong username or password, or this account is turned off.", "er"); go.disabled = false; return; }
+      if (!s.admin || !s.admin.dk) { say("This account is not an account admin. Ask the site owner to give it account admin rights.", "er"); go.disabled = false; return; }
+      var text = await P.fresh("accounts.enc"), d;
+      try { d = await L.openDirectory(text, { dk: s.admin.dk }); }
+      catch (e) { say("The site was updated a moment ago. Wait a minute, reload this page and sign in again.", "er"); go.disabled = false; return; }
+      S = { me: s.name, rights: { create: !!s.admin.create, manage: !!s.admin.manage }, dir: d.dir, pub: d.pub, created: [], dirty: false, sel: null,
+        loaded: { "accounts.enc": await L.gitSha(text) } };
+      p.value = ""; say(""); main();
+    } catch (e) { say("Could not reach the site. Check your connection. (" + e.message + ")", "er"); go.disabled = false; }
+  }
+  go.onclick = run; p.onkeydown = function (e) { if (e.key === "Enter") run(); };
+  $app.replaceChildren(h("div", { class: "card" }, [h("h2", { text: "Account admin sign in" }),
+    h("p", { class: "mu", text: "Use your own username and password. The site owner decides who is an account admin." }),
+    h("label", { text: "Username" }), u, h("label", { text: "Password" }), p, h("div", { class: "row", style: "margin-top:14px" }, [go])]));
+  if (msg) say(msg, "ok");
+  u.focus();
+}
+
+/* ---------- main ---------- */
+function main() {
+  var k = [h("div", { class: "row sp" }, [
+    h("span", { class: "mu", text: "Signed in as " + S.me + " · " + [S.rights.create ? "can create accounts" : "", S.rights.manage ? "can manage accounts" : ""].filter(Boolean).join(" and ") }),
+    h("button", { class: "g", text: "Sign out", on: { click: function () { if (!S.dirty || confirm("You have unpublished changes. Sign out anyway?")) { S = null; loginScreen(); } } } })]),
+    S.dirty ? h("p", { style: "color:var(--wn);font-weight:700;font-size:13px", text: "● Changes not published yet" }) : null];
+  if (S.sel) k.push(settingsCard());
+  else { k.push(accountsCard()); if (S.rights.create) k.push(newCard()); k.push(publishCard()); }
+  $app.replaceChildren.apply($app, k.filter(Boolean));
+}
+function change() { mark(); main(); }
+
+function pageToggles(u, onlyMine) {
+  var wrap = h("div", {}), allowed = mine().map(function (p) { return p.id; });
+  YEARS.forEach(function (y) {
+    var list = topPages().filter(function (p) { return yearOf(p) === y[0] && (allowed.indexOf(p.id) >= 0 || (!onlyMine && u.pages.indexOf(p.id) >= 0)); });
+    wrap.appendChild(h("h3", { class: "yh", text: y[1] + " subjects" }));
+    if (!list.length) { wrap.appendChild(h("p", { class: "mu", text: "None you can give." })); return; }
+    list.forEach(function (pg) {
+      var on = u.pages.indexOf(pg.id) >= 0, ok = allowed.indexOf(pg.id) >= 0;
+      wrap.appendChild(h("div", { class: "pg" }, [
+        h("div", {}, [h("b", { text: (pg.emoji || "") + " " + pg.title }), h("div", { class: on ? "ul" : "lk", text: (on ? "🔓 Unlocked" : "🔒 Locked") + (ok ? "" : " · only the site owner can change this") })]),
+        ok ? h("button", { class: on ? "d" : "", text: on ? "Lock" : "Unlock", on: { click: function () {
+          u.pages = on ? u.pages.filter(function (x) { return x !== pg.id; }) : u.pages.concat(pg.id); change(); } } }) : null]));
+    });
+  });
+  return wrap;
+}
+
+function accountsCard() {
+  var c = h("div", { class: "card" }, [h("h2", { text: "Accounts (" + S.dir.users.length + ")" })]);
+  S.dir.users.forEach(function (u) {
+    var you = same(u.name, S.me), adm = L.isAdmin(u), edit = canEdit(u);
+    c.appendChild(h("div", { class: "it" }, [h("div", { class: "row sp" }, [
+      h("div", {}, [h("b", { text: u.name }), " ", h("span", { class: "b " + (u.disabled ? "off" : "on"), text: u.disabled ? "Disabled" : "Active" }),
+        you ? h("span", {}, [" ", h("span", { class: "b ad", text: "You" })]) : adm ? h("span", {}, [" ", h("span", { class: "b ad", text: "Account admin" })]) : null,
+        h("div", { class: "mu", text: YEARS.map(function (y) { return y[1] + ": " + topPages().filter(function (p) { return yearOf(p) === y[0] && u.pages.indexOf(p.id) >= 0; }).length; }).join(" · ") + " subjects unlocked" })]),
+      edit ? h("button", { text: "Settings", on: { click: function () { S.sel = u.name; main(); } } }) : h("span", { class: "mu", text: you || adm ? "Only the owner can change this" : "View only" })])]));
+  });
+  return c;
+}
+
+function newCard() {
+  var n = h("input", { type: "text", autocomplete: "off", autocapitalize: "none" }), p = h("input", { type: "text", autocomplete: "off" });
+  var draft = { name: "", pages: [] };
+  var picks = h("div", {});
+  var add = h("button", { text: "Create account" });
+  add.onclick = async function () {
+    var name = n.value.trim();
+    if (!/^[A-Za-z0-9._-]{3,32}$/.test(name)) return say("Username: 3–32 letters, numbers, dot, dash or underscore.", "er");
+    if (findUser(name)) return say("That username already exists.", "er");
+    if (p.value.length < 8) return say("Password needs 8+ characters.", "er");
+    add.disabled = true; say("Creating…", "wn");
+    var s = await L.makeUserSecret(name, p.value);
+    S.dir.users.push({ name: name, salt: s.salt, ku: s.ku, iter: s.iter, pages: draft.pages.slice(), disabled: false });
+    S.created.push(name.toLowerCase());
+    say("Account " + name + " created with password " + p.value + ". Write it down now (it can't be shown again). Press Publish below to make it live.", "ok");
+    change();
+  };
+  var c = h("div", { class: "card" }, [h("h2", { text: "New account" }),
+    h("label", { text: "Username" }), n, h("label", { text: "Password" }), p,
+    h("div", { class: "row", style: "margin-top:10px" }, [h("button", { class: "g", text: "Generate password", on: { click: function () { p.value = genPass(); } } })]),
+    h("label", { text: "Pages this account can open" }), picks,
+    h("div", { class: "row", style: "margin-top:12px" }, [add]),
+    h("p", { class: "mu", text: "New accounts are normal users. Only the site owner can make account admins." })]);
+  // local version of the toggles that does not redraw the whole page
+  var allowed = mine();
+  function drawDraft() {
+    var wrap = h("div", {});
+    YEARS.forEach(function (y) {
+      var list = allowed.filter(function (pg) { return yearOf(pg) === y[0]; });
+      wrap.appendChild(h("h3", { class: "yh", text: y[1] + " subjects" }));
+      if (!list.length) { wrap.appendChild(h("p", { class: "mu", text: "None you can give." })); return; }
+      list.forEach(function (pg) {
+        var on = draft.pages.indexOf(pg.id) >= 0;
+        wrap.appendChild(h("div", { class: "pg" }, [h("div", {}, [h("b", { text: (pg.emoji || "") + " " + pg.title }), h("div", { class: on ? "ul" : "lk", text: on ? "🔓 Unlocked" : "🔒 Locked" })]),
+          h("button", { class: on ? "d" : "", text: on ? "Lock" : "Unlock", on: { click: function () { draft.pages = on ? draft.pages.filter(function (x) { return x !== pg.id; }) : draft.pages.concat(pg.id); drawDraft(); } } })]));
+      });
+    });
+    picks.replaceChildren(wrap);
+  }
+  drawDraft();
+  return c;
+}
+
+function settingsCard() {
+  var u = findUser(S.sel);
+  if (!u || !canEdit(u)) { S.sel = null; return accountsCard(); }
+  var c = h("div", { class: "card" }, [
+    h("div", { class: "row sp" }, [h("h2", { text: "Settings: " + u.name }), h("button", { class: "g", text: "← Back", on: { click: function () { S.sel = null; main(); } } })]),
+    h("p", { class: "mu", text: "Status: " + (u.disabled ? "Disabled (cannot sign in once published)" : "Active") })]);
+  c.appendChild(h("h2", { text: "Pages", style: "margin-top:16px" }));
+  c.appendChild(pageToggles(u, false));
+  var np = h("input", { type: "text", autocomplete: "off" }), rs = h("button", { text: "Set new password" });
+  rs.onclick = async function () {
+    if (np.value.length < 8) return say("Password needs 8+ characters.", "er");
+    rs.disabled = true; say("Working…", "wn");
+    var s = await L.makeUserSecret(u.name, np.value);
+    u.salt = s.salt; u.ku = s.ku; u.iter = s.iter;
+    say("New password set: " + np.value + ". The old one stops working once you publish.", "ok"); change();
+  };
+  c.appendChild(h("h2", { text: "Password", style: "margin-top:18px" }));
+  c.appendChild(h("div", { class: "row" }, [np, h("button", { class: "g", text: "Generate", on: { click: function () { np.value = genPass(); } } }), rs]));
+  c.appendChild(h("div", { class: "row", style: "margin-top:18px" }, [
+    h("button", { class: u.disabled ? "" : "d", text: u.disabled ? "Enable account" : "Disable account", on: { click: function () { u.disabled = !u.disabled; change(); } } }),
+    h("button", { class: "d", text: "Delete account", on: { click: function () {
+      if (confirm("Delete " + u.name + " for good?")) { S.dir.users = S.dir.users.filter(function (x) { return x !== u; }); S.sel = null; change(); } } } })]));
+  return c;
+}
+
+function publishCard() {
+  var repo = h("input", { type: "text", value: "Jakeclur/jakeclur.github.io" }), br = h("input", { type: "text", value: "main" }), tk = h("input", { type: "password", autocomplete: "off", placeholder: "github_pat_…" });
+  var pub = h("button", { text: "Publish changes" });
+  pub.onclick = async function () {
+    if (!S.dirty) return say("There are no changes to publish.", "wn");
+    if (!tk.value) return say("Paste a GitHub token first (see the note below).", "er");
+    pub.disabled = true; say("Re-locking pages with new keys…", "wn");
+    try {
+      var r = await L.rekey(S.dir, S.pub, async function (id) { var t = await P.fresh("p/" + encodeURIComponent(id) + ".enc"); if (t == null) throw new Error("missing page file " + id); return t; },
+        function (i, n) { say("Re-locking pages " + i + " of " + n + "…", "wn"); });
+      var n = await P.publish({ repo: repo.value.trim(), branch: br.value.trim(), token: tk.value.trim(), files: r.files, expect: S.loaded, say: say, message: "Update accounts (" + S.me + ")" });
+      S.dir = r.dir; S.loaded = { "accounts.enc": await L.gitSha(r.files["accounts.enc"]) }; S.dirty = false; S.created = [];
+      main(); say("Published " + n + " files. Changes are live in a minute or two.", "ok");
+    } catch (e) {
+      say(e.code === "STALE" ? e.message : /OperationError|decrypt/i.test(String(e && (e.name + e.message))) ? "The site was updated while you were working. Nothing was published. Reload this page, sign in again and redo your changes." : "Publish failed: " + e.message, "er");
+    }
+    pub.disabled = false;
+  };
+  return h("div", { class: "card" }, [h("h2", { text: "Publish" }),
+    h("p", { class: "mu", text: "Changes only go live after you publish. Publishing also gives every page a new key, so anyone you locked out loses access straight away. If someone else published after you signed in, publishing stops so you do not undo their work: reload and redo yours." }),
+    h("label", { text: "Repository" }), repo, h("label", { text: "Branch" }), br, h("label", { text: "GitHub token" }), tk,
+    h("p", { class: "mu", text: "Ask the site owner for a token, or make one at github.com/settings/personal-access-tokens: only this repository, permission “Contents: Read and write”. It stays in this page's memory and is gone when you close the tab." }),
+    h("div", { class: "row" }, [pub])]);
+}
+
+loginScreen();
+</script></body></html>

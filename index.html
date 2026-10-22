@@ -63,15 +63,16 @@ footer a{color:var(--ac)}
 </form>
 </section>
 <main id="hub" hidden>
-<h1>Year <span>Ten</span></h1>
-<p class="sub">Choose a subject to open its study hub</p>
+<h1 id="hh">Year <span>Ten</span></h1>
+<p class="sub" id="hs">Choose a subject to open its study hub</p>
+<p id="yb" hidden style="margin:-18px 0 22px"><a class="tb" href="index.html?y=all">← Choose a different year</a></p>
 <div class="grid" id="grid"></div>
 <section class="fb" id="fb"><h2>💬 Feedback</h2><p class="sub">Tell us what works, what's confusing, or what you'd like added. Please be kind and keep it about the website.</p>
 <div id="fmsg">Loading feedback…</div>
 <div id="fform" style="display:none"><input id="fnm" maxlength="40" placeholder="Your name (optional)"><textarea id="ftx" maxlength="500" placeholder="Write your feedback here…"></textarea><button id="fpost">Post feedback</button><span class="cnt" id="fcnt">0 / 500</span></div>
 <div id="flist"></div></section>
 </main>
-<footer id="ft" hidden><span id="who"></span> · <a href="#" id="lo">Sign out</a></footer>
+<footer id="ft" hidden><span id="who"></span><span id="aal" hidden> · <a href="accountadmin.html">Account admin</a></span> · <a href="#" id="lo">Sign out</a></footer>
 <script>
 { /* block scope: nothing here may stay global, or the pages written in later would clash with it */
 /* ---- Sign-in. Pages are stored encrypted (see lock.js); the admin page decides who gets which pages. ---- */
@@ -82,16 +83,33 @@ const clearSess=()=>{try{sessionStorage.removeItem(SK);localStorage.removeItem(S
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const wantPage=()=>new URLSearchParams(location.search).get("p");
 function showGate(msg){document.getElementById("hub").hidden=true;document.getElementById("ft").hidden=true;document.getElementById("gate").hidden=false;document.getElementById("lm").textContent=msg||""}
+const YK="yt-year";
 function showHub(s){
  document.getElementById("gate").hidden=true;document.getElementById("hub").hidden=false;document.getElementById("ft").hidden=false;
  document.getElementById("who").textContent="Signed in as "+s.name;
- const tiles=s.pages.filter(p=>!p.hidden);document.getElementById("grid").innerHTML=tiles.length?tiles.map(p=>`<a class="tile" href="index.html?p=${encodeURIComponent(p.id)}"><span class="e">${esc(p.emoji||"📄")}</span><span class="n">${esc(p.title)}</span><span class="d">${esc(p.note||"")}</span></a>`).join(""):'<p class="sub">No pages are unlocked for your account yet. Ask the site owner.</p>'}
+ document.getElementById("aal").hidden=!(s.admin&&(s.admin.create||s.admin.manage));
+ /* Year 10 or Year 11: chosen after signing in, remembered for this visit */
+ let yr=new URLSearchParams(location.search).get("y");
+ try{if(yr==="all"){sessionStorage.removeItem(YK);yr=null}else if(yr==="10"||yr==="11")sessionStorage.setItem(YK,yr);else yr=sessionStorage.getItem(YK)}catch(e){if(yr!=="10"&&yr!=="11")yr=null}
+ const tiles=s.pages.filter(p=>!p.hidden),yOf=p=>p.year||"10",grid=document.getElementById("grid");
+ document.getElementById("yb").hidden=!yr;
+ if(!yr){
+  document.getElementById("hh").innerHTML="Choose your <span>year</span>";
+  document.getElementById("hs").textContent="Pick a year to see its subjects";
+  grid.innerHTML=["10","11"].map(y=>{const n=tiles.filter(p=>yOf(p)===y).length;
+   return `<a class="tile" href="index.html?y=${y}"><span class="e">${y==="10"?"📘":"📗"}</span><span class="n">Year ${y}</span><span class="d">${n?n+" subject"+(n>1?"s":"")+" unlocked":"No subjects unlocked yet"}</span></a>`}).join("");
+  return}
+ document.getElementById("hh").innerHTML="Year <span>"+yr+"</span>";
+ document.getElementById("hs").textContent="Choose a subject to open its study hub";
+ const list=tiles.filter(p=>yOf(p)===yr);
+ grid.innerHTML=list.length?list.map(p=>`<a class="tile" href="index.html?p=${encodeURIComponent(p.id)}"><span class="e">${esc(p.emoji||"📄")}</span><span class="n">${esc(p.title)}</span><span class="d">${esc(p.note||"")}</span></a>`).join(""):'<p class="sub">No Year '+yr+' subjects are unlocked for your account yet. Ask the site owner.</p>'
+}
 async function openPage(s,id){
  const pg=s.pages.find(p=>p.id===id);
  if(!pg){history.replaceState(null,"","index.html");showHub(s);return}
  try{
-  const r=await fetch("p/"+encodeURIComponent(id)+".enc",{cache:"no-store"});if(!r.ok)throw 0;
-  let html=await YTLock.decryptPage(await r.text(),pg.key);
+  const get=async q=>{const r=await fetch("p/"+encodeURIComponent(id)+".enc"+q,{cache:"no-store"});if(!r.ok)throw 0;return YTLock.decryptPage(await r.text(),pg.key)};
+  let html;try{html=await get("")}catch(e){html=await get("?t="+Date.now())}   /* a just-published file may still be cached on the way */
   html=html.replace(/href="([a-z0-9-]+)\.html(#[^"]*)?"/g,(m,n,h)=>n==="index"?m:'href="index.html?p='+n+(h||"")+'"');
   /* links built by the page's own scripts (like the exam buttons) are caught when clicked */
   const shim='<script>document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var m=(a.getAttribute("href")||"").match(/^([a-z0-9-]+)\\.html(#.*)?$/);if(m&&m[1]!=="index"){e.preventDefault();location.href="index.html?p="+m[1]+(m[2]||"")}},true)<\/script>';
@@ -108,14 +126,16 @@ async function boot(){
 document.getElementById("lf").onsubmit=async e=>{
  e.preventDefault();const b=document.getElementById("lb"),m=document.getElementById("lm");b.disabled=true;m.textContent="Checking…";m.style.color="var(--mu)";
  try{
-  const acc=await (await fetch("access.json",{cache:"no-store"})).json();
-  const s=await YTLock.login(acc,document.getElementById("lu").value,document.getElementById("lp").value);
+  const acc=await (await fetch("access.json?t="+Date.now(),{cache:"no-store"})).json();
+  let s=await YTLock.login(acc,document.getElementById("lu").value,document.getElementById("lp").value);
   if(!s){m.style.color="#c0392b";m.textContent="Wrong username or password, or this account is turned off.";b.disabled=false;return}
-  setSess(s,document.getElementById("lk").checked);document.getElementById("lp").value="";
+  const keep=Object.assign({},s);if(s.admin)keep.admin={create:!!s.admin.create,manage:!!s.admin.manage};   /* the account admin key is not kept on this page */
+  try{sessionStorage.removeItem(YK)}catch(e){}
+  setSess(keep,document.getElementById("lk").checked);document.getElementById("lp").value="";s=keep;
   const id=wantPage();if(id)openPage(s,id);else showHub(s);
  }catch(err){m.style.color="#c0392b";m.textContent="Could not reach the site. Check your connection.";}
  b.disabled=false};
-document.getElementById("lo").onclick=e=>{e.preventDefault();clearSess();history.replaceState(null,"","index.html");showGate("")};
+document.getElementById("lo").onclick=e=>{e.preventDefault();clearSess();try{sessionStorage.removeItem(YK)}catch(x){}history.replaceState(null,"","index.html");showGate("")};
 boot();
 document.getElementById("th").onclick=()=>{const r=document.documentElement;const dk=r.dataset.theme=="dark"||(r.dataset.theme!="light"&&matchMedia("(prefers-color-scheme:dark)").matches);r.dataset.theme=dk?"light":"dark";try{localStorage.setItem("yt-theme",r.dataset.theme)}catch(e){}};
 
